@@ -35,7 +35,12 @@ public class CrearUsuario extends AppCompatActivity {
         txtNombreUsuario = findViewById(R.id.nomeUsuario);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(CrearUsuario.this);
-        builder.setMessage("Hay campos vacíos").setTitle("Error");
+        builder.setMessage("Hay campos vacíos").setTitle("Error").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+            }
+        });
         AlertDialog dialog = builder.create();
 
         btnCrearU.setOnClickListener(new View.OnClickListener() {
