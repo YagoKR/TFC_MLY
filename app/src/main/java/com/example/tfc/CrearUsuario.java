@@ -1,5 +1,6 @@
 package com.example.tfc;
 
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
@@ -44,7 +45,12 @@ public class CrearUsuario extends AppCompatActivity {
                     dialog.show();
                 } else {
                     AlertDialog.Builder builder = new AlertDialog.Builder(CrearUsuario.this);
-                    builder.setMessage("Usuario creado con éxito").setTitle("Éxito");
+                    builder.setMessage("Usuario creado con éxito").setTitle("Éxito").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                        @Override
+                        public void onClick(DialogInterface dialogInterface, int i) {
+                            finish();
+                        }
+                    });
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
