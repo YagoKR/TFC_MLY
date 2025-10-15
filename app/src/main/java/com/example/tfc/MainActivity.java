@@ -31,6 +31,14 @@ public class MainActivity extends AppCompatActivity {
         btnCrearUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                Intent i = new Intent(MainActivity.this, CrearUsuario.class);
+                startActivity(i);
+            }
+        });
+
+        btninicioSesion.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, InicioSesion.class);
                 startActivity(i);
             }
