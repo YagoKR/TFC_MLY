@@ -12,7 +12,7 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 public class MainActivity extends AppCompatActivity {
-    public Button btninicioSesion;
+    public Button btninicioSesion,btnCrearUsuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -26,8 +26,9 @@ public class MainActivity extends AppCompatActivity {
         });
 
         btninicioSesion = (Button) findViewById(R.id.btnIniciar);
+        btnCrearUsuario = (Button) findViewById(R.id.btnCrear);
 
-        btninicioSesion.setOnClickListener(new View.OnClickListener() {
+        btnCrearUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent i = new Intent(MainActivity.this, InicioSesion.class);
