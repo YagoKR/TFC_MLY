@@ -12,13 +12,13 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TFC">
         <activity
-            android:name=".InicioSesion"
+            android:name=".actividades.InicioSesion"
             android:exported="false" />
         <activity
-            android:name=".CrearUsuario"
+            android:name=".actividades.CrearUsuario"
             android:exported="false" />
         <activity
-            android:name=".MainActivity"
+            android:name=".actividades.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
