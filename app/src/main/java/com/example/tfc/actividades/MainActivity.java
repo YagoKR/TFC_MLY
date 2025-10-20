@@ -12,9 +12,11 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tfc.R;
+import com.example.tfc.bbdd.definicion.SQLiteHelper;
 
 public class MainActivity extends AppCompatActivity {
     public Button btninicioSesion,btnCrearUsuario;
+    public SQLiteHelper sqHelper;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -29,6 +31,9 @@ public class MainActivity extends AppCompatActivity {
 
         btninicioSesion = (Button) findViewById(R.id.btnIniciar);
         btnCrearUsuario = (Button) findViewById(R.id.btnCrear);
+        sqHelper = new SQLiteHelper(getApplicationContext());
+
+        sqHelper.getWritableDatabase();
 
         btnCrearUsuario.setOnClickListener(new View.OnClickListener() {
             @Override

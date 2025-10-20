@@ -1,10 +1,6 @@
 package com.example.tfc.bbdd.definicion;
 
-import static com.example.tfc.bbdd.definicion.DbContract.SQLITE_CREATE_CAMPANA;
-import static com.example.tfc.bbdd.definicion.DbContract.SQLITE_CREATE_USUARIO;
-import static com.example.tfc.bbdd.definicion.DbContract.SQLITE_DELETE_CAMPANA;
-import static com.example.tfc.bbdd.definicion.DbContract.SQLITE_DELETE_USUARIO;
-
+import static com.example.tfc.bbdd.definicion.DbContract.*;
 import android.database.sqlite.SQLiteDatabase;
 import android.database.sqlite.SQLiteOpenHelper;
 
@@ -20,12 +16,18 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQLITE_CREATE_USUARIO);
         db.execSQL(SQLITE_CREATE_CAMPANA);
+        db.execSQL(SQLITE_CREATE_PERSONAJE);
+        db.execSQL(SQLITE_CREATE_USUARIOS_CAMPANAS);
+        db.execSQL(SQLITE_CREATE_INVENTARIO);
     }
 
     @Override
     public void onUpgrade(SQLiteDatabase db, int oldVersion, int newVersion) {
         db.execSQL(SQLITE_DELETE_USUARIO);
         db.execSQL(SQLITE_DELETE_CAMPANA);
+        db.execSQL(SQLITE_DELETE_PERSONAJE);
+        db.execSQL(SQLITE_DELETE_INVENTARIO);
+        db.execSQL(SQLITE_DELETE_USUARIOS_CAMPANAS);
         onCreate(db);
     }
 

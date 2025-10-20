@@ -11,46 +11,94 @@ public class DbContract {
         public static final String COLUMN_PASSWORD = "Contraseña";
     }
 
-    public static final class CampanaEntry implements BaseColumns {
-        public static final String TABLE_NAME_02 = "Campañas";
-        public static final String COLUMN_CAMPANA = "Nombre campaña";
-        public static final String COLUMN_DESCRIPCION = "Descripcion";
-        public static final String COLUMN_ID_USUARIO= "ID_Usuario";
-    }
-
-    public static final class PersonajeEntry implements BaseColumns {
-        public static final String TABLE_NAME_03 = "Personajes";
-        public static final String COLUMN_ID_CAMPANA = "ID_PJ";
-        public static final String COLUMN_NOMBRE = "Nombre";
-        public static final String COLUMN_EDAD = "Edad";
-        public static final String COLUMN_STATS ="Stats";
-    }
-    public static final class InventarioEntry implements BaseColumns {
-        public static final String TABLE_NAME_03 = "Inventarios";
-        public static final String COLUMN_ID_CAMPANA = "ID_Campaña";
-        public static final String COLUMN_PRODUCTO = "Producto";
-        public static final String COLUMN_RAREZA ="Rareza";
-        public static final String COLUMN_CANTIDAD = "Cantidad";
-        public static final String COLUMN_DESCRIPCION ="Descripcion";
-    }
     public static final String SQLITE_CREATE_USUARIO =
             "CREATE TABLE " + UsuarioEntry.TABLE_NAME + " (" +
                     UsuarioEntry.COLUMN_USUARIO + " TEXT PRIMARY KEY, " +
                     UsuarioEntry.COLUMN_NOMBRE + " TEXT NOT NULL, " +
                     UsuarioEntry.COLUMN_EMAIL + " TEXT NOT NULL UNIQUE, " +
-                    UsuarioEntry.COLUMN_PASSWORD + " TEXT NOT NULL" +
-                    ");";
+                    UsuarioEntry.COLUMN_PASSWORD + " TEXT NOT NULL);";
+
     public static final String SQLITE_DELETE_USUARIO =
             "DROP TABLE IF EXISTS " + UsuarioEntry.TABLE_NAME;
 
+    public static final class CampanaEntry implements BaseColumns {
+        public static final String TABLE_NAME = "Campañas";
+        public static final String COLUMN_CAMPANA = "Nombre_campaña";
+        public static final String COLUMN_DESCRIPCION = "Descripcion";
+    }
+
     public static final String SQLITE_CREATE_CAMPANA =
-            "CREATE TABLE " + CampanaEntry.TABLE_NAME_02 + " (" +
-                    CampanaEntry.COLUMN_CAMPANA + " TEXT PRIMARY KEY, " +
-                    CampanaEntry.COLUMN_DESCRIPCION + " TEXT," +
-                    "FOREIGN KEY ("+ CampanaEntry.COLUMN_ID_USUARIO +" ) REFERENCES" +
-                    UsuarioEntry.TABLE_NAME + "("+ UsuarioEntry.COLUMN_USUARIO +") ON DELETE CASCADE" +
-                    ");";
+            "CREATE TABLE " + CampanaEntry.TABLE_NAME + " (" +
+                    BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    CampanaEntry.COLUMN_CAMPANA + " TEXT NOT NULL, " +
+                    CampanaEntry.COLUMN_DESCRIPCION + " TEXT);";
 
     public static final String SQLITE_DELETE_CAMPANA =
-            "DROP TABLE IF EXISTS " + CampanaEntry.TABLE_NAME_02;
+            "DROP TABLE IF EXISTS " + CampanaEntry.TABLE_NAME;
+
+    public static final class UsuariosCampanasEntry {
+        public static final String TABLE_NAME = "Usuarios_Campañas";
+        public static final String COLUMN_ID_USUARIO = "ID_Usuario";
+        public static final String COLUMN_ID_CAMPANA = "ID_Campaña";
+    }
+
+    public static final String SQLITE_CREATE_USUARIOS_CAMPANAS =
+            "CREATE TABLE " + UsuariosCampanasEntry.TABLE_NAME + " (" +
+                    UsuariosCampanasEntry.COLUMN_ID_USUARIO + " TEXT NOT NULL, " +
+                    UsuariosCampanasEntry.COLUMN_ID_CAMPANA + " INTEGER NOT NULL, " +
+                    "FOREIGN KEY (" + UsuariosCampanasEntry.COLUMN_ID_USUARIO + ") REFERENCES " +
+                    UsuarioEntry.TABLE_NAME + "(" + UsuarioEntry.COLUMN_USUARIO + ") ON DELETE CASCADE, " +
+                    "FOREIGN KEY (" + UsuariosCampanasEntry.COLUMN_ID_CAMPANA + ") REFERENCES " +
+                    CampanaEntry.TABLE_NAME + "(" + BaseColumns._ID + ") ON DELETE CASCADE, " +
+                    "PRIMARY KEY (" + UsuariosCampanasEntry.COLUMN_ID_USUARIO + ", " + UsuariosCampanasEntry.COLUMN_ID_CAMPANA + "));";
+
+    public static final String SQLITE_DELETE_USUARIOS_CAMPANAS =
+            "DROP TABLE IF EXISTS " + UsuariosCampanasEntry.TABLE_NAME;
+
+    public static final class PersonajeEntry implements BaseColumns {
+        public static final String TABLE_NAME = "Personajes";
+        public static final String COLUMN_ID_CAMPANA = "ID_Campana";
+        public static final String COLUMN_NOMBRE = "Nombre";
+        public static final String COLUMN_EDAD = "Edad";
+        public static final String COLUMN_STATS = "Stats";
+    }
+
+    public static final String SQLITE_CREATE_PERSONAJE =
+            "CREATE TABLE " + PersonajeEntry.TABLE_NAME + " (" +
+                    BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    PersonajeEntry.COLUMN_NOMBRE + " TEXT NOT NULL, " +
+                    PersonajeEntry.COLUMN_EDAD + " INTEGER, " +
+                    PersonajeEntry.COLUMN_STATS + " TEXT, " +
+                    PersonajeEntry.COLUMN_ID_CAMPANA + " INTEGER NOT NULL, " +
+                    "FOREIGN KEY (" + PersonajeEntry.COLUMN_ID_CAMPANA + ") REFERENCES " +
+                    CampanaEntry.TABLE_NAME + "(" + BaseColumns._ID + ") ON DELETE CASCADE);";
+
+    public static final String SQLITE_DELETE_PERSONAJE =
+            "DROP TABLE IF EXISTS " + PersonajeEntry.TABLE_NAME;
+
+    public static final class InventarioEntry implements BaseColumns {
+        public static final String TABLE_NAME = "Inventarios";
+        public static final String COLUMN_ID_PERSONAJE = "ID_Personaje";
+        public static final String COLUMN_PRODUCTO = "Producto";
+        public static final String COLUMN_RAREZA = "Rareza";
+        public static final String COLUMN_CANTIDAD = "Cantidad";
+        public static final String COLUMN_PRECIO = "Precio";
+        public static final String COLUMN_DESCRIPCION = "Descripcion";
+    }
+
+    public static final String SQLITE_CREATE_INVENTARIO =
+            "CREATE TABLE " + InventarioEntry.TABLE_NAME + " (" +
+                    BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
+                    InventarioEntry.COLUMN_ID_PERSONAJE + " INTEGER NOT NULL, " +
+                    InventarioEntry.COLUMN_PRODUCTO + " TEXT NOT NULL, " +
+                    InventarioEntry.COLUMN_RAREZA + " TEXT, " +
+                    InventarioEntry.COLUMN_CANTIDAD + " INTEGER, " +
+                    InventarioEntry.COLUMN_PRECIO + " INTEGER, " +
+                    InventarioEntry.COLUMN_DESCRIPCION + " TEXT, " +
+                    "FOREIGN KEY (" + InventarioEntry.COLUMN_ID_PERSONAJE + ") REFERENCES " +
+                    PersonajeEntry.TABLE_NAME + "(" + BaseColumns._ID + ") ON DELETE CASCADE);";
+
+    public static final String SQLITE_DELETE_INVENTARIO =
+            "DROP TABLE IF EXISTS " + InventarioEntry.TABLE_NAME;
+
 }
