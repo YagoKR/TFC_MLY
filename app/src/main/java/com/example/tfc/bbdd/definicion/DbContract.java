@@ -58,6 +58,7 @@ public class DbContract {
     public static final class PersonajeEntry implements BaseColumns {
         public static final String TABLE_NAME = "Personajes";
         public static final String COLUMN_ID_CAMPANA = "ID_Campana";
+        public static final String COLUMN_ID_USUARIO = "ID_Usuario";
         public static final String COLUMN_NOMBRE = "Nombre";
         public static final String COLUMN_EDAD = "Edad";
         public static final String COLUMN_STATS = "Stats";
@@ -70,8 +71,11 @@ public class DbContract {
                     PersonajeEntry.COLUMN_EDAD + " INTEGER, " +
                     PersonajeEntry.COLUMN_STATS + " TEXT, " +
                     PersonajeEntry.COLUMN_ID_CAMPANA + " INTEGER NOT NULL, " +
+                    PersonajeEntry.COLUMN_ID_USUARIO + " TEXT NOT NULL, " +
                     "FOREIGN KEY (" + PersonajeEntry.COLUMN_ID_CAMPANA + ") REFERENCES " +
-                    CampanaEntry.TABLE_NAME + "(" + BaseColumns._ID + ") ON DELETE CASCADE);";
+                    CampanaEntry.TABLE_NAME + "(" + BaseColumns._ID + ") ON DELETE CASCADE, " +
+                    "FOREIGN KEY (" + PersonajeEntry.COLUMN_ID_USUARIO + ") REFERENCES " +
+                    UsuarioEntry.TABLE_NAME + "(" + UsuarioEntry.COLUMN_USUARIO + ") ON DELETE CASCADE);";
 
     public static final String SQLITE_DELETE_PERSONAJE =
             "DROP TABLE IF EXISTS " + PersonajeEntry.TABLE_NAME;

@@ -11,7 +11,11 @@ public class SQLiteHelper extends SQLiteOpenHelper {
     public SQLiteHelper(android.content.Context context) {
         super(context, DATABASE_NOMBRE, null, DATABASE_VERSION);
     }
-
+    @Override
+    public void onConfigure(SQLiteDatabase db) {
+        super.onConfigure(db);
+        db.setForeignKeyConstraintsEnabled(true);
+    }
     @Override
     public void onCreate(SQLiteDatabase db) {
         db.execSQL(SQLITE_CREATE_USUARIO);
