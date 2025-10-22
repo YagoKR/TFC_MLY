@@ -1,4 +1,4 @@
-package com.example.tfc.actividades;
+package com.example.tfc.vista.actividades;
 
 import android.content.DialogInterface;
 import android.os.Bundle;

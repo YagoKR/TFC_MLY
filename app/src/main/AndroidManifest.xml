@@ -12,16 +12,16 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TFC">
         <activity
-            android:name=".actividades.ListadoCampanas"
+            android:name=".vista.actividades.ListadoCampanas"
             android:exported="false" />
         <activity
-            android:name=".actividades.InicioSesion"
+            android:name=".vista.actividades.InicioSesion"
             android:exported="false" />
         <activity
-            android:name=".actividades.CrearUsuario"
+            android:name=".vista.actividades.CrearUsuario"
             android:exported="false" />
         <activity
-            android:name=".actividades.MainActivity"
+            android:name=".vista.actividades.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
