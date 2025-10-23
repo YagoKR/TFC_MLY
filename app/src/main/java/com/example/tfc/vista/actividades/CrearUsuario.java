@@ -101,7 +101,7 @@ public class CrearUsuario extends AppCompatActivity {
                             e.printStackTrace();
                         }
                     } else {
-                        Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background);
+                        Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman_avatar_proof);
                         imagenBase64 = bitmapToBase64(defaultBitmap);
                         usuario = txtNombreUsuario.getText().toString();
                         nome = txtNombreReal.getText().toString();
