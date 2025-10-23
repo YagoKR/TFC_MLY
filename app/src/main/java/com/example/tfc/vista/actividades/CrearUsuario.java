@@ -1,12 +1,20 @@
 package com.example.tfc.vista.actividades;
 
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
@@ -14,11 +22,18 @@ import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tfc.R;
+import com.example.tfc.bbdd.dao.UsuarioDAO;
+import com.example.tfc.bbdd.entidades.Usuario;
+
+import java.io.ByteArrayOutputStream;
+import java.util.Base64;
 
 public class CrearUsuario extends AppCompatActivity {
 
     public Button btnCrearU;
-    public EditText txtContrasenha, txtNombreReal, txtNombreUsuario;
+    public EditText txtContrasenha, txtNombreReal, txtNombreUsuario, txtEmailUsuario;
+    public ImageView imgUsuario;
+    private Uri selectedImageUri;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -35,6 +50,10 @@ public class CrearUsuario extends AppCompatActivity {
         txtContrasenha = findViewById(R.id.contrasena);
         txtNombreReal = findViewById(R.id.nomeReal);
         txtNombreUsuario = findViewById(R.id.nomeUsuario);
+        txtEmailUsuario = findViewById(R.id.emailReal);
+        imgUsuario = findViewById(R.id.imageView);
+
+        imgUsuario.setImageResource(R.drawable.ic_launcher_background);
 
         AlertDialog.Builder builder = new AlertDialog.Builder(CrearUsuario.this);
         builder.setMessage("Hay campos vacíos").setTitle("Error").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -45,12 +64,54 @@ public class CrearUsuario extends AppCompatActivity {
         });
         AlertDialog dialog = builder.create();
 
+        imgUsuario.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
+                intent.setType("image/*");
+                startActivityForResult(intent, 123);
+            }
+        });
+
+
         btnCrearU.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 if (txtContrasenha.getText().toString().isEmpty() || txtNombreReal.getText().toString().isEmpty() || txtNombreUsuario.getText().toString().isEmpty()) {
                     dialog.show();
                 } else {
+                    String imagenBase64 = null;
+                    String usuario, nome, email, contrasena;
+
+                    if (selectedImageUri != null) {
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+                            imagenBase64 = bitmapToBase64(bitmap);
+                            usuario = txtNombreUsuario.getText().toString();
+                            nome = txtNombreReal.getText().toString();
+                            contrasena = txtContrasenha.getText().toString();
+                            email = txtEmailUsuario.getText().toString();
+
+                            Usuario u = new Usuario(usuario, nome, email, contrasena, imagenBase64);
+                            UsuarioDAO uDAO = new UsuarioDAO(getApplicationContext());
+                            uDAO.insertarDatos(u);
+                            Toast.makeText(CrearUsuario.this, "Datos guardados con éxito", Toast.LENGTH_SHORT).show();
+
+                        } catch (Exception e) {
+                            e.printStackTrace();
+                        }
+                    } else {
+                        Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.ic_launcher_background);
+                        imagenBase64 = bitmapToBase64(defaultBitmap);
+                        usuario = txtNombreUsuario.getText().toString();
+                        nome = txtNombreReal.getText().toString();
+                        contrasena = txtContrasenha.getText().toString();
+                        email = txtEmailUsuario.getText().toString();
+
+                        Usuario u = new Usuario(usuario, nome, email, contrasena, imagenBase64);
+                        UsuarioDAO uDAO = new UsuarioDAO(getApplicationContext());
+                        uDAO.insertarDatos(u);
+                    }
                     AlertDialog.Builder builder = new AlertDialog.Builder(CrearUsuario.this);
                     builder.setMessage("Usuario creado con éxito").setTitle("Éxito").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
@@ -64,4 +125,20 @@ public class CrearUsuario extends AppCompatActivity {
             }
         });
     }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 123 && resultCode == RESULT_OK && data != null) {
+            selectedImageUri = data.getData();
+            imgUsuario.setImageURI(selectedImageUri);
+        }
+    }
+    private String bitmapToBase64(Bitmap bitmap) {
+        ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
+        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+        byte[] byteArray = outputStream.toByteArray();
+        return Base64.getEncoder().encodeToString(byteArray);
+    }
+
 }

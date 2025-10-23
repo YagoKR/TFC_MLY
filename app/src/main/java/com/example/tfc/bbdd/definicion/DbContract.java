@@ -9,12 +9,14 @@ public class DbContract {
         public static final String COLUMN_NOMBRE = "Nombre";
         public static final String COLUMN_EMAIL = "Email";
         public static final String COLUMN_PASSWORD = "Contraseña";
+        public static final String COLUMN_IMAGEN = "Imagen";
     }
 
     public static final String SQLITE_CREATE_USUARIO =
             "CREATE TABLE " + UsuarioEntry.TABLE_NAME + " (" +
                     UsuarioEntry.COLUMN_USUARIO + " TEXT PRIMARY KEY, " +
                     UsuarioEntry.COLUMN_NOMBRE + " TEXT NOT NULL, " +
+                    UsuarioEntry.COLUMN_IMAGEN + " TEXT NOT NULL, " +
                     UsuarioEntry.COLUMN_EMAIL + " TEXT NOT NULL UNIQUE, " +
                     UsuarioEntry.COLUMN_PASSWORD + " TEXT NOT NULL);";
 
