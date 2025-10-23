@@ -6,14 +6,17 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.core.graphics.Insets;
 import androidx.core.view.ViewCompat;
 import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tfc.R;
+import com.example.tfc.bbdd.dao.UsuarioDAO;
 
 public class InicioSesion extends AppCompatActivity {
 
@@ -39,16 +42,40 @@ public class InicioSesion extends AppCompatActivity {
         btnInicio.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                String usuario = txtUsuario.getText().toString();
-                sp = getSharedPreferences("datosUsuario", MODE_PRIVATE);
-                SharedPreferences.Editor editor = sp.edit();
-                editor.putString("usuario", usuario);
-                editor.apply();
+                String usuario = txtUsuario.getText().toString().trim();
+                String contrasena = txtContrasena.getText().toString().trim();
 
-                Intent i = new Intent(InicioSesion.this, ListadoCampanas.class);
-                startActivity(i);
+                if (usuario.isEmpty() || contrasena.isEmpty()) {
+                    new AlertDialog.Builder(InicioSesion.this)
+                            .setTitle("Error")
+                            .setMessage("Completa todos los campos")
+                            .setPositiveButton("Ok", null)
+                            .show();
+                    return;
+                }
+
+                UsuarioDAO uDAO = new UsuarioDAO(getApplicationContext());
+
+                if (uDAO.validarUsuario(usuario, contrasena)) {
+                    SharedPreferences sp = getSharedPreferences("datosUsuario", MODE_PRIVATE);
+                    SharedPreferences.Editor editor = sp.edit();
+                    editor.putString("usuario", usuario);
+                    editor.apply();
+
+                    Intent i = new Intent(InicioSesion.this, ListadoCampanas.class);
+                    startActivity(i);
+                    finish();
+
+                } else {
+                    new AlertDialog.Builder(InicioSesion.this)
+                            .setTitle("Error")
+                            .setMessage("Usuario o contraseña incorrectos")
+                            .setPositiveButton("Ok", null)
+                            .show();
+                }
             }
         });
+
 
     }
 }

@@ -46,8 +46,30 @@ public class UsuarioDAO {
                 cursor.close();
             }
         }
-
         return existe;
     }
+
+    public boolean validarUsuario(String usuario, String contrasena) {
+        boolean valido = false;
+        Cursor cursor = null;
+        try {
+            cursor = db.query(
+                    "Usuarios",
+                    new String[]{"usuario"},
+                    "usuario = ? AND contraseña = ?",
+                    new String[]{usuario, contrasena},
+                    null, null, null
+            );
+            if (cursor != null && cursor.moveToFirst()) {
+                valido = true;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return valido;
+    }
+
 
 }
