@@ -2,6 +2,7 @@ package com.example.tfc.bbdd.dao;
 
 import android.content.ContentValues;
 import android.content.Context;
+import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.tfc.bbdd.definicion.SQLiteHelper;
@@ -25,4 +26,28 @@ public class UsuarioDAO {
 
         return db.insert ("Usuarios", null, values);
     }
+
+    public boolean existeUsuario(String idUsuario, String mail) {
+        boolean existe = false;
+        Cursor cursor = null;
+        try {
+            cursor = db.query(
+                    "Usuarios",
+                    new String[]{"usuario", "email"},
+                    "usuario = ? OR email = ?",
+                    new String[]{idUsuario},
+                    null, null, null
+            );
+            if (cursor != null && cursor.moveToFirst()) {
+                existe = true;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return existe;
+    }
+
 }

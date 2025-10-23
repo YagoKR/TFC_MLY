@@ -79,38 +79,42 @@ public class CrearUsuario extends AppCompatActivity {
             public void onClick(View v) {
                 if (txtContrasenha.getText().toString().isEmpty() || txtNombreReal.getText().toString().isEmpty() || txtNombreUsuario.getText().toString().isEmpty()) {
                     dialog.show();
-                } else {
+                    return;
+                }
                     String imagenBase64 = null;
                     String usuario, nome, email, contrasena;
 
-                    if (selectedImageUri != null) {
+                    usuario = txtNombreUsuario.getText().toString();
+                    nome = txtNombreReal.getText().toString();
+                    contrasena = txtContrasenha.getText().toString();
+                    email = txtEmailUsuario.getText().toString();
+
+                    UsuarioDAO uDAO = new UsuarioDAO(getApplicationContext());
+                if (uDAO.existeUsuario(usuario, email)) {
+                    new AlertDialog.Builder(CrearUsuario.this)
+                            .setTitle("Error")
+                            .setMessage("El nombre de usuario ya existe o el correo ya está siendo utilizado. Elige otro.")
+                            .setPositiveButton("Ok", null)
+                            .show();
+                    return;
+                }
+                if (selectedImageUri != null) {
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                             imagenBase64 = bitmapToBase64(bitmap);
-                            usuario = txtNombreUsuario.getText().toString();
-                            nome = txtNombreReal.getText().toString();
-                            contrasena = txtContrasenha.getText().toString();
-                            email = txtEmailUsuario.getText().toString();
-
                             Usuario u = new Usuario(usuario, nome, email, contrasena, imagenBase64);
-                            UsuarioDAO uDAO = new UsuarioDAO(getApplicationContext());
                             uDAO.insertarDatos(u);
                             Toast.makeText(CrearUsuario.this, "Datos guardados con éxito", Toast.LENGTH_SHORT).show();
-
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
                     } else {
                         Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman_avatar_proof);
                         imagenBase64 = bitmapToBase64(defaultBitmap);
-                        usuario = txtNombreUsuario.getText().toString();
-                        nome = txtNombreReal.getText().toString();
-                        contrasena = txtContrasenha.getText().toString();
-                        email = txtEmailUsuario.getText().toString();
-
                         Usuario u = new Usuario(usuario, nome, email, contrasena, imagenBase64);
-                        UsuarioDAO uDAO = new UsuarioDAO(getApplicationContext());
                         uDAO.insertarDatos(u);
+                        Toast.makeText(CrearUsuario.this, "Datos guardados con éxito", Toast.LENGTH_SHORT).show();
+
                     }
                     AlertDialog.Builder builder = new AlertDialog.Builder(CrearUsuario.this);
                     builder.setMessage("Usuario creado con éxito").setTitle("Éxito").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
@@ -122,7 +126,6 @@ public class CrearUsuario extends AppCompatActivity {
                     AlertDialog dialog = builder.create();
                     dialog.show();
                 }
-            }
         });
     }
 
