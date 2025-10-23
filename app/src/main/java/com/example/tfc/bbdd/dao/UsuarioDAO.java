@@ -70,6 +70,29 @@ public class UsuarioDAO {
         }
         return valido;
     }
+    public Usuario obtenerUsuario(String idUsuario) {
+        Usuario usuario = null;
+
+        Cursor cursor = db.query(
+                "Usuarios",
+                null,
+                "usuario = ?",
+                new String[]{idUsuario},
+                null, null, null
+        );
+
+        if (cursor != null && cursor.moveToFirst()) {
+            String nombre = cursor.getString(cursor.getColumnIndexOrThrow("Nombre"));
+            String email = cursor.getString(cursor.getColumnIndexOrThrow("Email"));
+            String contrasena = cursor.getString(cursor.getColumnIndexOrThrow("Contraseña"));
+            String imagen = cursor.getString(cursor.getColumnIndexOrThrow("Imagen"));
+
+            usuario = new Usuario(idUsuario, nombre, email, contrasena, imagen);
+            cursor.close();
+        }
+
+        return usuario;
+    }
 
 
 }

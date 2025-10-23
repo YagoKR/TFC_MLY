@@ -53,8 +53,6 @@ public class CrearUsuario extends AppCompatActivity {
         txtEmailUsuario = findViewById(R.id.emailReal);
         imgUsuario = findViewById(R.id.imageView);
 
-        imgUsuario.setImageResource(R.drawable.ic_launcher_background);
-
         AlertDialog.Builder builder = new AlertDialog.Builder(CrearUsuario.this);
         builder.setMessage("Hay campos vacíos").setTitle("Error").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
             @Override
