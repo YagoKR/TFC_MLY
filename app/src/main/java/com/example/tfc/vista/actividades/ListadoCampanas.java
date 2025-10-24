@@ -4,6 +4,7 @@ import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
@@ -23,6 +24,7 @@ public class ListadoCampanas extends AppCompatActivity {
     public UsuarioDAO usuarioDAO;
     public TextView txtNombre, txtEmail;
     public ImageView imgUsuario;
+    public Button btnanadirCampana;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -30,11 +32,11 @@ public class ListadoCampanas extends AppCompatActivity {
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_listado_campanas);
 
-
         toolbar = findViewById(R.id.toolbarListadoCampanas);
         txtNombre = findViewById(R.id.NombreUsuario);
         txtEmail = findViewById(R.id.correoUsuario);
         imgUsuario = findViewById(R.id.imageView2);
+        btnanadirCampana = findViewById(R.id.anadirCampana);
 
         usuarioDAO = new UsuarioDAO(getApplicationContext());
 

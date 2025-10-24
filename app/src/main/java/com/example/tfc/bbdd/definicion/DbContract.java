@@ -27,12 +27,14 @@ public class DbContract {
         public static final String TABLE_NAME = "Campañas";
         public static final String COLUMN_CAMPANA = "Nombre_campaña";
         public static final String COLUMN_DESCRIPCION = "Descripcion";
+        public static final String COLUMN_IMAGEN_CAMPANA = "Imagen_Campaña";
     }
 
     public static final String SQLITE_CREATE_CAMPANA =
             "CREATE TABLE " + CampanaEntry.TABLE_NAME + " (" +
                     BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     CampanaEntry.COLUMN_CAMPANA + " TEXT NOT NULL, " +
+                    CampanaEntry.COLUMN_IMAGEN_CAMPANA + " TEXT, " +
                     CampanaEntry.COLUMN_DESCRIPCION + " TEXT);";
 
     public static final String SQLITE_DELETE_CAMPANA =
@@ -64,6 +66,7 @@ public class DbContract {
         public static final String COLUMN_NOMBRE = "Nombre";
         public static final String COLUMN_EDAD = "Edad";
         public static final String COLUMN_STATS = "Stats";
+        public static final String COLUMN_IMAGEN_PJ = "Imagen_PJ";
     }
 
     public static final String SQLITE_CREATE_PERSONAJE =
@@ -72,6 +75,7 @@ public class DbContract {
                     PersonajeEntry.COLUMN_NOMBRE + " TEXT NOT NULL, " +
                     PersonajeEntry.COLUMN_EDAD + " INTEGER, " +
                     PersonajeEntry.COLUMN_STATS + " TEXT, " +
+                    PersonajeEntry.COLUMN_IMAGEN_PJ + " TEXT, " +
                     PersonajeEntry.COLUMN_ID_CAMPANA + " INTEGER NOT NULL, " +
                     PersonajeEntry.COLUMN_ID_USUARIO + " TEXT NOT NULL, " +
                     "FOREIGN KEY (" + PersonajeEntry.COLUMN_ID_CAMPANA + ") REFERENCES " +
