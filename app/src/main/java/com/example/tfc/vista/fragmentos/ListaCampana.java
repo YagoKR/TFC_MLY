@@ -7,8 +7,14 @@ import androidx.fragment.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.example.tfc.R;
+import com.example.tfc.bbdd.dao.CampanaDAO;
+import com.example.tfc.bbdd.entidades.Campana;
+import com.example.tfc.vista.adaptadores.CampanaAdapter;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,10 +32,17 @@ public class ListaCampana extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private CampanaDAO campanaDAO;
+    private CampanaAdapter campanaAdapter;
+    private ArrayList<Campana> listaCampanas;
+    private OnCampanaSelectedListener listener;
+
     public ListaCampana() {
         // Required empty public constructor
     }
-
+    public interface OnCampanaSelectedListener {
+        void onCampanaSelected(Campana campana);
+    }
     /**
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
@@ -60,7 +73,27 @@ public class ListaCampana extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lista_campana, container, false);
+        View view = inflater.inflate(R.layout.fragment_lista_campana, container, false);
+
+        campanaDAO = new CampanaDAO(getContext());
+        listaCampanas = campanaDAO.obtenerTodasCampanas();
+        Campana[] arrayCampanas = listaCampanas.toArray(new Campana[0]);
+
+
+        ListView listView = view.findViewById(R.id.listViewCampanas);
+        campanaAdapter = new CampanaAdapter(getContext(), R.layout.campana_element,R.id.textViewNombre, arrayCampanas);
+        listView.setAdapter(campanaAdapter);
+
+        listView.setOnItemClickListener((adapterView, v, position, id) -> {
+            Campana campanaSeleccionada = (Campana) adapterView.getItemAtPosition(position);
+        });
+
+        return view;
+    }
+
+    private void recargarCampanas() {
+        listaCampanas.clear();
+        listaCampanas.addAll(campanaDAO.obtenerTodasCampanas());
+        campanaAdapter.notifyDataSetChanged();
     }
 }
