@@ -11,8 +11,10 @@ import androidx.annotation.NonNull;
 import com.example.tfc.R;
 import com.example.tfc.bbdd.entidades.Campana;
 
+import java.util.ArrayList;
+
 public class CampanaAdapter extends ArrayAdapter<Campana> {
-    public CampanaAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull Campana[] objects) {
+    public CampanaAdapter(@NonNull Context context, int resource, int textViewResourceId, @NonNull ArrayList<Campana> objects) {
         super(context, resource, textViewResourceId, objects);
     }
 
@@ -46,4 +48,6 @@ public class CampanaAdapter extends ArrayAdapter<Campana> {
         }
         return convertView;
     }
+
+
 }

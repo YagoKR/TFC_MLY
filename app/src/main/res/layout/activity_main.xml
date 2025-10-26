@@ -27,6 +27,7 @@
         android:layout_marginStart="132dp"
         android:layout_marginBottom="388dp"
         android:text="Iniciar sesión "
+        android:backgroundTint="#3F60D8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -37,6 +38,7 @@
         android:layout_marginStart="132dp"
         android:layout_marginBottom="328dp"
         android:text="Crear usuario"
+        android:backgroundTint="#3F60D8"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
 
@@ -46,7 +48,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="1dp"
         android:layout_marginTop="1dp"
-        android:background="@android:color/holo_blue_dark"
+        android:background="#3F60D8"
         android:minHeight="?attr/actionBarSize"
         android:theme="?attr/actionBarTheme"
         app:layout_constraintStart_toStartOf="parent"

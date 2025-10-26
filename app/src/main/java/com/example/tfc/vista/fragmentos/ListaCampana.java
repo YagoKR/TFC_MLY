@@ -1,7 +1,11 @@
 package com.example.tfc.vista.fragmentos;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
+import androidx.activity.result.ActivityResultLauncher;
+import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -76,18 +80,15 @@ public class ListaCampana extends Fragment {
         View view = inflater.inflate(R.layout.fragment_lista_campana, container, false);
 
         campanaDAO = new CampanaDAO(getContext());
-        listaCampanas = campanaDAO.obtenerTodasCampanas();
-        Campana[] arrayCampanas = listaCampanas.toArray(new Campana[0]);
-
+        listaCampanas = new ArrayList<>(campanaDAO.obtenerTodasCampanas());
 
         ListView listView = view.findViewById(R.id.listViewCampanas);
-        campanaAdapter = new CampanaAdapter(getContext(), R.layout.campana_element,R.id.textViewNombre, arrayCampanas);
+        campanaAdapter = new CampanaAdapter(getContext(), R.layout.campana_element,R.id.textViewNombre, listaCampanas);
         listView.setAdapter(campanaAdapter);
 
         listView.setOnItemClickListener((adapterView, v, position, id) -> {
             Campana campanaSeleccionada = (Campana) adapterView.getItemAtPosition(position);
         });
-
         return view;
     }
 
@@ -95,5 +96,11 @@ public class ListaCampana extends Fragment {
         listaCampanas.clear();
         listaCampanas.addAll(campanaDAO.obtenerTodasCampanas());
         campanaAdapter.notifyDataSetChanged();
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        recargarCampanas();
     }
 }

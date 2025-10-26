@@ -35,7 +35,7 @@ public class UsuarioDAO {
                     "Usuarios",
                     new String[]{"usuario", "email"},
                     "usuario = ? OR email = ?",
-                    new String[]{idUsuario},
+                    new String[]{idUsuario,mail},
                     null, null, null
             );
             if (cursor != null && cursor.moveToFirst()) {

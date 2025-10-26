@@ -1,9 +1,13 @@
 package com.example.tfc.vista.actividades;
 
+import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.Menu;
+import android.view.MenuItem;
+import android.view.View;
 import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -59,7 +63,30 @@ public class ListadoCampanas extends AppCompatActivity {
             }
         }
 
+        btnanadirCampana.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(ListadoCampanas.this, CrearCampana.class);
+                startActivity(i);
+            }
+        });
 
+    }
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        getMenuInflater().inflate(R.menu.menu_item, menu);
+        return true;
+    }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        int id = item.getItemId();
+
+        if (id == R.id.salir) {
+            finishAffinity();
+            System.exit(0);
+            return true;
+        }
+        return super.onOptionsItemSelected(item);
     }
 }

@@ -20,9 +20,9 @@ public class CampanaDAO {
 
     public long insertarDatos(Campana campana) {
         ContentValues values = new ContentValues();
-        values.put ("nombreCampaña", campana.getNombreCampanha());
-        values.put ("descripcion", campana.getDescripcion());
-        values.put ("imagen", campana.getImagenCampanha());
+        values.put("Nombre_campaña", campana.getNombreCampanha());
+        values.put("Descripcion", campana.getDescripcion());
+        values.put("Imagen_Campaña", campana.getImagenCampanha());
 
         return db.insert ("Campañas", null, values);
     }
@@ -34,9 +34,9 @@ public class CampanaDAO {
             cursor = db.query("Campañas", null, null, null, null, null, null);
             if (cursor != null && cursor.moveToFirst()) {
                 do {
-                    String nombreCampanha = cursor.getString(cursor.getColumnIndexOrThrow("nombreCampaña"));
-                    String descripcion = cursor.getString(cursor.getColumnIndexOrThrow("descripcion"));
-                    String imagenCampanha = cursor.getString(cursor.getColumnIndexOrThrow("imagen"));
+                    String nombreCampanha = cursor.getString(cursor.getColumnIndexOrThrow("Nombre_campaña"));
+                    String descripcion = cursor.getString(cursor.getColumnIndexOrThrow("Descripcion"));
+                    String imagenCampanha = cursor.getString(cursor.getColumnIndexOrThrow("Imagen_Campaña"));
 
                     Campana campana = new Campana(nombreCampanha, descripcion, imagenCampanha);
                     campanas.add(campana);
@@ -48,6 +48,28 @@ public class CampanaDAO {
             }
         }
         return campanas;
+    }
+    public boolean existeCampana(String nombreCampana) {
+        boolean existe = false;
+        Cursor cursor = null;
+        try {
+            cursor = db.query(
+                    "Campañas",
+                    new String[]{"Nombre_campaña"},
+                    "Nombre_campaña = ?",
+                    new String[]{nombreCampana},
+                    null, null, null
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {
+                existe = true;
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return existe;
     }
 
 }
