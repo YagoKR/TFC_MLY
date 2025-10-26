@@ -12,9 +12,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+import androidx.appcompat.app.AlertDialog;
 
 import com.example.tfc.R;
 import com.example.tfc.bbdd.dao.CampanaDAO;
+import com.example.tfc.bbdd.dao.UsuarioCampanasDAO;
 import com.example.tfc.bbdd.entidades.Campana;
 import com.example.tfc.vista.adaptadores.CampanaAdapter;
 
@@ -37,6 +39,7 @@ public class ListaCampana extends Fragment {
     private String mParam2;
 
     private CampanaDAO campanaDAO;
+    private UsuarioCampanasDAO usuarioCampanasDAO;
     private CampanaAdapter campanaAdapter;
     private ArrayList<Campana> listaCampanas;
     private OnCampanaSelectedListener listener;
@@ -88,6 +91,22 @@ public class ListaCampana extends Fragment {
 
         listView.setOnItemClickListener((adapterView, v, position, id) -> {
             Campana campanaSeleccionada = (Campana) adapterView.getItemAtPosition(position);
+        });
+
+        listView.setOnItemLongClickListener((adapterView, v, position, id) -> {
+            Campana campanaSeleccionada = listaCampanas.get(position);
+
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Eliminar campaña")
+                    .setMessage("¿Seguro que deseas eliminar \"" + campanaSeleccionada.getNombreCampanha() + "\"?")
+                    .setPositiveButton("Sí", (dialog, which) -> {
+                        campanaDAO.borrarCampana(campanaSeleccionada.getNombreCampanha());
+                        recargarCampanas();
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+
+            return true; // Consumimos el evento
         });
         return view;
     }

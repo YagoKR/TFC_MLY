@@ -27,6 +27,10 @@ public class CampanaDAO {
         return db.insert ("Campañas", null, values);
     }
 
+    public int borrarCampana(String nombreCampana) {
+        return db.delete("Campañas", "Nombre_campaña = ?", new String[]{nombreCampana});
+    }
+
     public ArrayList<Campana> obtenerTodasCampanas() {
         ArrayList<Campana> campanas = new ArrayList<>();
         Cursor cursor = null;
