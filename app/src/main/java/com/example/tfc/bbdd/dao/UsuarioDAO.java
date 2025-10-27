@@ -93,6 +93,20 @@ public class UsuarioDAO {
 
         return usuario;
     }
+    public int actualizarUsuario(Usuario usuario) {
+        ContentValues values = new ContentValues();
+        values.put("nombre", usuario.getNombre());
+        values.put("email", usuario.getEmail());
+        values.put("contraseña", usuario.getContrasenha());
+        values.put("imagen", usuario.getImagen());
+
+        return db.update(
+                "Usuarios",
+                values,
+                "usuario = ?",
+                new String[]{usuario.getIdUsuario()}
+        );
+    }
 
 
 }

@@ -97,9 +97,9 @@ public class ListadoCampanas extends AppCompatActivity implements ListaCampana.O
     public boolean onOptionsItemSelected(MenuItem item) {
         int id = item.getItemId();
 
-        if (id == R.id.salir) {
-            finishAffinity();
-            System.exit(0);
+        if (id == R.id.editarPerfil) {
+            Intent intent = new Intent(ListadoCampanas.this, EditarUsuario.class);
+            startActivity(intent);
             return true;
         }
 
@@ -107,6 +107,13 @@ public class ListadoCampanas extends AppCompatActivity implements ListaCampana.O
             cerrarSesion();
             return true;
         }
+        if (id == R.id.salir) {
+            finishAffinity();
+            System.exit(0);
+            return true;
+        }
+
+
         return super.onOptionsItemSelected(item);
     }
 
@@ -116,4 +123,33 @@ public class ListadoCampanas extends AppCompatActivity implements ListaCampana.O
         intent.putExtra("campana", campana);
         startActivity(intent);
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        actualizarDatosUsuario();
+    }
+
+    private void actualizarDatosUsuario() {
+        sp = getSharedPreferences("datosUsuario", MODE_PRIVATE);
+        String username = sp.getString("usuario", null);
+
+        if (username != null) {
+            Usuario usuario = usuarioDAO.obtenerUsuario(username);
+
+            if (usuario != null) {
+                txtNombre.setText(usuario.getIdUsuario());
+                txtEmail.setText(usuario.getEmail());
+
+                try {
+                    byte[] bytes = android.util.Base64.decode(usuario.getImagen(), android.util.Base64.DEFAULT);
+                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                    imgUsuario.setImageBitmap(bitmap);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
+        }
+    }
+
 }
