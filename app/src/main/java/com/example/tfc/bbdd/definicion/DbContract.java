@@ -64,8 +64,8 @@ public class DbContract {
         public static final String COLUMN_ID_CAMPANA = "ID_Campana";
         public static final String COLUMN_ID_USUARIO = "ID_Usuario";
         public static final String COLUMN_NOMBRE = "Nombre";
-        public static final String COLUMN_EDAD = "Edad";
-        public static final String COLUMN_STATS = "Stats";
+        public static final String COLUMN_RAZA = "Raza";
+        public static final String COLUMN_CLASE = "Clase";
         public static final String COLUMN_IMAGEN_PJ = "Imagen_PJ";
     }
 
@@ -73,8 +73,8 @@ public class DbContract {
             "CREATE TABLE " + PersonajeEntry.TABLE_NAME + " (" +
                     BaseColumns._ID + " INTEGER PRIMARY KEY AUTOINCREMENT, " +
                     PersonajeEntry.COLUMN_NOMBRE + " TEXT NOT NULL, " +
-                    PersonajeEntry.COLUMN_EDAD + " INTEGER, " +
-                    PersonajeEntry.COLUMN_STATS + " TEXT, " +
+                    PersonajeEntry.COLUMN_RAZA + " TEXT NOT NULL, " +
+                    PersonajeEntry.COLUMN_CLASE + " TEXT NOT NULL, " +
                     PersonajeEntry.COLUMN_IMAGEN_PJ + " TEXT, " +
                     PersonajeEntry.COLUMN_ID_CAMPANA + " INTEGER NOT NULL, " +
                     PersonajeEntry.COLUMN_ID_USUARIO + " TEXT NOT NULL, " +

@@ -15,29 +15,32 @@
         android:layout_margin="8dp">
 
         <ImageView
-            android:id="@+id/imageViewCampaña"
+            android:id="@+id/imageViewPj"
             android:layout_width="85dp"
             android:layout_height="83dp"
+            android:background="@drawable/imagen_estilo"
+            android:scaleType="centerCrop"
+            android:clipToOutline="true"
             app:srcCompat="@android:drawable/sym_def_app_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <TextView
-        android:id="@+id/textViewNombreCampana"
+        android:id="@+id/textViewNombrePersonaje"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="18sp"
         android:textStyle="bold"
         app:layout_constraintTop_toTopOf="@id/imageContainer02"
         app:layout_constraintStart_toEndOf="@id/imageContainer02"
-        app:layout_constraintBottom_toTopOf="@id/textViewDescripcionCampana"
+        app:layout_constraintBottom_toTopOf="@id/textViewStats"
         android:layout_marginStart="8dp" />
 
     <TextView
-        android:id="@+id/textViewDescripcionCampana"
+        android:id="@+id/textViewStats"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/textViewNombreCampana"
+        app:layout_constraintTop_toBottomOf="@id/textViewNombrePersonaje"
         app:layout_constraintStart_toEndOf="@id/imageContainer02"
         android:layout_marginStart="8dp" />
 

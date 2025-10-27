@@ -8,56 +8,45 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
-import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tfc.R;
 import com.example.tfc.bbdd.dao.CampanaDAO;
+import com.example.tfc.bbdd.dao.PersonajeDAO;
 import com.example.tfc.bbdd.dao.UsuarioCampanasDAO;
-import com.example.tfc.bbdd.dao.UsuarioDAO;
 import com.example.tfc.bbdd.entidades.Campana;
-import com.example.tfc.bbdd.entidades.Usuario;
+import com.example.tfc.bbdd.entidades.Personaje;
 import com.example.tfc.bbdd.entidades.UsuariosCampanas;
 
 import java.io.ByteArrayOutputStream;
 import java.util.Base64;
 
-public class CrearCampana extends AppCompatActivity {
-    public SharedPreferences sp;
+public class CrearPersonaje extends AppCompatActivity {
 
-    public EditText txtNombreCampana, txtDescripcionCampana;
-    public ImageView imgCampana;
-    public Button btncrearCampana;
+    public EditText txtNombrePJ, txtRazaPJ, txtStatsPJ;
+    public ImageView imgPersonaje;
+    public Button btnAnadirPJ;
     private Uri selectedImageUri;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_crear_campana);
-        sp = getSharedPreferences("datosUsuario", MODE_PRIVATE);
-        String username = sp.getString("usuario", "Usuario");
+        setContentView(R.layout.activity_crear_personaje);
 
-        txtNombreCampana = findViewById(R.id.nomeCampana);
-        txtDescripcionCampana = findViewById(R.id.descripcionCampana);
-        imgCampana = findViewById(R.id.imageView3);
-        btncrearCampana = findViewById(R.id.btnCrearCampana);
+        txtNombrePJ = findViewById(R.id.nombrePersonaje);
+        txtRazaPJ = findViewById(R.id.razaPersonaje);
+        txtStatsPJ = findViewById(R.id.statsPersonaje);
+        imgPersonaje = findViewById(R.id.imageViewPersonaje);
+        btnAnadirPJ = findViewById(R.id.btnCrearPersonaje);
 
-        imgCampana.setOnClickListener(new View.OnClickListener() {
+        imgPersonaje.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
@@ -66,12 +55,11 @@ public class CrearCampana extends AppCompatActivity {
             }
         });
 
-
-        btncrearCampana.setOnClickListener(new View.OnClickListener() {
+        btnAnadirPJ.setOnClickListener(new View.OnClickListener() {
             @Override
-            public void onClick(View view) {
-                if (txtNombreCampana.getText().toString().isEmpty() || txtDescripcionCampana.getText().toString().isEmpty()) {
-                    AlertDialog.Builder builder = new AlertDialog.Builder(CrearCampana.this);
+            public void onClick(View v) {
+                if (txtNombrePJ.getText().toString().isEmpty() || txtRazaPJ.getText().toString().isEmpty() || txtStatsPJ.getText().toString().isEmpty()) {
+                    AlertDialog.Builder builder = new AlertDialog.Builder(CrearPersonaje.this);
                     builder.setMessage("Hay campos vacíos").setTitle("Error").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                         @Override
                         public void onClick(DialogInterface dialogInterface, int i) {
@@ -82,44 +70,51 @@ public class CrearCampana extends AppCompatActivity {
                     dialog.show();
                     return;
                 }
+
                 String imagenBase64 = null;
-                String campana, descripcion;
+                String nombre = txtNombrePJ.getText().toString();
+                String raza = txtRazaPJ.getText().toString();
+                String stats = txtStatsPJ.getText().toString();
 
-                campana = txtNombreCampana.getText().toString();
-                descripcion = txtDescripcionCampana.getText().toString();
+                SharedPreferences sp = getSharedPreferences("datosUsuario", MODE_PRIVATE);
+                String username = sp.getString("usuario", "Usuario");
 
-                UsuarioCampanasDAO ucDAO = new UsuarioCampanasDAO(getApplicationContext());
+                String nombreCampanha = getIntent().getStringExtra("nombreCampanha");
+
                 CampanaDAO cDAO = new CampanaDAO(getApplicationContext());
-                if (ucDAO.existeCampanaParaUsuario(username, campana)) {
-                    new AlertDialog.Builder(CrearCampana.this)
+                PersonajeDAO pDAO = new PersonajeDAO(getApplicationContext());
+
+                int id = cDAO.obtenerIdCampana(nombreCampanha);
+
+                if (pDAO.existePersonaje(nombre, id, username)) {
+                    new AlertDialog.Builder(CrearPersonaje.this)
                             .setTitle("Error")
-                            .setMessage("Ya existe esta campaña para este usuario.")
+                            .setMessage("Ya existe este personaje para este usuario")
                             .setPositiveButton("Ok", null)
                             .show();
                     return;
                 }
+
                 if (selectedImageUri != null) {
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                         Bitmap resizedBitmap = resizeAndCropBitmap(bitmap, 128, 128);
                         imagenBase64 = bitmapToBase64(resizedBitmap);
-                        Campana u = new Campana(campana, descripcion, imagenBase64);
-                        long idcampana = cDAO.insertarDatos(u);
-                        UsuariosCampanas uc = new UsuariosCampanas(username, (int) idcampana);
-                        ucDAO.insertarDatos(uc);
+                        Personaje p = new Personaje(nombre, raza, stats, imagenBase64, id , username);
+                        pDAO.insertarDatos(p);
+
                     } catch (Exception e) {
                         e.printStackTrace();
                     }
                 } else {
                     Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman_avatar_proof);
-                    imagenBase64 = bitmapToBase64(defaultBitmap);
-                    Campana u = new Campana(campana, descripcion, imagenBase64);
-                    long idcampana = cDAO.insertarDatos(u);
-                    UsuariosCampanas uc = new UsuariosCampanas(username, (int) idcampana);
-                    ucDAO.insertarDatos(uc);
+                    Bitmap resizedBitmap = resizeAndCropBitmap(defaultBitmap, 128, 128);
+                    imagenBase64 = bitmapToBase64(resizedBitmap);
+                    Personaje p = new Personaje(nombre, raza, stats, imagenBase64, id , username);
+                    pDAO.insertarDatos(p);
                 }
-                AlertDialog.Builder builder = new AlertDialog.Builder(CrearCampana.this);
-                builder.setMessage("Campaña creada con éxito").setTitle("Éxito").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                AlertDialog.Builder builder = new AlertDialog.Builder(CrearPersonaje.this);
+                builder.setMessage("Personaje creado con éxito").setTitle("Éxito").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
                         finish();
@@ -129,16 +124,9 @@ public class CrearCampana extends AppCompatActivity {
                 dialog.show();
             }
         });
+
     }
 
-    @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        if (requestCode == 123 && resultCode == RESULT_OK && data != null) {
-            selectedImageUri = data.getData();
-            imgCampana.setImageURI(selectedImageUri);
-        }
-    }
     private String bitmapToBase64(Bitmap bitmap) {
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
@@ -172,8 +160,4 @@ public class CrearCampana extends AppCompatActivity {
 
         return output;
     }
-
-
-
-
 }

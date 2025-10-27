@@ -76,4 +76,26 @@ public class CampanaDAO {
         return existe;
     }
 
+    public int obtenerIdCampana(String nombreCampana) {
+        int id = -1;
+        Cursor cursor = null;
+        try {
+            cursor = db.query(
+                    "Campañas",
+                    new String[]{"_id"},
+                    "Nombre_campaña = ?",
+                    new String[]{nombreCampana},
+                    null, null, null
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {
+                id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
+            }
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+        return id;
+    }
+
+
 }

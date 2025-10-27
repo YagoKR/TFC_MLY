@@ -1,14 +1,23 @@
 package com.example.tfc.vista.fragmentos;
 
+import android.content.Context;
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AlertDialog;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ListView;
 
 import com.example.tfc.R;
+import com.example.tfc.bbdd.dao.PersonajeDAO;
+import com.example.tfc.bbdd.entidades.Personaje;
+import com.example.tfc.vista.adaptadores.PersonajeAdapter;
+
+import java.util.ArrayList;
 
 /**
  * A simple {@link Fragment} subclass.
@@ -26,8 +35,16 @@ public class ListaPersonajes extends Fragment {
     private String mParam1;
     private String mParam2;
 
+    private PersonajeAdapter personajeAdapter;
+    private PersonajeDAO personajeDAO;
+    private ArrayList<Personaje> listaPersonajes;
+    private ListaPersonajes.OnPersonajeSelectedListener listener;
+
     public ListaPersonajes() {
         // Required empty public constructor
+    }
+    public interface OnPersonajeSelectedListener {
+        void onPersonajeSelected(Personaje personaje);
     }
 
     /**
@@ -60,7 +77,59 @@ public class ListaPersonajes extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_lista_personajes, container, false);
+        View view = inflater.inflate(R.layout.fragment_lista_personajes, container, false);
+
+        personajeDAO = new PersonajeDAO(getContext());
+
+        listaPersonajes = new ArrayList<>(personajeDAO.obtenerTodosPersonajes());
+
+        ListView listView = view.findViewById(R.id.listViewPersonajes);
+        personajeAdapter = new PersonajeAdapter(getContext(), R.layout.personajes_element,R.id.textViewNombrePersonaje, listaPersonajes);
+        listView.setAdapter(personajeAdapter);
+
+        listView.setOnItemClickListener((adapterView, v, position, id) -> {
+            Personaje personajeSeleccionado = (Personaje) adapterView.getItemAtPosition(position);
+            listener.onPersonajeSelected(personajeSeleccionado);
+        });
+
+        listView.setOnItemLongClickListener((adapterView, v, position, id) -> {
+            Personaje personajeSeleccionado = listaPersonajes.get(position);
+
+            new AlertDialog.Builder(getContext())
+                    .setTitle("Eliminar personaje")
+                    .setMessage("¿Seguro que deseas eliminar \"" + personajeSeleccionado.getNombre()+ "\"?")
+                    .setPositiveButton("Sí", (dialog, which) -> {
+                        personajeDAO.borrarPersonaje(personajeSeleccionado.getNombre());
+                        recargarPersonajes();
+                    })
+                    .setNegativeButton("No", null)
+                    .show();
+
+            return true;
+        });
+        return view;
+    }
+
+    private void recargarPersonajes() {
+        listaPersonajes.clear();
+        listaPersonajes.addAll(personajeDAO.obtenerTodosPersonajes());
+        personajeAdapter.notifyDataSetChanged();
+    }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof OnPersonajeSelectedListener) {
+            listener = (OnPersonajeSelectedListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " debe implementar OnPersonajeSelectedListener");
+        }
+    }
+
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        recargarPersonajes();
     }
 }

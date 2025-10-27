@@ -133,6 +133,9 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/toolbar2"
         app:layout_constraintVertical_bias="0.0"
+        android:background="@drawable/imagen_estilo"
+        android:scaleType="centerCrop"
+        android:clipToOutline="true"
         app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <EditText
