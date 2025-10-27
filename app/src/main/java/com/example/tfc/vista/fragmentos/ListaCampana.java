@@ -106,7 +106,7 @@ public class ListaCampana extends Fragment {
                     .setNegativeButton("No", null)
                     .show();
 
-            return true; // Consumimos el evento
+            return true;
         });
         return view;
     }
