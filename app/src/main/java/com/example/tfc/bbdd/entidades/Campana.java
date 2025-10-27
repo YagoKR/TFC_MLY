@@ -1,6 +1,8 @@
 package com.example.tfc.bbdd.entidades;
 
-public class Campana {
+import java.io.Serializable;
+
+public class Campana implements Serializable {
     public String nombreCampanha, descripcion, imagenCampanha;
     public Campana() {
     }

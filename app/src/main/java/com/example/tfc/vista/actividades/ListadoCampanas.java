@@ -19,9 +19,12 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.example.tfc.R;
 import com.example.tfc.bbdd.dao.UsuarioDAO;
+import com.example.tfc.bbdd.entidades.Campana;
 import com.example.tfc.bbdd.entidades.Usuario;
+import com.example.tfc.vista.fragmentos.ListaCampana;
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-public class ListadoCampanas extends AppCompatActivity {
+public class ListadoCampanas extends AppCompatActivity implements ListaCampana.OnCampanaSelectedListener{
 
     public Toolbar toolbar;
     public SharedPreferences sp;
@@ -72,6 +75,18 @@ public class ListadoCampanas extends AppCompatActivity {
         });
 
     }
+    private void cerrarSesion() {
+        SharedPreferences sp = getSharedPreferences("datosUsuario", MODE_PRIVATE);
+        SharedPreferences.Editor editor = sp.edit();
+        editor.clear();
+        editor.apply();
+
+        Intent intent = new Intent(ListadoCampanas.this, InicioSesion.class);
+        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(intent);
+        finish();
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         getMenuInflater().inflate(R.menu.menu_item, menu);
@@ -87,6 +102,18 @@ public class ListadoCampanas extends AppCompatActivity {
             System.exit(0);
             return true;
         }
+
+        if (id == R.id.cerrarSesion) {
+            cerrarSesion();
+            return true;
+        }
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public void onCampanaSelected(Campana campana) {
+        Intent intent = new Intent(this, ListadoPersonajes.class);
+        intent.putExtra("campana", campana);
+        startActivity(intent);
     }
 }

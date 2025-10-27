@@ -76,6 +76,14 @@ public class InicioSesion extends AppCompatActivity {
             }
         });
 
-
     }
+
+    @Override
+    protected void onResume() {
+        super.onResume();
+        txtUsuario.setText("");
+        txtContrasena.setText("");
+    }
+
+
 }

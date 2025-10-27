@@ -1,11 +1,13 @@
 package com.example.tfc.vista.fragmentos;
 
 import android.app.Activity;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.activity.result.ActivityResultLauncher;
 import androidx.activity.result.contract.ActivityResultContracts;
+import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
 import android.view.LayoutInflater;
@@ -91,6 +93,7 @@ public class ListaCampana extends Fragment {
 
         listView.setOnItemClickListener((adapterView, v, position, id) -> {
             Campana campanaSeleccionada = (Campana) adapterView.getItemAtPosition(position);
+            listener.onCampanaSelected(campanaSeleccionada);
         });
 
         listView.setOnItemLongClickListener((adapterView, v, position, id) -> {
@@ -115,6 +118,16 @@ public class ListaCampana extends Fragment {
         listaCampanas.clear();
         listaCampanas.addAll(campanaDAO.obtenerTodasCampanas());
         campanaAdapter.notifyDataSetChanged();
+    }
+    @Override
+    public void onAttach(@NonNull Context context) {
+        super.onAttach(context);
+        if (context instanceof OnCampanaSelectedListener) {
+            listener = (OnCampanaSelectedListener) context;
+        } else {
+            throw new ClassCastException(context.toString()
+                    + " debe implementar OnCampanaSelectedListener");
+        }
     }
 
     @Override

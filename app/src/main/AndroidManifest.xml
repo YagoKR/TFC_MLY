@@ -14,6 +14,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TFC">
         <activity
+            android:name=".vista.actividades.ListadoPersonajes"
+            android:exported="false" />
+        <activity
             android:name=".vista.actividades.CrearCampana"
             android:exported="false" />
         <activity
