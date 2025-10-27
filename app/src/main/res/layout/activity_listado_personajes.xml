@@ -23,14 +23,15 @@
 
     <ImageView
         android:id="@+id/imageView3"
-        android:layout_width="103dp"
-        android:layout_height="109dp"
+        android:layout_width="85dp"
+        android:layout_height="83dp"
         android:layout_marginStart="16dp"
         android:layout_marginTop="12dp"
+        android:background="@drawable/imagen_estilo"
+        android:scaleType="centerCrop"
+        android:clipToOutline="true"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@id/toolbarListadoCampanas"
-        app:layout_constraintWidth_percent="0.25"
-        app:layout_constraintDimensionRatio="1:1"
         app:srcCompat="@android:drawable/sym_def_app_icon" />
 
     <TextView
