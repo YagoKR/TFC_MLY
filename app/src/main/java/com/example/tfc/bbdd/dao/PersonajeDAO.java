@@ -4,7 +4,9 @@ import android.content.ContentValues;
 import android.content.Context;
 import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
+import android.provider.BaseColumns;
 
+import com.example.tfc.bbdd.definicion.DbContract;
 import com.example.tfc.bbdd.definicion.SQLiteHelper;
 import com.example.tfc.bbdd.entidades.Personaje;
 
@@ -23,7 +25,7 @@ public class PersonajeDAO {
         values.put("Nombre", personaje.getNombre());
         values.put("Raza", personaje.getRaza());
         values.put("Clase", personaje.getClase());
-        values.put("Imagen_PJ", personaje.getImagen());
+        values.put("Imagen_PJ", personaje.getImagenPJ());
         values.put("ID_Campana", personaje.getIdCampana());
         values.put("ID_Usuario", personaje.getIdUsuario());
 
@@ -68,9 +70,11 @@ public class PersonajeDAO {
                     String imagenPersonaje = cursor.getString(cursor.getColumnIndexOrThrow("Imagen_PJ"));
                     int idCampana = cursor.getInt(cursor.getColumnIndexOrThrow("ID_Campana"));
                     String idUsuario = cursor.getString(cursor.getColumnIndexOrThrow("ID_Usuario"));
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
 
-                    Personaje pesonaje = new Personaje(nombrePersonaje, raza, clase, imagenPersonaje, idCampana, idUsuario);
-                    personajes.add(pesonaje);
+                    Personaje personaje = new Personaje(nombrePersonaje, raza, clase, imagenPersonaje, idCampana, idUsuario);
+                    personaje.setIdPersonaje(id);
+                    personajes.add(personaje);
                 } while (cursor.moveToNext());
             }
         } finally {
@@ -80,5 +84,58 @@ public class PersonajeDAO {
         }
         return personajes;
     }
+
+    public Personaje obtenerPersonajePorId(int idPersonaje) {
+        Personaje personaje = null;
+        Cursor cursor = null;
+
+        try {
+            cursor = db.query(
+                    "Personajes",
+                    null,
+                    BaseColumns._ID + " = ?",
+                    new String[]{String.valueOf(idPersonaje)},
+                    null, null, null
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {
+                String nombre = cursor.getString(cursor.getColumnIndexOrThrow("Nombre"));
+                String raza = cursor.getString(cursor.getColumnIndexOrThrow("Raza"));
+                String clase = cursor.getString(cursor.getColumnIndexOrThrow("Clase"));
+                String imagen = cursor.getString(cursor.getColumnIndexOrThrow("Imagen_PJ"));
+                int idCampana = cursor.getInt(cursor.getColumnIndexOrThrow("ID_Campana"));
+                String idUsuario = cursor.getString(cursor.getColumnIndexOrThrow("ID_Usuario"));
+                int id = cursor.getInt(cursor.getColumnIndexOrThrow(BaseColumns._ID));
+
+                personaje = new Personaje(nombre, raza, clase, imagen, idCampana, idUsuario);
+                personaje.setIdPersonaje(id);
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return personaje;
+    }
+
+    public int actualizarPersonaje(Personaje personaje) {
+        ContentValues values = new ContentValues();
+        values.put("Nombre", personaje.getNombre());
+        values.put("Raza", personaje.getRaza());
+        values.put("Clase", personaje.getClase());
+        values.put("Imagen_PJ", personaje.getImagenPJ());
+        values.put("ID_Campana", personaje.getIdCampana());
+        values.put("ID_Usuario", personaje.getIdUsuario());
+
+        return db.update(
+                "Personajes",
+                values,
+                BaseColumns._ID + " = ?",
+                new String[]{String.valueOf(personaje.getIdPersonaje())}
+        );
+    }
+
+
 
 }

@@ -93,6 +93,7 @@ public class DbContract {
         public static final String COLUMN_RAREZA = "Rareza";
         public static final String COLUMN_CANTIDAD = "Cantidad";
         public static final String COLUMN_PRECIO = "Precio";
+        public static final String COLUMN_IMAGEN_ITEM = "Imagen_Item";
         public static final String COLUMN_DESCRIPCION = "Descripcion";
     }
 
@@ -105,6 +106,7 @@ public class DbContract {
                     InventarioEntry.COLUMN_CANTIDAD + " INTEGER, " +
                     InventarioEntry.COLUMN_PRECIO + " INTEGER, " +
                     InventarioEntry.COLUMN_DESCRIPCION + " TEXT, " +
+                    InventarioEntry.COLUMN_IMAGEN_ITEM + " TEXT, " +
                     "FOREIGN KEY (" + InventarioEntry.COLUMN_ID_PERSONAJE + ") REFERENCES " +
                     PersonajeEntry.TABLE_NAME + "(" + BaseColumns._ID + ") ON DELETE CASCADE);";
 

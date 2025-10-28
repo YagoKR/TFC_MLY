@@ -38,7 +38,7 @@ public class PersonajeAdapter extends ArrayAdapter<Personaje> {
         stats.setText(personaje.getClase());
 
 
-        String imagenBase64 = personaje.getImagen();
+        String imagenBase64 = personaje.getImagenPJ();
 
         if (imagenBase64 != null && !imagenBase64.isEmpty()) {
             try {

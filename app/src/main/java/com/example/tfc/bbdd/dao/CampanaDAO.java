@@ -43,8 +43,9 @@ public class CampanaDAO {
                     String nombreCampanha = cursor.getString(cursor.getColumnIndexOrThrow("Nombre_campaña"));
                     String descripcion = cursor.getString(cursor.getColumnIndexOrThrow("Descripcion"));
                     String imagenCampanha = cursor.getString(cursor.getColumnIndexOrThrow("Imagen_Campaña"));
-
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
                     Campana campana = new Campana(nombreCampanha, descripcion, imagenCampanha);
+                    campana.setId(id);
                     campanas.add(campana);
                 } while (cursor.moveToNext());
             }
@@ -105,7 +106,6 @@ public class CampanaDAO {
         values.put("Descripcion", campana.getDescripcion());
         values.put("Imagen_Campaña", campana.getImagenCampanha());
 
-        // Usar el ID para localizar la fila correcta
         return db.update(
                 "Campañas",
                 values,
@@ -129,8 +129,10 @@ public class CampanaDAO {
             String nombre = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CampanaEntry.COLUMN_CAMPANA));
             String descripcion = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CampanaEntry.COLUMN_DESCRIPCION));
             String imagen = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CampanaEntry.COLUMN_IMAGEN_CAMPANA));
+            int id = cursor.getInt(cursor.getColumnIndexOrThrow(BaseColumns._ID));
 
             campana = new Campana();
+            campana.setId(id);
             campana.setNombreCampanha(nombre);
             campana.setDescripcion(descripcion);
             campana.setImagenCampanha(imagen);

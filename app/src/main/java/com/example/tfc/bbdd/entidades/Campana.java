@@ -4,6 +4,7 @@ import java.io.Serializable;
 
 public class Campana implements Serializable {
     public String nombreCampanha, descripcion, imagenCampanha;
+    public int id;
     public Campana() {
     }
 
@@ -35,5 +36,13 @@ public class Campana implements Serializable {
 
     public void setImagenCampanha(String imagenCampanha) {
         this.imagenCampanha = imagenCampanha;
+    }
+
+    public int getId() {
+        return id;
+    }
+
+    public void setId(int id) {
+        this.id = id;
     }
 }

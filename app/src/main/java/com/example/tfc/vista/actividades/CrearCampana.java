@@ -103,8 +103,9 @@ public class CrearCampana extends AppCompatActivity {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                         Bitmap resizedBitmap = resizeAndCropBitmap(bitmap, 128, 128);
                         imagenBase64 = bitmapToBase64(resizedBitmap);
-                        Campana u = new Campana(campana, descripcion, imagenBase64);
-                        long idcampana = cDAO.insertarDatos(u);
+                        Campana c = new Campana(campana, descripcion, imagenBase64);
+                        long idcampana = cDAO.insertarDatos(c);
+                        c.setId((int) idcampana);
                         UsuariosCampanas uc = new UsuariosCampanas(username, (int) idcampana);
                         ucDAO.insertarDatos(uc);
                     } catch (Exception e) {
@@ -113,8 +114,9 @@ public class CrearCampana extends AppCompatActivity {
                 } else {
                     Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman_avatar_proof);
                     imagenBase64 = bitmapToBase64(defaultBitmap);
-                    Campana u = new Campana(campana, descripcion, imagenBase64);
-                    long idcampana = cDAO.insertarDatos(u);
+                    Campana c = new Campana(campana, descripcion, imagenBase64);
+                    long idcampana = cDAO.insertarDatos(c);
+                    c.setId((int) idcampana);
                     UsuariosCampanas uc = new UsuariosCampanas(username, (int) idcampana);
                     ucDAO.insertarDatos(uc);
                 }

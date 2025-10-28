@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
+import android.util.Log;
 import android.widget.*;
 
 import androidx.appcompat.app.AlertDialog;
@@ -47,14 +48,13 @@ public class EditarCampana extends AppCompatActivity {
         editDescripcionCampana = findViewById(R.id.editdescripcionCampana);
         imageViewEditar = findViewById(R.id.imageVieweditarCamp);
         btnEditarCampana = findViewById(R.id.btneditarCampana);
-        int id = getIntent().getIntExtra("id", 0);
-
         setSupportActionBar(toolbar);
         toolbar.setTitle("Editar Campaña");
+        int idCampana = getIntent().getIntExtra("id", -1);
 
         campanaDAO = new CampanaDAO(getApplicationContext());
 
-        campana = (Campana) getIntent().getSerializableExtra("campana");
+        campana = campanaDAO.obtenerCampanaPorId(idCampana);
         if (campana != null) {
             actualizarDatosCampana();
         }
@@ -82,7 +82,7 @@ public class EditarCampana extends AppCompatActivity {
                 campana.setImagenCampanha(imagenBase64Actual);
             }
 
-            campanaDAO.actualizarCampana(campana, id);
+            campanaDAO.actualizarCampana(campana, idCampana);
 
             AlertDialog.Builder builder = new AlertDialog.Builder(EditarCampana.this);
             builder.setMessage("Campaña modificada con éxito")

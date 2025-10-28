@@ -1,10 +1,12 @@
 package com.example.tfc.vista.actividades;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
+import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -32,6 +34,8 @@ public class ListadoPersonajes extends AppCompatActivity implements ListaPersona
     public int idCampana;
 
     private Toolbar toolbar;
+    public SharedPreferences sp;
+    private Campana campana;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,12 +48,16 @@ public class ListadoPersonajes extends AppCompatActivity implements ListaPersona
         imgCampana = findViewById(R.id.imageView3);
         btnCrearPersonaje = findViewById(R.id.anadirPJ);
         toolbar = findViewById(R.id.toolbarListadoCampanas);
+        sp = getSharedPreferences("datosUsuario", MODE_PRIVATE);
+        String username = sp.getString("usuario", "Usuario");
+        toolbar.setTitle("Campañas de " + username);
         setSupportActionBar(toolbar);
 
 
-        Campana campana = (Campana) getIntent().getSerializableExtra("campana");
+        idCampana = getIntent().getIntExtra("idCampana", -1);
+
         CampanaDAO cDAO = new CampanaDAO(getApplicationContext());
-        idCampana = cDAO.obtenerIdCampana(campana.getNombreCampanha());
+        campana = cDAO.obtenerCampanaPorId(idCampana);
 
         if (campana != null) {
             txtNombre.setText(campana.getNombreCampanha());
@@ -79,7 +87,6 @@ public class ListadoPersonajes extends AppCompatActivity implements ListaPersona
 
         if (id == R.id.editarCampana) {
             Intent intent = new Intent(ListadoPersonajes.this, EditarCampana.class);
-            intent.putExtra("campana", (Campana) getIntent().getSerializableExtra("campana"));
             intent.putExtra("id",idCampana);
             startActivity(intent);
             return true;
@@ -96,7 +103,9 @@ public class ListadoPersonajes extends AppCompatActivity implements ListaPersona
 
     @Override
     public void onPersonajeSelected(Personaje personaje) {
-
+        Intent intent = new Intent(this, ListadoInventario.class);
+        intent.putExtra("personajeID", personaje.getIdPersonaje());
+        startActivity(intent);
     }
 
     private void actualizarDatosCampana() {

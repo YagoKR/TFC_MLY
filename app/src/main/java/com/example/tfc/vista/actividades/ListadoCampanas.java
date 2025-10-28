@@ -120,7 +120,7 @@ public class ListadoCampanas extends AppCompatActivity implements ListaCampana.O
     @Override
     public void onCampanaSelected(Campana campana) {
         Intent intent = new Intent(this, ListadoPersonajes.class);
-        intent.putExtra("campana", campana);
+        intent.putExtra("idCampana", campana.getId());
         startActivity(intent);
     }
 
