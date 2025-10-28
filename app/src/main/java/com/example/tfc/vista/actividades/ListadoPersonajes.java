@@ -32,7 +32,6 @@ public class ListadoPersonajes extends AppCompatActivity implements ListaPersona
     public ImageView imgCampana;
     public Button btnCrearPersonaje;
     public int idCampana;
-
     private Toolbar toolbar;
     public SharedPreferences sp;
     private Campana campana;
@@ -52,7 +51,6 @@ public class ListadoPersonajes extends AppCompatActivity implements ListaPersona
         String username = sp.getString("usuario", "Usuario");
         toolbar.setTitle("Campañas de " + username);
         setSupportActionBar(toolbar);
-
 
         idCampana = getIntent().getIntExtra("idCampana", -1);
 

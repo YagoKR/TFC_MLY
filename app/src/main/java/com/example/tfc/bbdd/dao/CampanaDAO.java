@@ -38,7 +38,7 @@ public class CampanaDAO {
         Cursor cursor = null;
         try {
             cursor = db.query("Campañas", null, null, null, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 do {
                     String nombreCampanha = cursor.getString(cursor.getColumnIndexOrThrow("Nombre_campaña"));
                     String descripcion = cursor.getString(cursor.getColumnIndexOrThrow("Descripcion"));
@@ -68,7 +68,7 @@ public class CampanaDAO {
                     null, null, null
             );
 
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 existe = true;
             }
         } finally {
@@ -91,7 +91,7 @@ public class CampanaDAO {
                     null, null, null
             );
 
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
             }
         } finally {
@@ -125,7 +125,7 @@ public class CampanaDAO {
                 null, null, null
         );
 
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             String nombre = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CampanaEntry.COLUMN_CAMPANA));
             String descripcion = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CampanaEntry.COLUMN_DESCRIPCION));
             String imagen = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.CampanaEntry.COLUMN_IMAGEN_CAMPANA));

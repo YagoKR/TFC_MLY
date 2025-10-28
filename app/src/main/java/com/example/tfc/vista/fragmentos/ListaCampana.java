@@ -1,12 +1,9 @@
 package com.example.tfc.vista.fragmentos;
 
-import android.app.Activity;
 import android.content.Context;
-import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 
-import androidx.activity.result.ActivityResultLauncher;
-import androidx.activity.result.contract.ActivityResultContracts;
 import androidx.annotation.NonNull;
 import androidx.fragment.app.Fragment;
 
@@ -14,6 +11,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ListView;
+
 import androidx.appcompat.app.AlertDialog;
 
 import com.example.tfc.R;
@@ -24,19 +22,11 @@ import com.example.tfc.vista.adaptadores.CampanaAdapter;
 
 import java.util.ArrayList;
 
-/**
- * A simple {@link Fragment} subclass.
- * Use the {@link ListaCampana#newInstance} factory method to
- * create an instance of this fragment.
- */
 public class ListaCampana extends Fragment {
 
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
 
@@ -45,22 +35,17 @@ public class ListaCampana extends Fragment {
     private CampanaAdapter campanaAdapter;
     private ArrayList<Campana> listaCampanas;
     private OnCampanaSelectedListener listener;
+    private SharedPreferences sp;
+
+    private String idUsuario;
 
     public ListaCampana() {
-        // Required empty public constructor
     }
+
     public interface OnCampanaSelectedListener {
         void onCampanaSelected(Campana campana);
     }
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ListaCampana.
-     */
-    // TODO: Rename and change types and number of parameters
+
     public static ListaCampana newInstance(String param1, String param2) {
         ListaCampana fragment = new ListaCampana();
         Bundle args = new Bundle();
@@ -84,11 +69,18 @@ public class ListaCampana extends Fragment {
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lista_campana, container, false);
 
-        campanaDAO = new CampanaDAO(getContext());
-        listaCampanas = new ArrayList<>(campanaDAO.obtenerTodasCampanas());
+        usuarioCampanasDAO = new UsuarioCampanasDAO(getContext());
+
+        sp = getActivity().getSharedPreferences("datosUsuario", Context.MODE_PRIVATE);
+        idUsuario = sp.getString("usuario", null);
+
+        listaCampanas = new ArrayList<>();
+        if (idUsuario != null) {
+            listaCampanas.addAll(usuarioCampanasDAO.obtenerCampanasDeUsuario(idUsuario));
+        }
 
         ListView listView = view.findViewById(R.id.listViewCampanas);
-        campanaAdapter = new CampanaAdapter(getContext(), R.layout.campana_element,R.id.textViewNombre, listaCampanas);
+        campanaAdapter = new CampanaAdapter(getContext(), R.layout.campana_element, R.id.textViewNombre, listaCampanas);
         listView.setAdapter(campanaAdapter);
 
         listView.setOnItemClickListener((adapterView, v, position, id) -> {
@@ -103,7 +95,11 @@ public class ListaCampana extends Fragment {
                     .setTitle("Eliminar campaña")
                     .setMessage("¿Seguro que deseas eliminar \"" + campanaSeleccionada.getNombreCampanha() + "\"?")
                     .setPositiveButton("Sí", (dialog, which) -> {
+                        CampanaDAO campanaDAO = new CampanaDAO(getContext());
                         campanaDAO.borrarCampana(campanaSeleccionada.getNombreCampanha());
+
+                        usuarioCampanasDAO.borrarUsuarioCampana(idUsuario, String.valueOf(campanaSeleccionada.getId()));
+
                         recargarCampanas();
                     })
                     .setNegativeButton("No", null)
@@ -111,14 +107,18 @@ public class ListaCampana extends Fragment {
 
             return true;
         });
+
         return view;
     }
 
     private void recargarCampanas() {
         listaCampanas.clear();
-        listaCampanas.addAll(campanaDAO.obtenerTodasCampanas());
+        if (idUsuario != null) {
+            listaCampanas.addAll(usuarioCampanasDAO.obtenerCampanasDeUsuario(idUsuario));
+        }
         campanaAdapter.notifyDataSetChanged();
     }
+
     @Override
     public void onAttach(@NonNull Context context) {
         super.onAttach(context);

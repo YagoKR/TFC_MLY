@@ -30,11 +30,12 @@ public class InventarioAdapter extends ArrayAdapter<Inventario> {
             convertView = inflater.inflate(R.layout.inventario_element, parent, false);
         }
 
-        TextView nombreItem = convertView.findViewById(R.id.textViewNombrePersonaje);
-        TextView stats = convertView.findViewById(R.id.textViewStats);
-        ImageView imagenPersonaje = convertView.findViewById(R.id.imageViewPj);
-        //stats.setText(personaje.getClase());
+        TextView nombreItem = convertView.findViewById(R.id.textViewNombreItem);
+        TextView infoItem = convertView.findViewById(R.id.textViewInfoItem);
+        ImageView imagenPersonaje = convertView.findViewById(R.id.imageViewItem);
 
+        nombreItem.setText(inventario.getProducto() + "("+inventario.getCategoria()+")");
+        infoItem.setText(inventario.getDescripcion() + "\n" + inventario.getPrecio() + " " + inventario.getValor());
 
         String imagenBase64 = inventario.getImagenItem();
 

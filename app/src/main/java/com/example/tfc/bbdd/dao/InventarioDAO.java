@@ -6,7 +6,9 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.tfc.bbdd.definicion.SQLiteHelper;
-import com.example.tfc.bbdd.entidades.Personaje;
+import com.example.tfc.bbdd.entidades.Inventario;
+
+import java.util.ArrayList;
 
 public class InventarioDAO {
 
@@ -16,14 +18,15 @@ public class InventarioDAO {
         db = dbHelper.getWritableDatabase();
     }
 
-    public long insertarItem(int idPersonaje, String producto, String rareza, int cantidad, int precio, String descripcion) {
+    public long insertarItem(Inventario item) {
         ContentValues values = new ContentValues();
-        values.put("ID_Personaje", idPersonaje);
-        values.put("Producto", producto);
-        values.put("Rareza", rareza);
-        values.put("Cantidad", cantidad);
-        values.put("Precio", precio);
-        values.put("Descripcion", descripcion);
+        values.put("ID_Personaje", item.getIdPersonaje());
+        values.put("Producto", item.getProducto());
+        values.put("Categoria", item.getCategoria());
+        values.put("Cantidad", item.getCantidad());
+        values.put("Precio", item.getPrecio());
+        values.put("Valor", item.getValor());
+        values.put("Descripcion", item.getDescripcion());
 
         return db.insert("Inventarios", null, values);
     }
@@ -45,4 +48,71 @@ public class InventarioDAO {
 
         return existe;
     }
+
+    public ArrayList<Inventario> obtenerTodosItems() {
+        ArrayList<Inventario> items = new ArrayList<>();
+        Cursor cursor = null;
+
+        try {
+            cursor = db.query("Inventarios", null, null, null, null, null, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    long id = cursor.getLong(cursor.getColumnIndexOrThrow("_id"));
+                    int idPersonaje = cursor.getInt(cursor.getColumnIndexOrThrow("ID_Personaje"));
+                    String producto = cursor.getString(cursor.getColumnIndexOrThrow("Producto"));
+                    String rareza = cursor.getString(cursor.getColumnIndexOrThrow("Categoria"));
+                    int cantidad = cursor.getInt(cursor.getColumnIndexOrThrow("Cantidad"));
+                    int precio = cursor.getInt(cursor.getColumnIndexOrThrow("Precio"));
+                    String valor = cursor.getString(cursor.getColumnIndexOrThrow("Valor"));
+                    String descripcion = cursor.getString(cursor.getColumnIndexOrThrow("Descripcion"));
+                    String imagen = cursor.getString(cursor.getColumnIndexOrThrow("Imagen_Item"));
+
+                    Inventario item = new Inventario(id, idPersonaje, producto, rareza, cantidad, precio, valor, descripcion, imagen);
+                    items.add(item);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return items;
+    }
+
+    public ArrayList<Inventario> obtenerItemsPorPersonaje(int idPersonaje) {
+        ArrayList<Inventario> items = new ArrayList<>();
+        Cursor cursor = null;
+
+        try {
+            String selection = "ID_Personaje = ?";
+            String[] selectionArgs = { String.valueOf(idPersonaje) };
+            cursor = db.query("Inventarios", null, selection, selectionArgs, null, null, null);
+
+            if (cursor != null && cursor.moveToFirst()) {
+                do {
+                    long id = cursor.getLong(cursor.getColumnIndexOrThrow("_id"));
+                    String producto = cursor.getString(cursor.getColumnIndexOrThrow("Producto"));
+                    String rareza = cursor.getString(cursor.getColumnIndexOrThrow("Categoria"));
+                    int cantidad = cursor.getInt(cursor.getColumnIndexOrThrow("Cantidad"));
+                    int precio = cursor.getInt(cursor.getColumnIndexOrThrow("Precio"));
+                    String valor = cursor.getString(cursor.getColumnIndexOrThrow("Valor"));
+                    String descripcion = cursor.getString(cursor.getColumnIndexOrThrow("Descripcion"));
+                    String imagen = cursor.getString(cursor.getColumnIndexOrThrow("Imagen_Item"));
+
+                    Inventario item = new Inventario(id, idPersonaje, producto, rareza, cantidad, precio, valor, descripcion, imagen);
+                    items.add(item);
+                } while (cursor.moveToNext());
+            }
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return items;
+    }
+
+
 }

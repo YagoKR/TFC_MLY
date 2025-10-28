@@ -16,13 +16,18 @@ import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import com.android.volley.RequestQueue;
+import com.android.volley.toolbox.Volley;
 import com.example.tfc.R;
 import com.example.tfc.bbdd.dao.CampanaDAO;
 import com.example.tfc.bbdd.dao.PersonajeDAO;
 import com.example.tfc.bbdd.entidades.Campana;
+import com.example.tfc.bbdd.entidades.Inventario;
 import com.example.tfc.bbdd.entidades.Personaje;
+import com.example.tfc.vista.fragmentos.ListaInventario;
+import com.example.tfc.vista.fragmentos.ListaPersonajes;
 
-public class ListadoInventario extends AppCompatActivity {
+public class ListadoInventario extends AppCompatActivity implements ListaInventario.OnInventarioSelectedListener {
 
     public TextView txtNombrePersonaje, txtClasePersonaje;
     public ImageView imgPersonaje;
@@ -61,6 +66,18 @@ public class ListadoInventario extends AppCompatActivity {
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
             imgPersonaje.setImageBitmap(bitmap);
         }
+
+        ListaInventario fragment = ListaInventario.newInstance(idPersonaje);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.listaInventarioFragmentContainer, fragment)
+                .commit();
+
+        btnAnadirItem.setOnClickListener(v -> {
+            Intent intent = new Intent(this, CrearItem.class);
+            intent.putExtra("idPersonaj", idPersonaje);
+            startActivity(intent);
+        });
 
     }
 
@@ -115,5 +132,10 @@ public class ListadoInventario extends AppCompatActivity {
     protected void onResume() {
         super.onResume();
         actualizarDatosPersonaje();
+    }
+
+    @Override
+    public void OnInventarioSelectedListener(Inventario inventario) {
+
     }
 }

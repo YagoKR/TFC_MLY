@@ -7,34 +7,37 @@ public class Inventario implements Serializable {
     private long id;
     private int idPersonaje;
     private String producto;
-    private String rareza;
+    private String categoria;
     private int cantidad;
     private int precio;
+    private String valor;
     private String descripcion;
     private String imagenItem;
 
     public Inventario() {
     }
 
-    public Inventario(long id, int idPersonaje, String producto, String rareza,
-                      int cantidad, int precio, String descripcion, String imagen) {
+    public Inventario(long id, int idPersonaje, String producto, String categoria,
+                      int cantidad, int precio, String valor, String descripcion, String imagen) {
         this.id = id;
         this.idPersonaje = idPersonaje;
         this.producto = producto;
-        this.rareza = rareza;
+        this.categoria = categoria;
         this.cantidad = cantidad;
         this.precio = precio;
+        this.valor = valor;
         this.descripcion = descripcion;
         this.imagenItem = imagen;
     }
 
-    public Inventario(int idPersonaje, String producto, String rareza,
-                      int cantidad, int precio, String descripcion, String imagen) {
+    public Inventario(int idPersonaje, String producto, String categoria,
+                      int cantidad, int precio, String valor, String descripcion, String imagen) {
         this.idPersonaje = idPersonaje;
         this.producto = producto;
-        this.rareza = rareza;
+        this.categoria = categoria;
         this.cantidad = cantidad;
         this.precio = precio;
+        this.valor = valor;
         this.descripcion = descripcion;
         this.imagenItem = imagen;
     }
@@ -63,12 +66,12 @@ public class Inventario implements Serializable {
         this.producto = producto;
     }
 
-    public String getRareza() {
-        return rareza;
+    public String getCategoria() {
+        return categoria;
     }
 
-    public void setRareza(String rareza) {
-        this.rareza = rareza;
+    public void setCategoria(String categoria) {
+        this.categoria = categoria;
     }
 
     public int getCantidad() {
@@ -85,6 +88,14 @@ public class Inventario implements Serializable {
 
     public void setPrecio(int precio) {
         this.precio = precio;
+    }
+
+    public String getValor() {
+        return valor;
+    }
+
+    public void setValor(String valor) {
+        this.valor = valor;
     }
 
     public String getDescripcion() {
