@@ -102,7 +102,6 @@ public class CrearUsuario extends AppCompatActivity {
                             imagenBase64 = bitmapToBase64(bitmap);
                             Usuario u = new Usuario(usuario, nome, email, contrasena, imagenBase64);
                             uDAO.insertarDatos(u);
-                            Toast.makeText(CrearUsuario.this, "Datos guardados con éxito", Toast.LENGTH_SHORT).show();
                         } catch (Exception e) {
                             e.printStackTrace();
                         }
@@ -111,7 +110,6 @@ public class CrearUsuario extends AppCompatActivity {
                         imagenBase64 = bitmapToBase64(defaultBitmap);
                         Usuario u = new Usuario(usuario, nome, email, contrasena, imagenBase64);
                         uDAO.insertarDatos(u);
-                        Toast.makeText(CrearUsuario.this, "Datos guardados con éxito", Toast.LENGTH_SHORT).show();
 
                     }
                     AlertDialog.Builder builder = new AlertDialog.Builder(CrearUsuario.this);
