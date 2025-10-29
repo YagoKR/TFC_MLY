@@ -1,4 +1,4 @@
-package com.example.tfc.vista.actividades;
+package com.example.tfc.vista.actividades.listados;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -19,13 +19,13 @@ import androidx.appcompat.widget.Toolbar;
 import com.android.volley.RequestQueue;
 import com.android.volley.toolbox.Volley;
 import com.example.tfc.R;
-import com.example.tfc.bbdd.dao.CampanaDAO;
 import com.example.tfc.bbdd.dao.PersonajeDAO;
-import com.example.tfc.bbdd.entidades.Campana;
 import com.example.tfc.bbdd.entidades.Inventario;
 import com.example.tfc.bbdd.entidades.Personaje;
+import com.example.tfc.vista.actividades.creacion.CrearItem;
+import com.example.tfc.vista.actividades.edicion.EditarItem;
+import com.example.tfc.vista.actividades.edicion.EditarPersonajes;
 import com.example.tfc.vista.fragmentos.ListaInventario;
-import com.example.tfc.vista.fragmentos.ListaPersonajes;
 
 public class ListadoInventario extends AppCompatActivity implements ListaInventario.OnInventarioSelectedListener {
 

@@ -1,4 +1,4 @@
-package com.example.tfc.vista.actividades;
+package com.example.tfc.vista.actividades.creacion;
 
 import android.content.DialogInterface;
 import android.content.Intent;
@@ -8,30 +8,20 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.text.Editable;
-import android.text.TextWatcher;
-import android.util.Log;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tfc.R;
 import com.example.tfc.bbdd.dao.CampanaDAO;
 import com.example.tfc.bbdd.dao.UsuarioCampanasDAO;
-import com.example.tfc.bbdd.dao.UsuarioDAO;
 import com.example.tfc.bbdd.entidades.Campana;
-import com.example.tfc.bbdd.entidades.Usuario;
 import com.example.tfc.bbdd.entidades.UsuariosCampanas;
 
 import java.io.ByteArrayOutputStream;

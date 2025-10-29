@@ -1,4 +1,4 @@
-package com.example.tfc.vista.actividades;
+package com.example.tfc.vista.actividades.vista;
 
 import android.content.Intent;
 import android.os.Bundle;
@@ -13,6 +13,7 @@ import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tfc.R;
 import com.example.tfc.bbdd.definicion.SQLiteHelper;
+import com.example.tfc.vista.actividades.creacion.CrearUsuario;
 
 public class MainActivity extends AppCompatActivity {
     public Button btninicioSesion,btnCrearUsuario;

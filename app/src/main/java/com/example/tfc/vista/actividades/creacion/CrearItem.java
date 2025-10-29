@@ -1,4 +1,4 @@
-package com.example.tfc.vista.actividades;
+package com.example.tfc.vista.actividades.creacion;
 
 import android.content.Intent;
 import android.graphics.Bitmap;

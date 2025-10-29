@@ -15,43 +15,43 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TFC">
         <activity
-            android:name=".vista.actividades.EditarItem"
+            android:name=".vista.actividades.edicion.EditarItem"
             android:exported="false" />
         <activity
-            android:name=".vista.actividades.CrearItem"
+            android:name=".vista.actividades.creacion.CrearItem"
             android:exported="false" />
         <activity
-            android:name=".vista.actividades.EditarPersonajes"
+            android:name=".vista.actividades.edicion.EditarPersonajes"
             android:exported="false" />
         <activity
-            android:name=".vista.actividades.ListadoInventario"
+            android:name=".vista.actividades.listados.ListadoInventario"
             android:exported="false" />
         <activity
-            android:name=".vista.actividades.EditarCampana"
+            android:name=".vista.actividades.edicion.EditarCampana"
             android:exported="false" />
         <activity
-            android:name=".vista.actividades.EditarUsuario"
+            android:name=".vista.actividades.edicion.EditarUsuario"
             android:exported="false" />
         <activity
-            android:name=".vista.actividades.CrearPersonaje"
+            android:name=".vista.actividades.creacion.CrearPersonaje"
             android:exported="false" />
         <activity
-            android:name=".vista.actividades.ListadoPersonajes"
+            android:name=".vista.actividades.listados.ListadoPersonajes"
             android:exported="false" />
         <activity
-            android:name=".vista.actividades.CrearCampana"
+            android:name=".vista.actividades.creacion.CrearCampana"
             android:exported="false" />
         <activity
-            android:name=".vista.actividades.ListadoCampanas"
+            android:name=".vista.actividades.listados.ListadoCampanas"
             android:exported="false" />
         <activity
-            android:name=".vista.actividades.InicioSesion"
+            android:name=".vista.actividades.vista.InicioSesion"
             android:exported="false" />
         <activity
-            android:name=".vista.actividades.CrearUsuario"
+            android:name=".vista.actividades.creacion.CrearUsuario"
             android:exported="false" />
         <activity
-            android:name=".vista.actividades.MainActivity"
+            android:name=".vista.actividades.vista.MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />

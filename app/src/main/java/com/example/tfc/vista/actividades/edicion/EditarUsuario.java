@@ -1,6 +1,5 @@
-package com.example.tfc.vista.actividades;
+package com.example.tfc.vista.actividades.edicion;
 
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
@@ -18,9 +17,6 @@ import androidx.appcompat.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tfc.R;
 import com.example.tfc.bbdd.dao.UsuarioDAO;

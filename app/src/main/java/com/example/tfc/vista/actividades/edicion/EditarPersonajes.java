@@ -1,4 +1,4 @@
-package com.example.tfc.vista.actividades;
+package com.example.tfc.vista.actividades.edicion;
 
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -7,32 +7,30 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
 import android.util.Base64;
-import android.util.Log;
-import android.widget.*;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
 
-import androidx.appcompat.app.AlertDialog;
-import androidx.appcompat.widget.Toolbar;
 import androidx.activity.EdgeToEdge;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
+import androidx.appcompat.widget.Toolbar;
 
 import com.example.tfc.R;
-import com.example.tfc.bbdd.dao.CampanaDAO;
-import com.example.tfc.bbdd.entidades.Campana;
+import com.example.tfc.bbdd.dao.PersonajeDAO;
+import com.example.tfc.bbdd.entidades.Personaje;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
-public class EditarCampana extends AppCompatActivity {
+public class EditarPersonajes extends AppCompatActivity {
     private Toolbar toolbar;
-    private EditText editNombreCampana, editDescripcionCampana;
-    private ImageView imageViewEditar;
-    private Button btnEditarCampana;
-    private CampanaDAO campanaDAO;
-    private Campana campana;
+    private ImageView imageViewEditarPersonaje;
+    private EditText nombreEditarPersonaje, razaEditarPersonaje, statsEditarPersonaje;
+    private Button btnEditarPersonaje;
+    private PersonajeDAO personajeDAO;
+    private Personaje personaje;
 
     private Uri selectedImageUri;
     private String imagenBase64Actual;
@@ -40,54 +38,54 @@ public class EditarCampana extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
-        setContentView(R.layout.activity_editar_campana);
-
-
-        toolbar = findViewById(R.id.toolbar2);
-        editNombreCampana = findViewById(R.id.editnombreCampana);
-        editDescripcionCampana = findViewById(R.id.editdescripcionCampana);
-        imageViewEditar = findViewById(R.id.imageVieweditarCamp);
-        btnEditarCampana = findViewById(R.id.btneditarCampana);
+        setContentView(R.layout.activity_editar_personajes);
+        toolbar = findViewById(R.id.toolbarEditarPersonaje);
+        imageViewEditarPersonaje = findViewById(R.id.imageViewEditarPersonaje);
+        nombreEditarPersonaje = findViewById(R.id.nombreEditarPersonaje);
+        razaEditarPersonaje = findViewById(R.id.razaEditarPersonaje);
+        statsEditarPersonaje = findViewById(R.id.statsEditarPersonaje);
+        btnEditarPersonaje = findViewById(R.id.btnEditarPersonaje);
 
         setSupportActionBar(toolbar);
-        toolbar.setTitle("Editar Campaña");
+        toolbar.setTitle("Editar Personaje");
 
-        int idCampana = getIntent().getIntExtra("id", -1);
+        int idPersonaje = getIntent().getIntExtra("idPersona", -1);
 
-        campanaDAO = new CampanaDAO(getApplicationContext());
+        personajeDAO = new PersonajeDAO(getApplicationContext());
 
-        campana = campanaDAO.obtenerCampanaPorId(idCampana);
-        if (campana != null) {
-            actualizarDatosCampana();
+        personaje = personajeDAO.obtenerPersonajePorId(idPersonaje);
+        if (personaje != null) {
+            actualizarDatosPersonaje();
         }
 
-        imageViewEditar.setOnClickListener(v -> {
+        imageViewEditarPersonaje.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
             startActivityForResult(intent, 123);
         });
 
-        btnEditarCampana.setOnClickListener(v -> {
-            campana.setNombreCampanha(editNombreCampana.getText().toString());
-            campana.setDescripcion(editDescripcionCampana.getText().toString());
+        btnEditarPersonaje.setOnClickListener(v -> {
+            personaje.setNombre(nombreEditarPersonaje.getText().toString());
+            personaje.setRaza(razaEditarPersonaje.getText().toString());
+            personaje.setClase(statsEditarPersonaje.getText().toString());
 
             if (selectedImageUri != null) {
                 try {
                     Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                     String nuevaImagenBase64 = bitmapToBase64(bitmap);
-                    campana.setImagenCampanha(nuevaImagenBase64);
+                    personaje.setImagenPJ(nuevaImagenBase64);
                 } catch (IOException e) {
                     e.printStackTrace();
-                    campana.setImagenCampanha(imagenBase64Actual);
+                    personaje.setImagenPJ(imagenBase64Actual);
                 }
             } else {
-                campana.setImagenCampanha(imagenBase64Actual);
+                personaje.setImagenPJ(imagenBase64Actual);
             }
 
-            campanaDAO.actualizarCampana(campana, idCampana);
+            personajeDAO.actualizarPersonaje(personaje);
 
-            AlertDialog.Builder builder = new AlertDialog.Builder(EditarCampana.this);
-            builder.setMessage("Campaña modificada con éxito")
+            AlertDialog.Builder builder = new AlertDialog.Builder(EditarPersonajes.this);
+            builder.setMessage("Personaje modificado con éxito")
                     .setTitle("Éxito")
                     .setPositiveButton("Ok", (dialogInterface, i) -> {
                         setResult(RESULT_OK);
@@ -97,20 +95,18 @@ public class EditarCampana extends AppCompatActivity {
         });
     }
 
+    private void actualizarDatosPersonaje() {
+        nombreEditarPersonaje.setText(personaje.getNombre());
+        razaEditarPersonaje.setText(personaje.getRaza());
+        statsEditarPersonaje.setText(personaje.getClase());
+        imagenBase64Actual = personaje.getImagenPJ();
 
-    private void actualizarDatosCampana() {
-        if (campana != null) {
-            editNombreCampana.setText(campana.getNombreCampanha());
-            editDescripcionCampana.setText(campana.getDescripcion());
-            imagenBase64Actual = campana.getImagenCampanha();
-
+        if (imagenBase64Actual != null && !imagenBase64Actual.isEmpty()) {
             try {
-                if (imagenBase64Actual != null && !imagenBase64Actual.isEmpty()) {
-                    byte[] bytes = Base64.decode(imagenBase64Actual, Base64.DEFAULT);
-                    Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                    Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
-                    imageViewEditar.setImageBitmap(resized);
-                }
+                byte[] bytes = Base64.decode(imagenBase64Actual, Base64.DEFAULT);
+                Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
+                Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
+                imageViewEditarPersonaje.setImageBitmap(resized);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -122,7 +118,7 @@ public class EditarCampana extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         if (requestCode == 123 && resultCode == RESULT_OK && data != null) {
             selectedImageUri = data.getData();
-            imageViewEditar.setImageURI(selectedImageUri);
+            imageViewEditarPersonaje.setImageURI(selectedImageUri);
         }
     }
 

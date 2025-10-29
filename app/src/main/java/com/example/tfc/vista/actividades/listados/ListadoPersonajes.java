@@ -1,4 +1,4 @@
-package com.example.tfc.vista.actividades;
+package com.example.tfc.vista.actividades.listados;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -6,7 +6,6 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.util.Base64;
-import android.util.Log;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.widget.Button;
@@ -16,15 +15,13 @@ import android.widget.TextView;
 import androidx.activity.EdgeToEdge;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
-import androidx.core.graphics.Insets;
-import androidx.core.view.ViewCompat;
-import androidx.core.view.WindowInsetsCompat;
 
 import com.example.tfc.R;
 import com.example.tfc.bbdd.dao.CampanaDAO;
 import com.example.tfc.bbdd.entidades.Campana;
 import com.example.tfc.bbdd.entidades.Personaje;
-import com.example.tfc.vista.fragmentos.ListaInventario;
+import com.example.tfc.vista.actividades.creacion.CrearPersonaje;
+import com.example.tfc.vista.actividades.edicion.EditarCampana;
 import com.example.tfc.vista.fragmentos.ListaPersonajes;
 
 public class ListadoPersonajes extends AppCompatActivity implements ListaPersonajes.OnPersonajeSelectedListener {

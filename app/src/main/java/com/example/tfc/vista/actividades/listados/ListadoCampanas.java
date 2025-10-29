@@ -1,4 +1,4 @@
-package com.example.tfc.vista.actividades;
+package com.example.tfc.vista.actividades.listados;
 
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -21,8 +21,10 @@ import com.example.tfc.R;
 import com.example.tfc.bbdd.dao.UsuarioDAO;
 import com.example.tfc.bbdd.entidades.Campana;
 import com.example.tfc.bbdd.entidades.Usuario;
+import com.example.tfc.vista.actividades.creacion.CrearCampana;
+import com.example.tfc.vista.actividades.edicion.EditarUsuario;
+import com.example.tfc.vista.actividades.vista.InicioSesion;
 import com.example.tfc.vista.fragmentos.ListaCampana;
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 public class ListadoCampanas extends AppCompatActivity implements ListaCampana.OnCampanaSelectedListener{
 
