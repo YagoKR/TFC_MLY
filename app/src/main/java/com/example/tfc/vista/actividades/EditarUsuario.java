@@ -28,6 +28,9 @@ import com.example.tfc.bbdd.entidades.Usuario;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 
 public class EditarUsuario extends AppCompatActivity {
     private Toolbar toolbar;
@@ -68,7 +71,7 @@ public class EditarUsuario extends AppCompatActivity {
                 editNombreUsuario.setText(usuario.getIdUsuario());
                 editNombreReal.setText(usuario.getNombre());
                 editmail.setText(usuario.getEmail());
-                editcontrasena.setText(usuario.getContrasenha());
+                editcontrasena.setText("");
                 imagenBase64Actual = usuario.getImagen();
 
                 try {
@@ -93,15 +96,24 @@ public class EditarUsuario extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                String nuevaContrasena = editcontrasena.getText().toString().trim();
+                if (nuevaContrasena.length() < 6 || nuevaContrasena.length() > 12) {
+                    new AlertDialog.Builder(EditarUsuario.this)
+                            .setTitle("Error")
+                            .setMessage("La contraseña debe tener entre 6 y 12 caracteres")
+                            .setPositiveButton("Ok", null)
+                            .show();
+                    return;
+                }
+
                 usuario.setNombre(editNombreReal.getText().toString());
                 usuario.setEmail(editmail.getText().toString());
-                usuario.setContrasenha(editcontrasena.getText().toString());
+                usuario.setContrasenha(hashPassword(nuevaContrasena));
 
                 if (selectedImageUri != null) {
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                        String nuevaImagenBase64 = bitmapToBase64(bitmap);
-                        usuario.setImagen(nuevaImagenBase64);
+                        usuario.setImagen(bitmapToBase64(bitmap));
                     } catch (IOException e) {
                         e.printStackTrace();
                         usuario.setImagen(imagenBase64Actual);
@@ -112,19 +124,16 @@ public class EditarUsuario extends AppCompatActivity {
 
                 usuarioDAO.actualizarUsuario(usuario);
 
-                AlertDialog.Builder builder = new AlertDialog.Builder(EditarUsuario.this);
-                builder.setMessage("Usuario modificado con éxito")
+                new AlertDialog.Builder(EditarUsuario.this)
+                        .setMessage("Usuario modificado con éxito")
                         .setTitle("Éxito")
-                        .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialogInterface, int i) {
-                                setResult(RESULT_OK);
-                                finish();
-                            }
-                        });
-                builder.create().show();
+                        .setPositiveButton("Ok", (dialogInterface, i) -> {
+                            setResult(RESULT_OK);
+                            finish();
+                        }).show();
             }
         });
+
     }
 
     @Override
@@ -140,5 +149,21 @@ public class EditarUsuario extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         byte[] byteArray = outputStream.toByteArray();
         return java.util.Base64.getEncoder().encodeToString(byteArray);
+    }
+
+    public static String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
     }
 }

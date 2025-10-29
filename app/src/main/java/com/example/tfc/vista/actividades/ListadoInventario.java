@@ -136,6 +136,8 @@ public class ListadoInventario extends AppCompatActivity implements ListaInventa
 
     @Override
     public void OnInventarioSelectedListener(Inventario inventario) {
-
+        Intent intent = new Intent(this, EditarItem.class);
+        intent.putExtra("idItem", inventario.getId());
+        startActivity(intent);
     }
 }

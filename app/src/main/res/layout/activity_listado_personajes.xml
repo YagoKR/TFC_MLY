@@ -60,10 +60,9 @@
         app:layout_constraintBottom_toBottomOf="@id/imageView3" />
 
     <androidx.fragment.app.FragmentContainerView
-        android:id="@+id/listaCampanaFragmentContainer"
+        android:id="@+id/listaPersonajeFragmentContainer"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:name="com.example.tfc.vista.fragmentos.ListaPersonajes"
         app:layout_constraintTop_toBottomOf="@id/imageView3"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintEnd_toEndOf="parent"

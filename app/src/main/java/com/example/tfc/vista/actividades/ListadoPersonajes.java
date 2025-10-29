@@ -24,6 +24,7 @@ import com.example.tfc.R;
 import com.example.tfc.bbdd.dao.CampanaDAO;
 import com.example.tfc.bbdd.entidades.Campana;
 import com.example.tfc.bbdd.entidades.Personaje;
+import com.example.tfc.vista.fragmentos.ListaInventario;
 import com.example.tfc.vista.fragmentos.ListaPersonajes;
 
 public class ListadoPersonajes extends AppCompatActivity implements ListaPersonajes.OnPersonajeSelectedListener {
@@ -66,9 +67,15 @@ public class ListadoPersonajes extends AppCompatActivity implements ListaPersona
             imgCampana.setImageBitmap(bitmap);
         }
 
+        ListaPersonajes fragment = ListaPersonajes.newInstance(username, idCampana);
+
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.listaPersonajeFragmentContainer, fragment)
+                .commit();
+
         btnCrearPersonaje.setOnClickListener(v -> {
             Intent intent = new Intent(this, CrearPersonaje.class);
-            intent.putExtra("nombreCampanha", campana.getNombreCampanha());
+            intent.putExtra("idCampana", campana.getId());
             startActivity(intent);
         });
 

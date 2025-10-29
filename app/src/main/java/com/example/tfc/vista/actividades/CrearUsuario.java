@@ -26,6 +26,9 @@ import com.example.tfc.bbdd.dao.UsuarioDAO;
 import com.example.tfc.bbdd.entidades.Usuario;
 
 import java.io.ByteArrayOutputStream;
+import java.nio.charset.StandardCharsets;
+import java.security.MessageDigest;
+import java.security.NoSuchAlgorithmException;
 import java.util.Base64;
 
 public class CrearUsuario extends AppCompatActivity {
@@ -80,14 +83,25 @@ public class CrearUsuario extends AppCompatActivity {
                     return;
                 }
                     String imagenBase64 = null;
-                    String usuario, nome, email, contrasena;
+                    String usuario, nome, email, contrasena, contrasenaHasheada;
 
                     usuario = txtNombreUsuario.getText().toString();
                     nome = txtNombreReal.getText().toString();
                     contrasena = txtContrasenha.getText().toString();
                     email = txtEmailUsuario.getText().toString();
 
-                    UsuarioDAO uDAO = new UsuarioDAO(getApplicationContext());
+                if (contrasena.length() < 6 || contrasena.length() > 12) {
+                    new AlertDialog.Builder(CrearUsuario.this)
+                            .setTitle("Error")
+                            .setMessage("La contraseña debe tener entre 6 y 12 caracteres")
+                            .setPositiveButton("Ok", null)
+                            .show();
+                    return;
+                }
+
+                contrasenaHasheada = hashPassword(contrasena);
+
+                UsuarioDAO uDAO = new UsuarioDAO(getApplicationContext());
                 if (uDAO.existeUsuario(usuario, email)) {
                     new AlertDialog.Builder(CrearUsuario.this)
                             .setTitle("Error")
@@ -99,8 +113,9 @@ public class CrearUsuario extends AppCompatActivity {
                 if (selectedImageUri != null) {
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                            imagenBase64 = bitmapToBase64(bitmap);
-                            Usuario u = new Usuario(usuario, nome, email, contrasena, imagenBase64);
+                            Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
+                            imagenBase64 = bitmapToBase64(resized);
+                            Usuario u = new Usuario(usuario, nome, email, contrasenaHasheada, imagenBase64);
                             uDAO.insertarDatos(u);
                         } catch (Exception e) {
                             e.printStackTrace();
@@ -108,7 +123,7 @@ public class CrearUsuario extends AppCompatActivity {
                     } else {
                         Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman_avatar_proof);
                         imagenBase64 = bitmapToBase64(defaultBitmap);
-                        Usuario u = new Usuario(usuario, nome, email, contrasena, imagenBase64);
+                        Usuario u = new Usuario(usuario, nome, email, contrasenaHasheada, imagenBase64);
                         uDAO.insertarDatos(u);
 
                     }
@@ -138,6 +153,41 @@ public class CrearUsuario extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         byte[] byteArray = outputStream.toByteArray();
         return Base64.getEncoder().encodeToString(byteArray);
+    }
+
+
+    public static String hashPassword(String password) {
+        try {
+            MessageDigest digest = MessageDigest.getInstance("SHA-256");
+            byte[] hash = digest.digest(password.getBytes(StandardCharsets.UTF_8));
+            StringBuilder hexString = new StringBuilder();
+            for (byte b : hash) {
+                String hex = Integer.toHexString(0xff & b);
+                if (hex.length() == 1) hexString.append('0');
+                hexString.append(hex);
+            }
+            return hexString.toString();
+        } catch (NoSuchAlgorithmException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    private Bitmap resizeAndCropBitmap(Bitmap original, int targetWidth, int targetHeight) {
+        if (original == null) throw new IllegalArgumentException("Bitmap no puede ser nulo");
+        if (targetWidth <= 0 || targetHeight <= 0)
+            throw new IllegalArgumentException("Las dimensiones objetivo deben ser mayores que 0");
+
+        int width = original.getWidth();
+        int height = original.getHeight();
+        float scale = Math.max((float) targetWidth / width, (float) targetHeight / height);
+
+        int scaledWidth = Math.round(scale * width);
+        int scaledHeight = Math.round(scale * height);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(original, scaledWidth, scaledHeight, true);
+
+        int offsetX = (scaledWidth - targetWidth) / 2;
+        int offsetY = (scaledHeight - targetHeight) / 2;
+        return Bitmap.createBitmap(scaledBitmap, offsetX, offsetY, targetWidth, targetHeight);
     }
 
 }

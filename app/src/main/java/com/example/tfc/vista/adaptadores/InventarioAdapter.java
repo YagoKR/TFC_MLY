@@ -35,7 +35,7 @@ public class InventarioAdapter extends ArrayAdapter<Inventario> {
         ImageView imagenPersonaje = convertView.findViewById(R.id.imageViewItem);
 
         nombreItem.setText(inventario.getProducto() + "("+inventario.getCategoria()+")");
-        infoItem.setText(inventario.getDescripcion() + "\n" + inventario.getPrecio() + " " + inventario.getValor());
+        infoItem.setText(inventario.getDescripcion() +"\nCantidad:"+inventario.getCantidad()+ "\n" + inventario.getPrecio() + " " + inventario.getValor());
 
         String imagenBase64 = inventario.getImagenItem();
 

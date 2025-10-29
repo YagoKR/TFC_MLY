@@ -108,7 +108,8 @@ public class EditarPersonajes extends AppCompatActivity {
             try {
                 byte[] bytes = Base64.decode(imagenBase64Actual, Base64.DEFAULT);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                imageViewEditarPersonaje.setImageBitmap(bitmap);
+                Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
+                imageViewEditarPersonaje.setImageBitmap(resized);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -129,5 +130,32 @@ public class EditarPersonajes extends AppCompatActivity {
         bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
         byte[] byteArray = outputStream.toByteArray();
         return java.util.Base64.getEncoder().encodeToString(byteArray);
+    }
+
+    private Bitmap resizeAndCropBitmap(Bitmap original, int targetWidth, int targetHeight) {
+        if (original == null) {
+            throw new IllegalArgumentException("Bitmap no puede ser nulo");
+        }
+
+        if (targetWidth <= 0 || targetHeight <= 0) {
+            throw new IllegalArgumentException("Las dimensiones objetivo deben ser mayores que 0");
+        }
+
+        int width = original.getWidth();
+        int height = original.getHeight();
+
+        float scale = Math.max((float) targetWidth / width, (float) targetHeight / height);
+
+        int scaledWidth = Math.round(scale * width);
+        int scaledHeight = Math.round(scale * height);
+
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(original, scaledWidth, scaledHeight, true);
+
+        int offsetX = (scaledWidth - targetWidth) / 2;
+        int offsetY = (scaledHeight - targetHeight) / 2;
+
+        Bitmap output = Bitmap.createBitmap(scaledBitmap, offsetX, offsetY, targetWidth, targetHeight);
+
+        return output;
     }
 }

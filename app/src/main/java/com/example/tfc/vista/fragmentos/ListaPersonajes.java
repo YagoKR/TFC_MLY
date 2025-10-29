@@ -28,12 +28,12 @@ public class ListaPersonajes extends Fragment {
 
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
+    private static final String ARG_IDUSER = "iduser";
+    private static final String ARG_IDCAMPANA = "idCampana";
 
     // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+    private String iduser;
+    private int idCampana;
 
     private PersonajeAdapter personajeAdapter;
     private PersonajeDAO personajeDAO;
@@ -51,16 +51,16 @@ public class ListaPersonajes extends Fragment {
      * Use this factory method to create a new instance of
      * this fragment using the provided parameters.
      *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
+     * @param iduser Parameter 1.
+     * @param idCampana Parameter 2.
      * @return A new instance of fragment ListaPersonajes.
      */
     // TODO: Rename and change types and number of parameters
-    public static ListaPersonajes newInstance(String param1, String param2) {
+    public static ListaPersonajes newInstance(String iduser, int idCampana) {
         ListaPersonajes fragment = new ListaPersonajes();
         Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
+        args.putString(ARG_IDUSER, iduser);
+        args.putInt(ARG_IDCAMPANA, idCampana);
         fragment.setArguments(args);
         return fragment;
     }
@@ -69,8 +69,8 @@ public class ListaPersonajes extends Fragment {
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
+            iduser = getArguments().getString(ARG_IDUSER);
+            idCampana = getArguments().getInt(ARG_IDCAMPANA);
         }
     }
 
@@ -81,7 +81,7 @@ public class ListaPersonajes extends Fragment {
 
         personajeDAO = new PersonajeDAO(getContext());
 
-        listaPersonajes = new ArrayList<>(personajeDAO.obtenerTodosPersonajes());
+        listaPersonajes = new ArrayList<>(personajeDAO.obtenerPersonajesPorCampanaYUsuario(idCampana, iduser));
 
         ListView listView = view.findViewById(R.id.listViewPersonajes);
         personajeAdapter = new PersonajeAdapter(getContext(), R.layout.personajes_element,R.id.textViewNombrePersonaje, listaPersonajes);
@@ -112,7 +112,7 @@ public class ListaPersonajes extends Fragment {
 
     private void recargarPersonajes() {
         listaPersonajes.clear();
-        listaPersonajes.addAll(personajeDAO.obtenerTodosPersonajes());
+        listaPersonajes.addAll(personajeDAO.obtenerPersonajesPorCampanaYUsuario(idCampana, iduser));
         personajeAdapter.notifyDataSetChanged();
     }
     @Override

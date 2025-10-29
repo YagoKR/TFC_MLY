@@ -120,6 +120,16 @@ public class CrearItem extends AppCompatActivity {
             return;
         }
 
+        if (cantidad > 999) {
+            mostrarDialogo("Error", "La cantidad máxima permitida es 999");
+            return;
+        }
+        InventarioDAO invDAO = new InventarioDAO(getApplicationContext());
+        if (invDAO.existeItem(idPersonaje, nombre)) {
+            mostrarDialogo("Error", "Ya existe un ítem con ese nombre para este personaje");
+            return;
+        }
+
         if (!descripcionUsuario.isEmpty()) {
             descripcionAPI = descripcionUsuario;
         }
@@ -132,7 +142,6 @@ public class CrearItem extends AppCompatActivity {
             } else {
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman_avatar_proof);
             }
-
             Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
             imagenBase64 = bitmapToBase64(resized);
         } catch (Exception e) {
@@ -140,7 +149,7 @@ public class CrearItem extends AppCompatActivity {
             return;
         }
 
-        InventarioDAO invDAO = new InventarioDAO(getApplicationContext());
+        invDAO = new InventarioDAO(getApplicationContext());
         Inventario item = new Inventario(
                 idPersonaje,
                 nombre,

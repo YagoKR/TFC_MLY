@@ -15,6 +15,9 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.TFC">
         <activity
+            android:name=".vista.actividades.EditarItem"
+            android:exported="false" />
+        <activity
             android:name=".vista.actividades.CrearItem"
             android:exported="false" />
         <activity

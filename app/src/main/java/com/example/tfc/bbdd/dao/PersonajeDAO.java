@@ -57,33 +57,6 @@ public class PersonajeDAO {
         }
         return existe;
     }
-    public ArrayList<Personaje> obtenerTodosPersonajes() {
-        ArrayList<Personaje> personajes = new ArrayList<>();
-        Cursor cursor = null;
-        try {
-            cursor = db.query("Personajes", null, null, null, null, null, null);
-            if (cursor != null && cursor.moveToFirst()) {
-                do {
-                    String nombrePersonaje = cursor.getString(cursor.getColumnIndexOrThrow("Nombre"));
-                    String raza = cursor.getString(cursor.getColumnIndexOrThrow("Raza"));
-                    String clase = cursor.getString(cursor.getColumnIndexOrThrow("Clase"));
-                    String imagenPersonaje = cursor.getString(cursor.getColumnIndexOrThrow("Imagen_PJ"));
-                    int idCampana = cursor.getInt(cursor.getColumnIndexOrThrow("ID_Campana"));
-                    String idUsuario = cursor.getString(cursor.getColumnIndexOrThrow("ID_Usuario"));
-                    int id = cursor.getInt(cursor.getColumnIndexOrThrow("_id"));
-
-                    Personaje personaje = new Personaje(nombrePersonaje, raza, clase, imagenPersonaje, idCampana, idUsuario);
-                    personaje.setIdPersonaje(id);
-                    personajes.add(personaje);
-                } while (cursor.moveToNext());
-            }
-        } finally {
-            if (cursor != null) {
-                cursor.close();
-            }
-        }
-        return personajes;
-    }
 
     public Personaje obtenerPersonajePorId(int idPersonaje) {
         Personaje personaje = null;
@@ -136,6 +109,45 @@ public class PersonajeDAO {
         );
     }
 
+    public ArrayList<Personaje> obtenerPersonajesPorCampanaYUsuario(int idCampana, String idUsuario) {
+        ArrayList<Personaje> personajes = new ArrayList<>();
+        Cursor cursor = null;
+
+        try {
+            cursor = db.query(
+                    DbContract.PersonajeEntry.TABLE_NAME,
+                    null,
+                    DbContract.PersonajeEntry.COLUMN_ID_CAMPANA + " = ? AND " +
+                            DbContract.PersonajeEntry.COLUMN_ID_USUARIO + " = ?",
+                    new String[]{String.valueOf(idCampana), idUsuario},
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor.moveToFirst()) {
+                do {
+                    String nombre = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PersonajeEntry.COLUMN_NOMBRE));
+                    String raza = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PersonajeEntry.COLUMN_RAZA));
+                    String clase = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PersonajeEntry.COLUMN_CLASE));
+                    String imagen = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PersonajeEntry.COLUMN_IMAGEN_PJ));
+                    int idCamp = cursor.getInt(cursor.getColumnIndexOrThrow(DbContract.PersonajeEntry.COLUMN_ID_CAMPANA));
+                    String idUser = cursor.getString(cursor.getColumnIndexOrThrow(DbContract.PersonajeEntry.COLUMN_ID_USUARIO));
+                    int id = cursor.getInt(cursor.getColumnIndexOrThrow(BaseColumns._ID));
+
+                    Personaje personaje = new Personaje(nombre, raza, clase, imagen, idCamp, idUser);
+                    personaje.setIdPersonaje(id);
+
+                    personajes.add(personaje);
+                } while (cursor.moveToNext());
+            }
+
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+
+        return personajes;
+    }
 
 
 }

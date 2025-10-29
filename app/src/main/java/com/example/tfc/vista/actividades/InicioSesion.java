@@ -51,7 +51,7 @@ public class InicioSesion extends AppCompatActivity {
 
                 UsuarioDAO uDAO = new UsuarioDAO(getApplicationContext());
 
-                if (uDAO.validarUsuario(usuario, contrasena)) {
+                if (uDAO.validarUsuario(usuario, CrearUsuario.hashPassword(contrasena))) {
                     SharedPreferences sp = getSharedPreferences("datosUsuario", MODE_PRIVATE);
                     SharedPreferences.Editor editor = sp.edit();
                     editor.putString("usuario", usuario);
@@ -67,6 +67,7 @@ public class InicioSesion extends AppCompatActivity {
                             .setMessage("Usuario o contraseña incorrectos")
                             .setPositiveButton("Ok", null)
                             .show();
+                            txtContrasena.setText("");
                 }
             }
         });

@@ -14,6 +14,7 @@ import android.widget.EditText;
 import android.widget.ImageView;
 
 import androidx.activity.EdgeToEdge;
+import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,7 +34,10 @@ public class CrearPersonaje extends AppCompatActivity {
     public EditText txtNombrePJ, txtRazaPJ, txtStatsPJ;
     public ImageView imgPersonaje;
     public Button btnAnadirPJ;
+    public int idCampana;
+    public String username;
     private Uri selectedImageUri;
+    private PersonajeDAO pDAO;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -45,6 +49,13 @@ public class CrearPersonaje extends AppCompatActivity {
         txtStatsPJ = findViewById(R.id.statsPersonaje);
         imgPersonaje = findViewById(R.id.imageViewPersonaje);
         btnAnadirPJ = findViewById(R.id.btnCrearPersonaje);
+
+        idCampana = getIntent().getIntExtra("idCampana", -1);
+
+        SharedPreferences sp = getSharedPreferences("datosUsuario", MODE_PRIVATE);
+        username = sp.getString("usuario", "Usuario");
+
+        pDAO = new PersonajeDAO(getApplicationContext());
 
         imgPersonaje.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -76,17 +87,8 @@ public class CrearPersonaje extends AppCompatActivity {
                 String raza = txtRazaPJ.getText().toString();
                 String stats = txtStatsPJ.getText().toString();
 
-                SharedPreferences sp = getSharedPreferences("datosUsuario", MODE_PRIVATE);
-                String username = sp.getString("usuario", "Usuario");
 
-                String nombreCampanha = getIntent().getStringExtra("nombreCampanha");
-
-                CampanaDAO cDAO = new CampanaDAO(getApplicationContext());
-                PersonajeDAO pDAO = new PersonajeDAO(getApplicationContext());
-
-                int id = cDAO.obtenerIdCampana(nombreCampanha);
-
-                if (pDAO.existePersonaje(nombre, id, username)) {
+                if (pDAO.existePersonaje(nombre, idCampana, username)) {
                     new AlertDialog.Builder(CrearPersonaje.this)
                             .setTitle("Error")
                             .setMessage("Ya existe este personaje para este usuario")
@@ -100,7 +102,7 @@ public class CrearPersonaje extends AppCompatActivity {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
                         Bitmap resizedBitmap = resizeAndCropBitmap(bitmap, 128, 128);
                         imagenBase64 = bitmapToBase64(resizedBitmap);
-                        Personaje p = new Personaje(nombre, raza, stats, imagenBase64, id , username);
+                        Personaje p = new Personaje(nombre, raza, stats, imagenBase64, idCampana , username);
                         pDAO.insertarDatos(p);
 
                     } catch (Exception e) {
@@ -110,7 +112,7 @@ public class CrearPersonaje extends AppCompatActivity {
                     Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman_avatar_proof);
                     Bitmap resizedBitmap = resizeAndCropBitmap(defaultBitmap, 128, 128);
                     imagenBase64 = bitmapToBase64(resizedBitmap);
-                    Personaje p = new Personaje(nombre, raza, stats, imagenBase64, id , username);
+                    Personaje p = new Personaje(nombre, raza, stats, imagenBase64, idCampana , username);
                     pDAO.insertarDatos(p);
                 }
                 AlertDialog.Builder builder = new AlertDialog.Builder(CrearPersonaje.this);
@@ -125,6 +127,14 @@ public class CrearPersonaje extends AppCompatActivity {
             }
         });
 
+    }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == 123 && resultCode == RESULT_OK && data != null) {
+            selectedImageUri = data.getData();
+            imgPersonaje.setImageURI(selectedImageUri);
+        }
     }
 
     private String bitmapToBase64(Bitmap bitmap) {
