@@ -104,22 +104,23 @@ public class EditarUsuario extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
-                String nuevaContrasena = editcontrasena.getText().toString().trim();
-                if (editcontrasena.isEnabled()) {
-                    if (nuevaContrasena.length() < 6 || nuevaContrasena.length() > 12) {
-                        new AlertDialog.Builder(EditarUsuario.this)
-                                .setTitle("Error")
-                                .setMessage("La contraseña debe tener entre 6 y 12 caracteres")
-                                .setPositiveButton("Ok", null)
-                                .show();
-                        return;
-                    }
-                    usuario.setContrasenha(hashPassword(nuevaContrasena));
-                }
-
                 usuario.setNombre(editNombreReal.getText().toString());
                 usuario.setEmail(editmail.getText().toString());
-                usuario.setContrasenha(hashPassword(nuevaContrasena));
+
+                if (editcontrasena.isEnabled()) {
+                    String nuevaContrasena = editcontrasena.getText().toString().trim();
+                    if (!nuevaContrasena.isEmpty()) {
+                        if (nuevaContrasena.length() < 6 || nuevaContrasena.length() > 12) {
+                            new AlertDialog.Builder(EditarUsuario.this)
+                                    .setTitle("Error")
+                                    .setMessage("La contraseña debe tener entre 6 y 12 caracteres")
+                                    .setPositiveButton("Ok", null)
+                                    .show();
+                            return;
+                        }
+                        usuario.setContrasenha(hashPassword(nuevaContrasena));
+                    }
+                }
 
                 if (selectedImageUri != null) {
                     try {

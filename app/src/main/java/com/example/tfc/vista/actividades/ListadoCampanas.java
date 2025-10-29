@@ -138,7 +138,7 @@ public class ListadoCampanas extends AppCompatActivity implements ListaCampana.O
             Usuario usuario = usuarioDAO.obtenerUsuario(username);
 
             if (usuario != null) {
-                txtNombre.setText(usuario.getIdUsuario());
+                txtNombre.setText(usuario.getIdUsuario() +"("+usuario.getNombre()+")");
                 txtEmail.setText(usuario.getEmail());
 
                 try {
