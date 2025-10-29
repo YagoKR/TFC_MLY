@@ -48,8 +48,10 @@ public class EditarCampana extends AppCompatActivity {
         editDescripcionCampana = findViewById(R.id.editdescripcionCampana);
         imageViewEditar = findViewById(R.id.imageVieweditarCamp);
         btnEditarCampana = findViewById(R.id.btneditarCampana);
+
         setSupportActionBar(toolbar);
         toolbar.setTitle("Editar Campaña");
+
         int idCampana = getIntent().getIntExtra("id", -1);
 
         campanaDAO = new CampanaDAO(getApplicationContext());

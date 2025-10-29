@@ -52,14 +52,19 @@ public class CrearItem extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         EdgeToEdge.enable(this);
         setContentView(R.layout.activity_crear_item);
+
         idPersonaje = getIntent().getIntExtra("idPersonaj", -1);
 
         nomeItem = findViewById(R.id.nomeItem);
         cantiItem = findViewById(R.id.cantidadItem);
         descripcionItem = findViewById(R.id.descripcionItem);
+
         imagenItem = findViewById(R.id.imagenItem);
+
         btnCrearItem = findViewById(R.id.btnCrearItem);
+
         requestQueue = Volley.newRequestQueue(this);
+
         imagenItem.setOnClickListener(v -> {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");

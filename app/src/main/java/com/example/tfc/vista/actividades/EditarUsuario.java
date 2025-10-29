@@ -51,11 +51,14 @@ public class EditarUsuario extends AppCompatActivity {
         setContentView(R.layout.activity_editar_usuario);
 
         toolbar = findViewById(R.id.toolbar2);
+
         editNombreUsuario = findViewById(R.id.editnombreUsuario);
         editNombreReal = findViewById(R.id.editNombreReal);
         editmail = findViewById(R.id.editmail);
         editcontrasena = findViewById(R.id.editcontrasena);
+
         imageView = findViewById(R.id.imageView);
+
         btnEditarUsuario = findViewById(R.id.btnEditarUsuario);
         btncambiarContrasena = findViewById(R.id.btnCambiarContrasena);
 
