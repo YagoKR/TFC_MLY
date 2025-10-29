@@ -36,7 +36,7 @@ public class EditarUsuario extends AppCompatActivity {
     private Toolbar toolbar;
     private EditText editNombreUsuario, editNombreReal, editmail, editcontrasena;
     private ImageView imageView;
-    private Button btnEditarUsuario;
+    private Button btnEditarUsuario, btncambiarContrasena;
     private UsuarioDAO usuarioDAO;
     private SharedPreferences sp;
     private Usuario usuario;
@@ -57,6 +57,7 @@ public class EditarUsuario extends AppCompatActivity {
         editcontrasena = findViewById(R.id.editcontrasena);
         imageView = findViewById(R.id.imageView);
         btnEditarUsuario = findViewById(R.id.btnEditarUsuario);
+        btncambiarContrasena = findViewById(R.id.btnCambiarContrasena);
 
         setSupportActionBar(toolbar);
         toolbar.setTitle("Editar perfil");
@@ -71,7 +72,7 @@ public class EditarUsuario extends AppCompatActivity {
                 editNombreUsuario.setText(usuario.getIdUsuario());
                 editNombreReal.setText(usuario.getNombre());
                 editmail.setText(usuario.getEmail());
-                editcontrasena.setText("");
+                editcontrasena.setText(usuario.getContrasenha());
                 imagenBase64Actual = usuario.getImagen();
 
                 try {
@@ -92,18 +93,28 @@ public class EditarUsuario extends AppCompatActivity {
                 startActivityForResult(intent, 123);
             }
         });
+
+        btncambiarContrasena.setOnClickListener(v -> {
+            editcontrasena.setEnabled(true);
+            editcontrasena.setText("");
+            editcontrasena.requestFocus();
+        });
+
         btnEditarUsuario.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
 
                 String nuevaContrasena = editcontrasena.getText().toString().trim();
-                if (nuevaContrasena.length() < 6 || nuevaContrasena.length() > 12) {
-                    new AlertDialog.Builder(EditarUsuario.this)
-                            .setTitle("Error")
-                            .setMessage("La contraseña debe tener entre 6 y 12 caracteres")
-                            .setPositiveButton("Ok", null)
-                            .show();
-                    return;
+                if (editcontrasena.isEnabled()) {
+                    if (nuevaContrasena.length() < 6 || nuevaContrasena.length() > 12) {
+                        new AlertDialog.Builder(EditarUsuario.this)
+                                .setTitle("Error")
+                                .setMessage("La contraseña debe tener entre 6 y 12 caracteres")
+                                .setPositiveButton("Ok", null)
+                                .show();
+                        return;
+                    }
+                    usuario.setContrasenha(hashPassword(nuevaContrasena));
                 }
 
                 usuario.setNombre(editNombreReal.getText().toString());
@@ -113,7 +124,8 @@ public class EditarUsuario extends AppCompatActivity {
                 if (selectedImageUri != null) {
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                        usuario.setImagen(bitmapToBase64(bitmap));
+                        Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
+                        usuario.setImagen(bitmapToBase64(resized));
                     } catch (IOException e) {
                         e.printStackTrace();
                         usuario.setImagen(imagenBase64Actual);
@@ -165,5 +177,23 @@ public class EditarUsuario extends AppCompatActivity {
         } catch (NoSuchAlgorithmException e) {
             throw new RuntimeException(e);
         }
+    }
+
+    private Bitmap resizeAndCropBitmap(Bitmap original, int targetWidth, int targetHeight) {
+        if (original == null) throw new IllegalArgumentException("Bitmap no puede ser nulo");
+        if (targetWidth <= 0 || targetHeight <= 0)
+            throw new IllegalArgumentException("Las dimensiones objetivo deben ser mayores que 0");
+
+        int width = original.getWidth();
+        int height = original.getHeight();
+        float scale = Math.max((float) targetWidth / width, (float) targetHeight / height);
+
+        int scaledWidth = Math.round(scale * width);
+        int scaledHeight = Math.round(scale * height);
+        Bitmap scaledBitmap = Bitmap.createScaledBitmap(original, scaledWidth, scaledHeight, true);
+
+        int offsetX = (scaledWidth - targetWidth) / 2;
+        int offsetY = (scaledHeight - targetHeight) / 2;
+        return Bitmap.createBitmap(scaledBitmap, offsetX, offsetY, targetWidth, targetHeight);
     }
 }
