@@ -5,7 +5,7 @@ Será desarrollada con el emulador Pixel 7 Pro en mente.
 
 Para clonar el repositorio es necesario tener instalado git y utilizar git clone en la carpeta que se quiera descargar el proyecto.
 
-Además de instalar estas dependencias
+Además de instalar estas dependencias:
 
 dependencies {
     implementation(libs.volley)
