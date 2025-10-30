@@ -60,8 +60,8 @@ public class ListadoCampanas extends AppCompatActivity implements ListaCampana.O
             Usuario usuario = uDAO.obtenerUsuario(username);
 
             if (usuario != null) {
-                txtNombre.setText(usuario.getIdUsuario() +"("+usuario.getNombre()+")");
-                txtEmail.setText(usuario.getEmail());
+                txtNombre.setText(usuario.getIdUsuario());
+                txtEmail.setText("Nombre: "+usuario.getNombre()+"\n"+usuario.getEmail());
 
                 byte[] bytes = android.util.Base64.decode(usuario.getImagen(), android.util.Base64.DEFAULT);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -158,8 +158,8 @@ public class ListadoCampanas extends AppCompatActivity implements ListaCampana.O
             Usuario usuario = usuarioDAO.obtenerUsuario(username);
 
             if (usuario != null) {
-                txtNombre.setText(usuario.getIdUsuario() +"("+usuario.getNombre()+")");
-                txtEmail.setText(usuario.getEmail());
+                txtNombre.setText(usuario.getIdUsuario());
+                txtEmail.setText("Nombre: "+usuario.getNombre()+"\n"+usuario.getEmail());
 
                 try {
                     byte[] bytes = android.util.Base64.decode(usuario.getImagen(), android.util.Base64.DEFAULT);
