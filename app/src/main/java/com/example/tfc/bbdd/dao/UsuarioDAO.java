@@ -93,6 +93,40 @@ public class UsuarioDAO {
 
         return usuario;
     }
+
+    public Usuario obtenerUsuarioPorEmail(String email) {
+        Usuario usuario = null;
+        Cursor cursor = null;
+
+        try {
+            cursor = db.query(
+                    "Usuarios",
+                    null,
+                    "email = ?",
+                    new String[]{email},
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {
+                String idUsuario = cursor.getString(cursor.getColumnIndexOrThrow("Usuario"));
+                String nombre = cursor.getString(cursor.getColumnIndexOrThrow("Nombre"));
+                String contrasena = cursor.getString(cursor.getColumnIndexOrThrow("Contraseña"));
+                String imagen = cursor.getString(cursor.getColumnIndexOrThrow("Imagen"));
+
+                usuario = new Usuario(idUsuario, nombre, email, contrasena, imagen);
+            }
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+        return usuario;
+    }
+
     public int actualizarUsuario(Usuario usuario) {
         ContentValues values = new ContentValues();
         values.put("nombre", usuario.getNombre());

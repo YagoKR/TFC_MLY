@@ -133,7 +133,19 @@ public class EditarUsuario extends AppCompatActivity {
                             .show();
                     return;
                 }
-                usuario.setEmail(editmail.getText().toString());
+
+                String nuevoEmail = editmail.getText().toString().trim();
+                Usuario usuarioExistente = usuarioDAO.obtenerUsuarioPorEmail(nuevoEmail);
+                if (usuarioExistente != null && !usuarioExistente.getIdUsuario().equals(usuario.getIdUsuario())) {
+                    new AlertDialog.Builder(EditarUsuario.this)
+                            .setTitle("Error")
+                            .setMessage("El correo ya está registrado en otra cuenta. Elige otro.")
+                            .setPositiveButton("Ok", null)
+                            .show();
+                    return;
+                }
+
+                usuario.setEmail(nuevoEmail);
 
                 if (editcontrasena.isEnabled()) {
                     String nuevaContrasena = editcontrasena.getText().toString().trim();

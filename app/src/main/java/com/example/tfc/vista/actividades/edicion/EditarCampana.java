@@ -102,6 +102,16 @@ public class EditarCampana extends AppCompatActivity {
 
 
         btnEditarCampana.setOnClickListener(v -> {
+            String idUsuario = getIntent().getStringExtra("usuario");
+            if (campanaDAO.existeCampanaConNombre(idUsuario, editNombreCampana.getText().toString(), idCampana)) {
+                new AlertDialog.Builder(EditarCampana.this)
+                        .setTitle("Error")
+                        .setMessage("Ya tienes una campaña con ese nombre. Elige otro.")
+                        .setPositiveButton("Ok", null)
+                        .show();
+                return;
+            }
+
             campana.setNombreCampanha(editNombreCampana.getText().toString());
             campana.setDescripcion(editDescripcionCampana.getText().toString());
 

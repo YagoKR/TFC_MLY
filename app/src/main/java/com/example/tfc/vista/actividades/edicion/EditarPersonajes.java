@@ -52,7 +52,7 @@ public class EditarPersonajes extends AppCompatActivity {
         toolbar.setTitle("Editar Personaje");
 
         int idPersonaje = getIntent().getIntExtra("idPersona", -1);
-
+        int idCampana = getIntent().getIntExtra("idCampana", -1);
         personajeDAO = new PersonajeDAO(getApplicationContext());
 
         personaje = personajeDAO.obtenerPersonajePorId(idPersonaje);
@@ -118,6 +118,20 @@ public class EditarPersonajes extends AppCompatActivity {
         });
 
         btnEditarPersonaje.setOnClickListener(v -> {
+
+            if (personajeDAO.existePersonajeConNombreEnCampana(
+                    nombreEditarPersonaje.getText().toString(),
+                    idCampana,
+                    idPersonaje)) {
+
+                new AlertDialog.Builder(this)
+                        .setTitle("Error")
+                        .setMessage("Ya existe un personaje con ese nombre en esta campaña. Elige otro.")
+                        .setPositiveButton("Ok", null)
+                        .show();
+                return;
+            }
+
             personaje.setNombre(nombreEditarPersonaje.getText().toString());
             personaje.setRaza(razaEditarPersonaje.getText().toString());
             personaje.setClase(statsEditarPersonaje.getText().toString());

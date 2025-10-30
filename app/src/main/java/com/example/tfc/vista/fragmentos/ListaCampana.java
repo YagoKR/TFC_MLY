@@ -95,8 +95,6 @@ public class ListaCampana extends Fragment {
                     .setTitle("Eliminar campaña")
                     .setMessage("¿Seguro que deseas eliminar \"" + campanaSeleccionada.getNombreCampanha() + "\"?\n Se borrarán todos los personajes e items asociados.")
                     .setPositiveButton("Sí", (dialog, which) -> {
-                        CampanaDAO campanaDAO = new CampanaDAO(getContext());
-                        campanaDAO.borrarCampana(campanaSeleccionada.getNombreCampanha());
 
                         usuarioCampanasDAO.borrarUsuarioCampana(idUsuario, String.valueOf(campanaSeleccionada.getId()));
 

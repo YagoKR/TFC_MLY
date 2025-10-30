@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
+import androidx.annotation.Nullable;
+
 import com.example.tfc.bbdd.definicion.DbContract;
 import com.example.tfc.bbdd.definicion.SQLiteHelper;
 import com.example.tfc.bbdd.entidades.Personaje;
@@ -32,8 +34,8 @@ public class PersonajeDAO {
         return db.insert("Personajes", null, values);
     }
 
-    public int borrarPersonaje(String nombrePersonaje) {
-        return db.delete("Personajes", "Nombre = ?", new String[]{nombrePersonaje});
+    public int borrarPersonaje(String nombrePersonaje, String idUsuario, int idCampana) {
+        return db.delete("Personajes", "Nombre = ? AND ID_Usuario = ? AND ID_CAMPANA = ?", new String[]{nombrePersonaje, idUsuario, String.valueOf(idCampana)});
     }
     public boolean existePersonaje(String nombrePersonaje, int idCampana, String idUsuario) {
         boolean existe = false;
@@ -149,5 +151,44 @@ public class PersonajeDAO {
         return personajes;
     }
 
+    public boolean existePersonajeConNombreEnCampana(String nombrePersonaje, int idCampana, @Nullable Integer idPersonajeExcluido) {
+        boolean existe = false;
+        Cursor cursor = null;
+
+        try {
+            String selection = "Nombre = ? AND ID_Campana = ?";
+            ArrayList<String> argsList = new ArrayList<>();
+            argsList.add(nombrePersonaje);
+            argsList.add(String.valueOf(idCampana));
+
+            if (idPersonajeExcluido != null && idPersonajeExcluido != -1) {
+                selection += " AND " + BaseColumns._ID + " != ?";
+                argsList.add(String.valueOf(idPersonajeExcluido));
+            }
+
+            String[] selectionArgs = argsList.toArray(new String[0]);
+
+            cursor = db.query(
+                    "Personajes",
+                    new String[]{BaseColumns._ID},
+                    selection,
+                    selectionArgs,
+                    null,
+                    null,
+                    null
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {
+                existe = true;
+            }
+
+        } finally {
+            if (cursor != null) {
+                cursor.close();
+            }
+        }
+
+        return existe;
+    }
 
 }

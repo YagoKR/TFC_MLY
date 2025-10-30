@@ -98,6 +98,7 @@ public class ListadoInventario extends AppCompatActivity implements ListaInventa
         if (id == R.id.editarPersonaje) {
             Intent intent = new Intent(ListadoInventario.this, EditarPersonajes.class);
             intent.putExtra("idPersona",idPersonaje);
+            intent.putExtra("idCampana",personaje.getIdCampana());
             startActivity(intent);
             return true;
         }

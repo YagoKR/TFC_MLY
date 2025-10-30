@@ -33,6 +33,7 @@ public class ListadoPersonajes extends AppCompatActivity implements ListaPersona
     private Toolbar toolbar;
     public SharedPreferences sp;
     private Campana campana;
+    public String username;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -46,7 +47,7 @@ public class ListadoPersonajes extends AppCompatActivity implements ListaPersona
         btnCrearPersonaje = findViewById(R.id.anadirPJ);
         toolbar = findViewById(R.id.toolbarListadoCampanas);
         sp = getSharedPreferences("datosUsuario", MODE_PRIVATE);
-        String username = sp.getString("usuario", "Usuario");
+        username = sp.getString("usuario", "Usuario");
         toolbar.setTitle("Campañas de " + username);
         setSupportActionBar(toolbar);
 
@@ -90,6 +91,7 @@ public class ListadoPersonajes extends AppCompatActivity implements ListaPersona
         if (id == R.id.editarCampana) {
             Intent intent = new Intent(ListadoPersonajes.this, EditarCampana.class);
             intent.putExtra("id",idCampana);
+            intent.putExtra("usuario",username);
             startActivity(intent);
             return true;
         }

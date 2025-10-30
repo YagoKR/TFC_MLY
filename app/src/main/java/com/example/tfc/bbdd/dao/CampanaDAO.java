@@ -6,6 +6,8 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 import android.provider.BaseColumns;
 
+import androidx.annotation.Nullable;
+
 import com.example.tfc.bbdd.definicion.DbContract;
 import com.example.tfc.bbdd.definicion.SQLiteHelper;
 import com.example.tfc.bbdd.entidades.Campana;
@@ -27,10 +29,6 @@ public class CampanaDAO {
         values.put("Imagen_Campaña", campana.getImagenCampanha());
 
         return db.insert ("Campañas", null, values);
-    }
-
-    public int borrarCampana(String nombreCampana) {
-        return db.delete("Campañas", "Nombre_campaña = ?", new String[]{nombreCampana});
     }
 
     public int actualizarCampana(Campana campana, int id) {
@@ -74,6 +72,50 @@ public class CampanaDAO {
         }
 
         return campana;
+    }
+
+    public boolean existeCampanaConNombre(String idUsuario, String nombreCampana, @Nullable Integer idCampanaExcluida) {
+        boolean existe = false;
+        Cursor cursor = null;
+
+        try {
+            String tables = DbContract.CampanaEntry.TABLE_NAME + " c INNER JOIN " +
+                    DbContract.UsuariosCampanasEntry.TABLE_NAME + " uc ON " +
+                    "c." + BaseColumns._ID + " = uc." + DbContract.UsuariosCampanasEntry.COLUMN_ID_CAMPANA;
+
+            String selection = "uc." + DbContract.UsuariosCampanasEntry.COLUMN_ID_USUARIO + " = ? AND " +
+                    "c." + DbContract.CampanaEntry.COLUMN_CAMPANA + " = ?";
+
+            ArrayList<String> selectionArgsList = new ArrayList<>();
+            selectionArgsList.add(idUsuario);
+            selectionArgsList.add(nombreCampana);
+
+            if (idCampanaExcluida != null && idCampanaExcluida != -1) {
+                selection += " AND c." + BaseColumns._ID + " != ?";
+                selectionArgsList.add(String.valueOf(idCampanaExcluida));
+            }
+
+            String[] selectionArgs = selectionArgsList.toArray(new String[0]);
+
+            cursor = db.query(
+                    tables,
+                    new String[]{"c." + BaseColumns._ID},
+                    selection,
+                    selectionArgs,
+                    null, null, null
+            );
+
+            if (cursor != null && cursor.moveToFirst()) {
+                existe = true;
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            if (cursor != null) cursor.close();
+        }
+
+        return existe;
     }
 
 

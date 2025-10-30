@@ -99,7 +99,7 @@ public class ListaPersonajes extends Fragment {
                     .setTitle("Eliminar personaje")
                     .setMessage("¿Seguro que deseas eliminar \"" + personajeSeleccionado.getNombre()+ "\"?\n Se borrarán todos los items asociados.")
                     .setPositiveButton("Sí", (dialog, which) -> {
-                        personajeDAO.borrarPersonaje(personajeSeleccionado.getNombre());
+                        personajeDAO.borrarPersonaje(personajeSeleccionado.getNombre(), personajeSeleccionado.getIdUsuario(), personajeSeleccionado.getIdCampana());
                         recargarPersonajes();
                     })
                     .setNegativeButton("No", null)
