@@ -8,6 +8,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -56,6 +58,40 @@ public class CrearCampana extends AppCompatActivity {
             }
         });
 
+        txtNombreCampana.addTextChangedListener(new TextWatcher() {
+            private static final int MAX_CHARACTERS = 30;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > MAX_CHARACTERS) {
+                    txtNombreCampana.setText(s.subSequence(0, MAX_CHARACTERS));
+                    txtNombreCampana.setSelection(MAX_CHARACTERS);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+
+        txtDescripcionCampana.addTextChangedListener(new TextWatcher() {
+            private static final int MAX_CHARACTERS = 100;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > MAX_CHARACTERS) {
+                    txtDescripcionCampana.setText(s.subSequence(0, MAX_CHARACTERS));
+                    txtDescripcionCampana.setSelection(MAX_CHARACTERS);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
 
         btncrearCampana.setOnClickListener(new View.OnClickListener() {
             @Override

@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.widget.Button;
 import android.widget.EditText;
@@ -62,6 +64,57 @@ public class EditarPersonajes extends AppCompatActivity {
             Intent intent = new Intent(Intent.ACTION_GET_CONTENT);
             intent.setType("image/*");
             startActivityForResult(intent, 123);
+        });
+
+        nombreEditarPersonaje.addTextChangedListener(new TextWatcher() {
+            private static final int MAX_CHARACTERS = 15;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > MAX_CHARACTERS) {
+                    nombreEditarPersonaje.setText(s.subSequence(0, MAX_CHARACTERS));
+                    nombreEditarPersonaje.setSelection(MAX_CHARACTERS);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+        statsEditarPersonaje.addTextChangedListener(new TextWatcher() {
+            private static final int MAX_CHARACTERS = 60;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > MAX_CHARACTERS) {
+                    statsEditarPersonaje.setText(s.subSequence(0, MAX_CHARACTERS));
+                    statsEditarPersonaje.setSelection(MAX_CHARACTERS);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+        razaEditarPersonaje.addTextChangedListener(new TextWatcher() {
+            private static final int MAX_CHARACTERS = 20;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > MAX_CHARACTERS) {
+                    razaEditarPersonaje.setText(s.subSequence(0, MAX_CHARACTERS));
+                    razaEditarPersonaje.setSelection(MAX_CHARACTERS);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
         });
 
         btnEditarPersonaje.setOnClickListener(v -> {

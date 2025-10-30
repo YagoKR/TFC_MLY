@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -73,6 +75,39 @@ public class CrearUsuario extends AppCompatActivity {
             }
         });
 
+        txtNombreUsuario.addTextChangedListener(new TextWatcher() {
+            private static final int MAX_CHARACTERS = 15;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > MAX_CHARACTERS) {
+                    txtNombreUsuario.setText(s.subSequence(0, MAX_CHARACTERS));
+                    txtNombreUsuario.setSelection(MAX_CHARACTERS);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+        txtNombreReal.addTextChangedListener(new TextWatcher() {
+            private static final int MAX_CHARACTERS = 15;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > MAX_CHARACTERS) {
+                    txtNombreReal.setText(s.subSequence(0, MAX_CHARACTERS));
+                    txtNombreReal.setSelection(MAX_CHARACTERS);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
 
         btnCrearU.setOnClickListener(new View.OnClickListener() {
             @Override

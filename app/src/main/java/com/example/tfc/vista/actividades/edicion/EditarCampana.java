@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.widget.*;
 
@@ -62,6 +64,42 @@ public class EditarCampana extends AppCompatActivity {
             intent.setType("image/*");
             startActivityForResult(intent, 123);
         });
+
+        editNombreCampana.addTextChangedListener(new TextWatcher() {
+            private static final int MAX_CHARACTERS = 30;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > MAX_CHARACTERS) {
+                    editNombreCampana.setText(s.subSequence(0, MAX_CHARACTERS));
+                    editNombreCampana.setSelection(MAX_CHARACTERS);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+
+        editDescripcionCampana.addTextChangedListener(new TextWatcher() {
+            private static final int MAX_CHARACTERS = 100;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > MAX_CHARACTERS) {
+                    editDescripcionCampana.setText(s.subSequence(0, MAX_CHARACTERS));
+                    editDescripcionCampana.setSelection(MAX_CHARACTERS);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
 
         btnEditarCampana.setOnClickListener(v -> {
             campana.setNombreCampanha(editNombreCampana.getText().toString());

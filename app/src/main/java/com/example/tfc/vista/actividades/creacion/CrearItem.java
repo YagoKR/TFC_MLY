@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.util.Log;
 import android.widget.Button;
@@ -74,6 +76,23 @@ public class CrearItem extends AppCompatActivity {
                 String item = nomeItem.getText().toString().trim().toLowerCase().replace(" ", "-");
                 if (!item.isEmpty()) checkApiConnection(item);
             }
+        });
+
+        descripcionItem.addTextChangedListener(new TextWatcher() {
+            private static final int MAX_CHARACTERS = 30;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > MAX_CHARACTERS) {
+                    descripcionItem.setText(s.subSequence(0, MAX_CHARACTERS));
+                    descripcionItem.setSelection(MAX_CHARACTERS);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
         });
 
         btnCrearItem.setOnClickListener(v -> guardarItem());

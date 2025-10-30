@@ -60,7 +60,11 @@ public class ListadoInventario extends AppCompatActivity implements ListaInventa
 
         if (personaje != null){
             txtNombrePersonaje.setText(personaje.getNombre()+ "(" + personaje.getRaza() + ")");
-            txtClasePersonaje.setText(personaje.getClase());
+
+            String stastPJ = personaje.getClase().replaceAll(",", ",\n");
+
+            txtClasePersonaje.setText(stastPJ);
+
 
             byte[] bytes = Base64.decode(personaje.getImagenPJ(), Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);

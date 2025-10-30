@@ -6,6 +6,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.widget.Button;
 import android.widget.EditText;
@@ -26,7 +28,7 @@ import java.io.ByteArrayOutputStream;
 public class EditarItem extends AppCompatActivity {
     private Toolbar toolbar;
     private ImageView imagenItem;
-    private EditText nomeEditItem, cantidadItem, descripcionItem;
+    private EditText nomeEditItem, cantidadEditItem, descripcionEditItem;
     private Button btnEditarItem;
     private Uri selectedImageUri;
     private String imagenBase64Actual;
@@ -46,8 +48,8 @@ public class EditarItem extends AppCompatActivity {
 
         imagenItem = findViewById(R.id.imagenEditItem);
         nomeEditItem = findViewById(R.id.nomeEditItem);
-        cantidadItem = findViewById(R.id.cantidadItem);
-        descripcionItem = findViewById(R.id.descripcionItem);
+        cantidadEditItem = findViewById(R.id.cantidadItem);
+        descripcionEditItem = findViewById(R.id.descripcionItem);
         btnEditarItem = findViewById(R.id.btnEditarItem);
 
         long idItem = getIntent().getLongExtra("idItem", -1);
@@ -57,8 +59,8 @@ public class EditarItem extends AppCompatActivity {
         if (itemActual != null) {
             idPersonaje = itemActual.getIdPersonaje();
             nomeEditItem.setText(itemActual.getProducto());
-            cantidadItem.setText(String.valueOf(itemActual.getCantidad()));
-            descripcionItem.setText(itemActual.getDescripcion());
+            cantidadEditItem.setText(String.valueOf(itemActual.getCantidad()));
+            descripcionEditItem.setText(itemActual.getDescripcion());
             imagenBase64Actual = itemActual.getImagenItem();
 
             if (imagenBase64Actual != null && !imagenBase64Actual.isEmpty()) {
@@ -75,9 +77,27 @@ public class EditarItem extends AppCompatActivity {
             startActivityForResult(intent, 123);
         });
 
+        descripcionEditItem.addTextChangedListener(new TextWatcher() {
+            private static final int MAX_CHARACTERS = 30;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > MAX_CHARACTERS) {
+                    descripcionEditItem.setText(s.subSequence(0, MAX_CHARACTERS));
+                    descripcionEditItem.setSelection(MAX_CHARACTERS);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
+
         btnEditarItem.setOnClickListener(v -> {
-            String cantidadTexto = cantidadItem.getText().toString().trim();
-            String descripcion = descripcionItem.getText().toString().trim();
+            String cantidadTexto = cantidadEditItem.getText().toString().trim();
+            String descripcion = descripcionEditItem.getText().toString().trim();
 
             if (cantidadTexto.isEmpty()) {
                 mostrarDialogo("Error", "La cantidad no puede estar vacía");

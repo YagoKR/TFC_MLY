@@ -7,6 +7,8 @@ import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Base64;
 import android.view.View;
 import android.widget.*;
@@ -92,6 +94,24 @@ public class EditarUsuario extends AppCompatActivity {
                 startActivityForResult(intent, 123);
             }
         });
+
+        editNombreReal.addTextChangedListener(new TextWatcher() {
+            private static final int MAX_CHARACTERS = 15;
+            @Override
+            public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
+
+            @Override
+            public void onTextChanged(CharSequence s, int start, int before, int count) {
+                if (s.length() > MAX_CHARACTERS) {
+                    editNombreReal.setText(s.subSequence(0, MAX_CHARACTERS));
+                    editNombreReal.setSelection(MAX_CHARACTERS);
+                }
+            }
+
+            @Override
+            public void afterTextChanged(Editable s) { }
+        });
+
 
         btncambiarContrasena.setOnClickListener(v -> {
             editcontrasena.setEnabled(true);

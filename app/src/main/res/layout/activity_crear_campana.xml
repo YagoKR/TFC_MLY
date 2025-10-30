@@ -76,7 +76,7 @@
         android:id="@+id/descripcionCampana"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Ej. Información detallada sobre la campaña..."
+        android:hint="Ej. Información simple sobre la campaña..."
         android:inputType="textMultiLine"
         android:minLines="3"
         android:maxLines="10"

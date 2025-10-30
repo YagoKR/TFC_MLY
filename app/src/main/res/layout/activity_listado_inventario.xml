@@ -45,18 +45,24 @@
         app:layout_constraintStart_toEndOf="@id/imageView4"
         app:layout_constraintTop_toTopOf="@id/imageView4"
         app:layout_constraintBottom_toTopOf="@+id/NivelesPersonaje" />
-
     <TextView
         android:id="@+id/NivelesPersonaje"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:text="Clases"
         android:textSize="14sp"
         android:gravity="start"
+        android:minLines="1"
+        android:ellipsize="none"
+        android:scrollHorizontally="false"
+        android:inputType="textMultiLine"
+        android:breakStrategy="simple"
         android:layout_marginStart="16dp"
         app:layout_constraintStart_toEndOf="@id/imageView4"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/NombrePersonaje"
         app:layout_constraintBottom_toBottomOf="@id/imageView4" />
+
 
     <View
         android:id="@+id/separador01"

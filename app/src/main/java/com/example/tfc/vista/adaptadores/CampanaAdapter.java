@@ -30,7 +30,15 @@ public class CampanaAdapter extends ArrayAdapter<Campana> {
         TextView descripcionCampana = convertView.findViewById(R.id.textViewDescripcion);
         ImageView imagenCampana = convertView.findViewById(R.id.imageView);
         nombreCampana.setText(campana.getNombreCampanha());
-        descripcionCampana.setText(campana.getDescripcion());
+        String descripcion = campana.getDescripcion();
+        int maxCharactersBeforeBreak = 40;
+
+        if (descripcion.length() > maxCharactersBeforeBreak) {
+            descripcion = descripcion.substring(0, maxCharactersBeforeBreak) + "\n" + descripcion.substring(maxCharactersBeforeBreak);
+        }
+
+        descripcionCampana.setText(descripcion);
+
 
         String imagenBase64 = campana.getImagenCampanha();
 
