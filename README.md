@@ -1,4 +1,4 @@
-<img width="1867" height="980" alt="image" src="https://github.com/user-attachments/assets/3e3b3aa7-4440-4202-bcd5-86f097cb6928" />TFC Yago Martínez Loureda
+TFC Yago Martínez Loureda
 
 La aplicación está pensada para funcionar con Android 13 (API 33). 
 Será desarrollada con el emulador Pixel 7 Pro en mente.
