@@ -35,7 +35,7 @@ public class PersonajeAdapter extends ArrayAdapter<Personaje> {
         TextView stats = convertView.findViewById(R.id.textViewStats);
         ImageView imagenPersonaje = convertView.findViewById(R.id.imageViewPj);
         nombrePersonaje.setText(personaje.getNombre() +" ("+ personaje.getRaza() +")");
-        String claseConSaltos = personaje.getClase().replaceAll(",", ",\n");
+        String claseConSaltos = personaje.getClase().replaceAll(",", "\n");
 
         stats.setText(claseConSaltos);
 

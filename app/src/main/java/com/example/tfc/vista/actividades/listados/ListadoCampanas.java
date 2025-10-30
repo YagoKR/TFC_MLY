@@ -159,7 +159,7 @@ public class ListadoCampanas extends AppCompatActivity implements ListaCampana.O
 
             if (usuario != null) {
                 txtNombre.setText(usuario.getIdUsuario());
-                txtEmail.setText("Nombre: "+usuario.getNombre()+"\n"+usuario.getEmail());
+                txtEmail.setText("Nombre: " + usuario.getNombre() + "\n"+usuario.getEmail());
 
                 try {
                     byte[] bytes = android.util.Base64.decode(usuario.getImagen(), android.util.Base64.DEFAULT);

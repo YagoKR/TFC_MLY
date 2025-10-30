@@ -61,7 +61,7 @@ public class ListadoInventario extends AppCompatActivity implements ListaInventa
         if (personaje != null){
             txtNombrePersonaje.setText(personaje.getNombre()+ "(" + personaje.getRaza() + ")");
 
-            String stastPJ = personaje.getClase().replaceAll(",", ",\n");
+            String stastPJ = personaje.getClase().replaceAll(",", "\n");
 
             txtClasePersonaje.setText(stastPJ);
 
@@ -118,7 +118,8 @@ public class ListadoInventario extends AppCompatActivity implements ListaInventa
 
         if (personajeActualizado != null) {
             txtNombrePersonaje.setText(personajeActualizado.getNombre()+ "(" + personajeActualizado.getRaza() + ")");
-            txtClasePersonaje.setText(personajeActualizado.getClase());
+            String stastPJ = personajeActualizado.getClase().replaceAll(",", "\n");
+            txtClasePersonaje.setText(stastPJ);
 
             try {
                 if (personajeActualizado.getImagenPJ() != null && !personajeActualizado.getImagenPJ().isEmpty()) {
