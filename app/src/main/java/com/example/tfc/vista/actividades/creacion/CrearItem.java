@@ -19,8 +19,6 @@ import androidx.appcompat.app.AppCompatActivity;
 
 import com.android.volley.Request;
 import com.android.volley.RequestQueue;
-import com.android.volley.Response;
-import com.android.volley.VolleyError;
 import com.android.volley.toolbox.StringRequest;
 import com.android.volley.toolbox.Volley;
 import com.example.tfc.R;
@@ -145,7 +143,7 @@ public class CrearItem extends AppCompatActivity {
             if (selectedImageUri != null) {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
             } else {
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman_avatar_proof);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.item_generic);
             }
             Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
             imagenBase64 = bitmapToBase64(resized);

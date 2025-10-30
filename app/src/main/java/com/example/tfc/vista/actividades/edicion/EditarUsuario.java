@@ -104,15 +104,24 @@ public class EditarUsuario extends AppCompatActivity {
             public void onClick(View v) {
 
                 usuario.setNombre(editNombreReal.getText().toString());
+
+                if (!validarEmail(editmail.getText().toString())) {
+                    new AlertDialog.Builder(EditarUsuario.this)
+                            .setTitle("Error")
+                            .setMessage("El correo debe tener un formato válido (ejemplo: usuario@correo.com).")
+                            .setPositiveButton("Ok", null)
+                            .show();
+                    return;
+                }
                 usuario.setEmail(editmail.getText().toString());
 
                 if (editcontrasena.isEnabled()) {
                     String nuevaContrasena = editcontrasena.getText().toString().trim();
                     if (!nuevaContrasena.isEmpty()) {
-                        if (nuevaContrasena.length() < 6 || nuevaContrasena.length() > 12) {
+                        if (!validarContrasena(nuevaContrasena)) {
                             new AlertDialog.Builder(EditarUsuario.this)
                                     .setTitle("Error")
-                                    .setMessage("La contraseña debe tener entre 6 y 12 caracteres")
+                                    .setMessage("La contraseña debe tener entre 6 y 12 caracteres, al menos una mayúscula y un número.")
                                     .setPositiveButton("Ok", null)
                                     .show();
                             return;
@@ -120,6 +129,7 @@ public class EditarUsuario extends AppCompatActivity {
                         usuario.setContrasenha(hashPassword(nuevaContrasena));
                     }
                 }
+
 
                 if (selectedImageUri != null) {
                     try {
@@ -196,4 +206,14 @@ public class EditarUsuario extends AppCompatActivity {
         int offsetY = (scaledHeight - targetHeight) / 2;
         return Bitmap.createBitmap(scaledBitmap, offsetX, offsetY, targetWidth, targetHeight);
     }
+
+    private boolean validarContrasena(String contrasena) {
+        return contrasena.matches("^(?=.*[A-Z])(?=.*\\d).{6,12}$");
+    }
+
+    private boolean validarEmail(String email) {
+        return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+    }
+
+
 }

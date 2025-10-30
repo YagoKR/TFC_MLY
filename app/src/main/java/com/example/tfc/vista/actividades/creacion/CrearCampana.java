@@ -102,7 +102,7 @@ public class CrearCampana extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman_avatar_proof);
+                    Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.dragon_generic);
                     imagenBase64 = bitmapToBase64(defaultBitmap);
                     Campana c = new Campana(campana, descripcion, imagenBase64);
                     long idcampana = cDAO.insertarDatos(c);

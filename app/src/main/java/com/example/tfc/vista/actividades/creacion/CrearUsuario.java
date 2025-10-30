@@ -89,10 +89,19 @@ public class CrearUsuario extends AppCompatActivity {
                     contrasena = txtContrasenha.getText().toString();
                     email = txtEmailUsuario.getText().toString();
 
-                if (contrasena.length() < 6 || contrasena.length() > 12) {
+                if (!validarContrasena(contrasena)) {
                     new AlertDialog.Builder(CrearUsuario.this)
                             .setTitle("Error")
-                            .setMessage("La contraseña debe tener entre 6 y 12 caracteres")
+                            .setMessage("La contraseña debe tener entre 6 y 12 caracteres, al menos una mayúscula y un número.")
+                            .setPositiveButton("Ok", null)
+                            .show();
+                    return;
+                }
+
+                if (!validarEmail(email)) {
+                    new AlertDialog.Builder(CrearUsuario.this)
+                            .setTitle("Error")
+                            .setMessage("El correo electrónico no tiene un formato válido (ejemplo: usuario@correo.com).")
                             .setPositiveButton("Ok", null)
                             .show();
                     return;
@@ -188,5 +197,13 @@ public class CrearUsuario extends AppCompatActivity {
         int offsetY = (scaledHeight - targetHeight) / 2;
         return Bitmap.createBitmap(scaledBitmap, offsetX, offsetY, targetWidth, targetHeight);
     }
+    private boolean validarContrasena(String contrasena) {
+        return contrasena.matches("^(?=.*[A-Z])(?=.*\\d).{6,12}$");
+    }
+    private boolean validarEmail(String email) {
+        return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
+    }
+
+
 
 }

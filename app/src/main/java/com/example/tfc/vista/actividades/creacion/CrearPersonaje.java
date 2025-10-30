@@ -105,7 +105,7 @@ public class CrearPersonaje extends AppCompatActivity {
                         e.printStackTrace();
                     }
                 } else {
-                    Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman_avatar_proof);
+                    Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.character_generic);
                     Bitmap resizedBitmap = resizeAndCropBitmap(defaultBitmap, 128, 128);
                     imagenBase64 = bitmapToBase64(resizedBitmap);
                     Personaje p = new Personaje(nombre, raza, stats, imagenBase64, idCampana , username);
