@@ -12,6 +12,7 @@ import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.activity.OnBackPressedCallback;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
@@ -75,6 +76,23 @@ public class ListadoCampanas extends AppCompatActivity implements ListaCampana.O
                 startActivity(i);
             }
         });
+
+        OnBackPressedCallback onBackPressedCallback = new OnBackPressedCallback(true) {
+            @Override
+            public void handleOnBackPressed() {
+                new androidx.appcompat.app.AlertDialog.Builder(ListadoCampanas.this)
+                        .setTitle("Salir de la aplicación")
+                        .setMessage("¿Deseas salir? Solo podrás volver iniciando sesión de nuevo.")
+                        .setPositiveButton("Salir", (dialog, which) -> {
+                            finishAffinity();
+                            System.exit(0);
+                        })
+                        .setNegativeButton("Cancelar", null)
+                        .show();
+            }
+        };
+        getOnBackPressedDispatcher().addCallback(this, onBackPressedCallback);
+
 
     }
     private void cerrarSesion() {

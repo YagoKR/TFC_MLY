@@ -97,7 +97,7 @@ public class ListaPersonajes extends Fragment {
 
             new AlertDialog.Builder(getContext())
                     .setTitle("Eliminar personaje")
-                    .setMessage("¿Seguro que deseas eliminar \"" + personajeSeleccionado.getNombre()+ "\"?")
+                    .setMessage("¿Seguro que deseas eliminar \"" + personajeSeleccionado.getNombre()+ "\"?\n Se borrarán todos los items asociados.")
                     .setPositiveButton("Sí", (dialog, which) -> {
                         personajeDAO.borrarPersonaje(personajeSeleccionado.getNombre());
                         recargarPersonajes();
