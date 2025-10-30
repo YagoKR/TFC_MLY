@@ -126,7 +126,7 @@ public class EditarPersonajes extends AppCompatActivity {
 
                 new AlertDialog.Builder(this)
                         .setTitle("Error")
-                        .setMessage("Ya existe un personaje con ese nombre en esta campaña. Elige otro.")
+                        .setMessage("Ya existe un personaje con ese nombre en esta campaña")
                         .setPositiveButton("Ok", null)
                         .show();
                 return;

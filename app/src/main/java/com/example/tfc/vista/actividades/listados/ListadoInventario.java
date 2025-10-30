@@ -61,10 +61,12 @@ public class ListadoInventario extends AppCompatActivity implements ListaInventa
         if (personaje != null){
             txtNombrePersonaje.setText(personaje.getNombre()+ "(" + personaje.getRaza() + ")");
 
-            String stastPJ = personaje.getClase().replaceAll(",", "\n");
-
-            txtClasePersonaje.setText(stastPJ);
-
+            String[] atributos = personaje.getClase().split(",");
+            StringBuilder sb = new StringBuilder();
+            for (String atributo : atributos) {
+                sb.append(String.format("%-20s", atributo.trim())).append("\n");
+            }
+            txtClasePersonaje.setText(sb.toString());
 
             byte[] bytes = Base64.decode(personaje.getImagenPJ(), Base64.DEFAULT);
             Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
@@ -119,8 +121,13 @@ public class ListadoInventario extends AppCompatActivity implements ListaInventa
 
         if (personajeActualizado != null) {
             txtNombrePersonaje.setText(personajeActualizado.getNombre()+ "(" + personajeActualizado.getRaza() + ")");
-            String stastPJ = personajeActualizado.getClase().replaceAll(",", "\n");
-            txtClasePersonaje.setText(stastPJ);
+            String[] atributos = personaje.getClase().split(",");
+            StringBuilder sb = new StringBuilder();
+            for (String atributo : atributos) {
+                sb.append(String.format("%-20s", atributo.trim())).append("\n");
+            }
+            txtClasePersonaje.setText(sb.toString());
+
 
             try {
                 if (personajeActualizado.getImagenPJ() != null && !personajeActualizado.getImagenPJ().isEmpty()) {
