@@ -26,6 +26,7 @@ import com.example.tfc.bbdd.entidades.Usuario;
 import com.example.tfc.vista.actividades.creacion.CrearCampana;
 import com.example.tfc.vista.actividades.edicion.EditarUsuario;
 import com.example.tfc.vista.actividades.vista.InicioSesion;
+import com.example.tfc.vista.actividades.vista.MainActivity;
 import com.example.tfc.vista.fragmentos.ListaCampana;
 
 public class ListadoCampanas extends AppCompatActivity implements ListaCampana.OnCampanaSelectedListener{
@@ -135,7 +136,7 @@ public class ListadoCampanas extends AppCompatActivity implements ListaCampana.O
                             SharedPreferences.Editor editor = sp.edit();
                             editor.clear();
                             editor.apply();
-                            Intent intent = new Intent(ListadoCampanas.this, InicioSesion.class);
+                            Intent intent = new Intent(ListadoCampanas.this, MainActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                             finish();

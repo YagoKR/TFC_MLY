@@ -65,6 +65,7 @@ public class InicioSesion extends AppCompatActivity {
                             .setMessage("Usuario o contraseña incorrectos")
                             .setPositiveButton("Ok", null)
                             .show();
+                            txtUsuario.setText("");
                             txtContrasena.setText("");
                 }
             }

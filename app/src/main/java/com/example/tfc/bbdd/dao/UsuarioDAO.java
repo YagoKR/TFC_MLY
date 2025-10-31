@@ -149,8 +149,11 @@ public class UsuarioDAO {
 
     public int borrarUsuario(String idUsuario) {
         UsuarioCampanasDAO ucDAO = new UsuarioCampanasDAO(context);
+        CampanaDAO campanaDAO = new CampanaDAO(context);
+
         ArrayList<Campana> campanas = ucDAO.obtenerCampanasDeUsuario(idUsuario);
         for (Campana c : campanas) {
+            campanaDAO.borrarCampana(c.getId());
             ucDAO.borrarUsuarioCampana(idUsuario, c.getId());
         }
 

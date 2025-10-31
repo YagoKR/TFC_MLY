@@ -4,7 +4,7 @@
     <item
         android:id="@+id/editarCampana"
         android:orderInCategory="100"
-        android:title="Editar campaña"
+        android:title="Editar Campaña"
         app:showAsAction="never" />
     <item
         android:id="@+id/salirCampana"

@@ -4,7 +4,7 @@
     <item
         android:id="@+id/editarPersonaje"
         android:orderInCategory="100"
-        android:title="Editar personaje"
+        android:title="Editar Personaje"
         app:showAsAction="never" />
     <item
         android:id="@+id/salirPersonaje"

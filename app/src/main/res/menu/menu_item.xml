@@ -4,7 +4,7 @@
     <item
         android:id="@+id/editarPerfil"
         android:orderInCategory="100"
-        android:title="Editar perfil"
+        android:title="Editar Perfil"
         app:showAsAction="never" />
     <item
         android:id="@+id/cerrarSesion"
