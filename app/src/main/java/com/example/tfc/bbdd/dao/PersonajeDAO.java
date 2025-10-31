@@ -49,7 +49,7 @@ public class PersonajeDAO {
                     null, null, null
             );
 
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 existe = true;
             }
         } finally {
@@ -73,7 +73,7 @@ public class PersonajeDAO {
                     null, null, null
             );
 
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 String nombre = cursor.getString(cursor.getColumnIndexOrThrow("Nombre"));
                 String raza = cursor.getString(cursor.getColumnIndexOrThrow("Raza"));
                 String clase = cursor.getString(cursor.getColumnIndexOrThrow("Clase"));
@@ -178,7 +178,7 @@ public class PersonajeDAO {
                     null
             );
 
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 existe = true;
             }
 

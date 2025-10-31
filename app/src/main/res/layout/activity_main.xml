@@ -26,7 +26,7 @@
         android:id="@+id/textView2"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Bienvenidos\na la aplicación de gestión de inventario de DND"
+        android:text="Bienvenid@s a la aplicación de gestión de inventarios en DND"
         android:textAlignment="center"
         android:textSize="20sp"
         android:textStyle="bold"

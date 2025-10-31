@@ -14,6 +14,7 @@
         android:roundIcon="@mipmap/ic_dragon_round"
         android:supportsRtl="true"
         android:theme="@style/Theme.TFC">
+
         <activity
             android:name=".vista.actividades.edicion.EditarItem"
             android:exported="false" />

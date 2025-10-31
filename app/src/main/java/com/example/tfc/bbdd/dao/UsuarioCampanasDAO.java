@@ -41,7 +41,7 @@ public class UsuarioCampanasDAO {
                     new String[]{idUsuario, nombreCampana},
                     null, null, null
             );
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 existe = true;
             }
         } finally {

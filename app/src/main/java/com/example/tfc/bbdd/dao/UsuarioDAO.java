@@ -43,7 +43,7 @@ public class UsuarioDAO {
                     new String[]{idUsuario,mail},
                     null, null, null
             );
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 existe = true;
             }
         } finally {
@@ -65,7 +65,7 @@ public class UsuarioDAO {
                     new String[]{usuario, contrasena},
                     null, null, null
             );
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 valido = true;
             }
         } finally {
@@ -86,7 +86,7 @@ public class UsuarioDAO {
                 null, null, null
         );
 
-        if (cursor != null && cursor.moveToFirst()) {
+        if (cursor.moveToFirst()) {
             String nombre = cursor.getString(cursor.getColumnIndexOrThrow("Nombre"));
             String email = cursor.getString(cursor.getColumnIndexOrThrow("Email"));
             String contrasena = cursor.getString(cursor.getColumnIndexOrThrow("Contraseña"));
@@ -114,7 +114,7 @@ public class UsuarioDAO {
                     null
             );
 
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 String idUsuario = cursor.getString(cursor.getColumnIndexOrThrow("Usuario"));
                 String nombre = cursor.getString(cursor.getColumnIndexOrThrow("Nombre"));
                 String contrasena = cursor.getString(cursor.getColumnIndexOrThrow("Contraseña"));

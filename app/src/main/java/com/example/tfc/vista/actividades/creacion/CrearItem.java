@@ -36,10 +36,11 @@ public class CrearItem extends AppCompatActivity {
 
     private static final String API_URL = "https://www.dnd5eapi.co/api/equipment/";
     private RequestQueue requestQueue;
-    private EditText nomeItem, cantiItem, descripcionItem;
+    private EditText txtnomeItem, cantiItem, txtDescripcionItem;
     private ImageView imagenItem;
     private Button btnCrearItem;
     private Uri selectedImageUri;
+    
     private int idPersonaje;
 
     private String descripcionAPI = "Sin descripción";
@@ -55,9 +56,9 @@ public class CrearItem extends AppCompatActivity {
 
         idPersonaje = getIntent().getIntExtra("idPersonaj", -1);
 
-        nomeItem = findViewById(R.id.nomeItem);
+        txtnomeItem = findViewById(R.id.nomeItem);
         cantiItem = findViewById(R.id.cantidadItem);
-        descripcionItem = findViewById(R.id.descripcionItem);
+        txtDescripcionItem = findViewById(R.id.descripcionItem);
 
         imagenItem = findViewById(R.id.imagenItem);
 
@@ -71,14 +72,14 @@ public class CrearItem extends AppCompatActivity {
             startActivityForResult(intent, 123);
         });
 
-        nomeItem.setOnFocusChangeListener((v, hasFocus) -> {
+        txtnomeItem.setOnFocusChangeListener((v, hasFocus) -> {
             if (!hasFocus) {
-                String item = nomeItem.getText().toString().trim().toLowerCase().replace(" ", "-");
+                String item = txtnomeItem.getText().toString().trim().toLowerCase().replace(" ", "-");
                 if (!item.isEmpty()) checkApiConnection(item);
             }
         });
 
-        descripcionItem.addTextChangedListener(new TextWatcher() {
+        txtDescripcionItem.addTextChangedListener(new TextWatcher() {
             private static final int MAX_CHARACTERS = 35;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
@@ -86,8 +87,8 @@ public class CrearItem extends AppCompatActivity {
             @Override
             public void onTextChanged(CharSequence s, int start, int before, int count) {
                 if (s.length() > MAX_CHARACTERS) {
-                    descripcionItem.setText(s.subSequence(0, MAX_CHARACTERS));
-                    descripcionItem.setSelection(MAX_CHARACTERS);
+                    txtDescripcionItem.setText(s.subSequence(0, MAX_CHARACTERS));
+                    txtDescripcionItem.setSelection(MAX_CHARACTERS);
                 }
             }
 
@@ -125,9 +126,9 @@ public class CrearItem extends AppCompatActivity {
     }
 
     private void guardarItem() {
-        String nombre = nomeItem.getText().toString().trim();
+        String nombre = txtnomeItem.getText().toString().trim();
         String cantidadTexto = cantiItem.getText().toString().trim();
-        String descripcionUsuario = descripcionItem.getText().toString().trim();
+        String descripcionUsuario = txtDescripcionItem.getText().toString().trim();
 
         if (nombre.isEmpty() || cantidadTexto.isEmpty()) {
             mostrarDialogo("Error", "Hay campos vacíos");

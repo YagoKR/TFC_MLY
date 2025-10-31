@@ -76,7 +76,7 @@ public class InventarioDAO {
             String[] selectionArgs = { String.valueOf(idPersonaje) };
             cursor = db.query("Inventarios", null, selection, selectionArgs, null, null, null);
 
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 do {
                     long id = cursor.getLong(cursor.getColumnIndexOrThrow("_id"));
                     String producto = cursor.getString(cursor.getColumnIndexOrThrow("Producto"));

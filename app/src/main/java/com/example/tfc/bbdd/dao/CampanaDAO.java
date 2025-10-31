@@ -109,7 +109,7 @@ public class CampanaDAO {
                     null, null, null
             );
 
-            if (cursor != null && cursor.moveToFirst()) {
+            if (cursor.moveToFirst()) {
                 existe = true;
             }
 
