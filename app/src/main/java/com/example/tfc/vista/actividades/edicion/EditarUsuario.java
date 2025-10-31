@@ -23,6 +23,7 @@ import androidx.appcompat.app.AppCompatActivity;
 import com.example.tfc.R;
 import com.example.tfc.bbdd.dao.UsuarioDAO;
 import com.example.tfc.bbdd.entidades.Usuario;
+import com.example.tfc.vista.actividades.creacion.CrearUsuario;
 
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
@@ -96,7 +97,7 @@ public class EditarUsuario extends AppCompatActivity {
         });
 
         editNombreReal.addTextChangedListener(new TextWatcher() {
-            private static final int MAX_CHARACTERS = 15;
+            private static final int MAX_CHARACTERS = 25;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
@@ -125,21 +126,14 @@ public class EditarUsuario extends AppCompatActivity {
 
                 usuario.setNombre(editNombreReal.getText().toString());
 
-                if (!validarEmail(editmail.getText().toString())) {
-                    new AlertDialog.Builder(EditarUsuario.this)
-                            .setTitle("Error")
-                            .setMessage("El correo debe tener un formato válido (ejemplo: usuario@correo.com).")
-                            .setPositiveButton("Ok", null)
-                            .show();
-                    return;
-                }
+                if (!validarEmail(editmail.getText().toString())) return;
 
                 String nuevoEmail = editmail.getText().toString().trim();
                 Usuario usuarioExistente = usuarioDAO.obtenerUsuarioPorEmail(nuevoEmail);
                 if (usuarioExistente != null && !usuarioExistente.getIdUsuario().equals(usuario.getIdUsuario())) {
                     new AlertDialog.Builder(EditarUsuario.this)
                             .setTitle("Error")
-                            .setMessage("El correo ya está registrado en otra cuenta. Elige otro.")
+                            .setMessage("El correo ya está registrado en otra cuenta")
                             .setPositiveButton("Ok", null)
                             .show();
                     return;
@@ -150,43 +144,83 @@ public class EditarUsuario extends AppCompatActivity {
                 if (editcontrasena.isEnabled()) {
                     String nuevaContrasena = editcontrasena.getText().toString().trim();
                     if (!nuevaContrasena.isEmpty()) {
-                        if (!validarContrasena(nuevaContrasena)) {
-                            new AlertDialog.Builder(EditarUsuario.this)
-                                    .setTitle("Error")
-                                    .setMessage("La contraseña debe tener entre 6 y 12 caracteres, al menos una mayúscula y un número.")
-                                    .setPositiveButton("Ok", null)
-                                    .show();
-                            return;
-                        }
-                        usuario.setContrasenha(hashPassword(nuevaContrasena));
-                    }
-                }
+                        if (!validarContrasena(nuevaContrasena)) return;
 
+                        final EditText inputConfirm = new EditText(EditarUsuario.this);
+                        inputConfirm.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-                if (selectedImageUri != null) {
-                    try {
-                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                        Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
-                        usuario.setImagen(bitmapToBase64(resized));
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                        usuario.setImagen(imagenBase64Actual);
+                        new AlertDialog.Builder(EditarUsuario.this)
+                                .setTitle("Confirmar contraseña")
+                                .setMessage("Introduce de nuevo tu nueva contraseña")
+                                .setView(inputConfirm)
+                                .setPositiveButton("Aceptar", (dialog, which) -> {
+                                    String confirmacion = inputConfirm.getText().toString();
+                                    if (!nuevaContrasena.equals(confirmacion)) {
+                                        new AlertDialog.Builder(EditarUsuario.this)
+                                                .setTitle("Error")
+                                                .setMessage("Las contraseñas no coinciden.")
+                                                .setPositiveButton("Ok", null)
+                                                .show();
+                                        return;
+                                    }
+
+                                    usuario.setContrasenha(hashPassword(nuevaContrasena));
+
+                                    if (selectedImageUri != null) {
+                                        try {
+                                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+                                            Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
+                                            usuario.setImagen(bitmapToBase64(resized));
+                                        } catch (IOException e) {
+                                            e.printStackTrace();
+                                            usuario.setImagen(imagenBase64Actual);
+                                        }
+                                    } else {
+                                        usuario.setImagen(imagenBase64Actual);
+                                    }
+
+                                    usuarioDAO.actualizarUsuario(usuario);
+
+                                    new AlertDialog.Builder(EditarUsuario.this)
+                                            .setMessage("Usuario modificado con éxito")
+                                            .setTitle("Éxito")
+                                            .setPositiveButton("Ok", (dialogInterface, i1) -> {
+                                                setResult(RESULT_OK);
+                                                finish();
+                                            }).show();
+
+                                })
+                                .setNegativeButton("Cancelar", null)
+                                .show();
+
                     }
                 } else {
-                    usuario.setImagen(imagenBase64Actual);
+                    if (selectedImageUri != null) {
+                        try {
+                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+                            Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
+                            usuario.setImagen(bitmapToBase64(resized));
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                            usuario.setImagen(imagenBase64Actual);
+                        }
+                    } else {
+                        usuario.setImagen(imagenBase64Actual);
+                    }
+
+                    usuarioDAO.actualizarUsuario(usuario);
+
+                    new AlertDialog.Builder(EditarUsuario.this)
+                            .setMessage("Usuario modificado con éxito")
+                            .setTitle("Éxito")
+                            .setPositiveButton("Ok", (dialogInterface, i1) -> {
+                                setResult(RESULT_OK);
+                                finish();
+                            }).show();
                 }
-
-                usuarioDAO.actualizarUsuario(usuario);
-
-                new AlertDialog.Builder(EditarUsuario.this)
-                        .setMessage("Usuario modificado con éxito")
-                        .setTitle("Éxito")
-                        .setPositiveButton("Ok", (dialogInterface, i) -> {
-                            setResult(RESULT_OK);
-                            finish();
-                        }).show();
             }
         });
+
 
     }
 
@@ -240,7 +274,16 @@ public class EditarUsuario extends AppCompatActivity {
     }
 
     private boolean validarContrasena(String contrasena) {
-        return contrasena.matches("^(?=.*[A-Z])(?=.*\\d).{6,12}$");
+        if (!contrasena.matches("^[A-Za-z0-9]+$")) {
+            new AlertDialog.Builder(EditarUsuario.this)
+                    .setTitle("Error")
+                    .setMessage("La contraseña solo puede contener letras y números.")
+                    .setPositiveButton("Ok", null)
+                    .show();
+            return false;
+        }
+
+        return contrasena.matches("^(?=.*[A-Z])(?=.*\\d)[A-Za-z0-9]{6,12}$");
     }
 
     private boolean validarEmail(String email) {

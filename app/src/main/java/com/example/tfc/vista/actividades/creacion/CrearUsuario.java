@@ -93,7 +93,7 @@ public class CrearUsuario extends AppCompatActivity {
         });
 
         txtNombreReal.addTextChangedListener(new TextWatcher() {
-            private static final int MAX_CHARACTERS = 15;
+            private static final int MAX_CHARACTERS = 25;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
@@ -116,71 +116,91 @@ public class CrearUsuario extends AppCompatActivity {
                     dialog.show();
                     return;
                 }
-                    String imagenBase64 = null;
-                    String usuario, nome, email, contrasena, contrasenaHasheada;
 
-                    usuario = txtNombreUsuario.getText().toString();
-                    nome = txtNombreReal.getText().toString();
-                    contrasena = txtContrasenha.getText().toString();
-                    email = txtEmailUsuario.getText().toString();
+                String usuario = txtNombreUsuario.getText().toString();
+                String nome = txtNombreReal.getText().toString();
+                String email = txtEmailUsuario.getText().toString();
+                String contrasena = txtContrasenha.getText().toString();
 
-                if (!validarContrasena(contrasena)) {
-                    new AlertDialog.Builder(CrearUsuario.this)
-                            .setTitle("Error")
-                            .setMessage("La contraseña debe tener entre 6 y 12 caracteres, al menos una mayúscula y un número.")
-                            .setPositiveButton("Ok", null)
-                            .show();
-                    return;
-                }
+                if (!validarContrasena(contrasena)) return;
 
                 if (!validarEmail(email)) {
                     new AlertDialog.Builder(CrearUsuario.this)
                             .setTitle("Error")
-                            .setMessage("El correo electrónico no tiene un formato válido (ejemplo: usuario@correo.com).")
+                            .setMessage("El correo electrónico no tiene un formato válido (ejemplo: usuario@correo.com)")
                             .setPositiveButton("Ok", null)
                             .show();
                     return;
                 }
 
-                contrasenaHasheada = hashPassword(contrasena);
+                final EditText inputConfirm = new EditText(CrearUsuario.this);
+                inputConfirm.setInputType(android.text.InputType.TYPE_CLASS_TEXT | android.text.InputType.TYPE_TEXT_VARIATION_PASSWORD);
 
-                UsuarioDAO uDAO = new UsuarioDAO(getApplicationContext());
-                if (uDAO.existeUsuario(usuario, email)) {
-                    new AlertDialog.Builder(CrearUsuario.this)
-                            .setTitle("Error")
-                            .setMessage("El nombre de usuario ya existe o el correo ya está siendo utilizado. Elige otro.")
-                            .setPositiveButton("Ok", null)
-                            .show();
-                    return;
-                }
-                if (selectedImageUri != null) {
-                        try {
-                            Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                            Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
-                            imagenBase64 = bitmapToBase64(resized);
-                            Usuario u = new Usuario(usuario, nome, email, contrasenaHasheada, imagenBase64);
-                            uDAO.insertarDatos(u);
-                        } catch (Exception e) {
-                            e.printStackTrace();
-                        }
-                    } else {
-                        Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman_avatar_proof);
-                        imagenBase64 = bitmapToBase64(defaultBitmap);
-                        Usuario u = new Usuario(usuario, nome, email, contrasenaHasheada, imagenBase64);
-                        uDAO.insertarDatos(u);
+                new AlertDialog.Builder(CrearUsuario.this)
+                        .setTitle("Confirmar contraseña")
+                        .setMessage("Introduce de nuevo tu contraseña")
+                        .setView(inputConfirm)
+                        .setPositiveButton("Aceptar", new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialogInterface, int i) {
+                                String confirmacion = inputConfirm.getText().toString();
 
-                    }
-                    AlertDialog.Builder builder = new AlertDialog.Builder(CrearUsuario.this);
-                    builder.setMessage("Usuario creado con éxito").setTitle("Éxito").setPositiveButton("Ok", new DialogInterface.OnClickListener() {
-                        @Override
-                        public void onClick(DialogInterface dialogInterface, int i) {
-                            finish();
-                        }
-                    });
-                    AlertDialog dialog = builder.create();
-                    dialog.show();
-                }
+                                if (!contrasena.equals(confirmacion)) {
+                                    new AlertDialog.Builder(CrearUsuario.this)
+                                            .setTitle("Error")
+                                            .setMessage("Las contraseñas no coinciden")
+                                            .setPositiveButton("Ok", null)
+                                            .show();
+                                    return;
+                                }
+
+                                String contrasenaHasheada = hashPassword(contrasena);
+                                UsuarioDAO uDAO = new UsuarioDAO(getApplicationContext());
+
+                                if (uDAO.existeUsuario(usuario, email)) {
+                                    new AlertDialog.Builder(CrearUsuario.this)
+                                            .setTitle("Error")
+                                            .setMessage("El nombre de usuario ya existe o el correo ya está siendo utilizado")
+                                            .setPositiveButton("Ok", null)
+                                            .show();
+                                    return;
+                                }
+
+                                String imagenBase64;
+                                try {
+                                    Bitmap bitmap;
+                                    if (selectedImageUri != null) {
+                                        bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
+                                    } else {
+                                        bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman_avatar_proof);
+                                    }
+                                    Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
+                                    imagenBase64 = bitmapToBase64(resized);
+
+                                    Usuario u = new Usuario(usuario, nome, email, contrasenaHasheada, imagenBase64);
+                                    uDAO.insertarDatos(u);
+
+                                    new AlertDialog.Builder(CrearUsuario.this)
+                                            .setMessage("Usuario creado con éxito")
+                                            .setTitle("Éxito")
+                                            .setPositiveButton("Ok", new DialogInterface.OnClickListener() {
+                                                @Override
+                                                public void onClick(DialogInterface dialogInterface, int i) {
+                                                    finish();
+                                                }
+                                            })
+                                            .show();
+
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        })
+                        .setNegativeButton("Cancelar", null)
+                        .show();
+            }
         });
+
     }
 
     @Override
@@ -232,9 +252,20 @@ public class CrearUsuario extends AppCompatActivity {
         int offsetY = (scaledHeight - targetHeight) / 2;
         return Bitmap.createBitmap(scaledBitmap, offsetX, offsetY, targetWidth, targetHeight);
     }
+
     private boolean validarContrasena(String contrasena) {
-        return contrasena.matches("^(?=.*[A-Z])(?=.*\\d).{6,12}$");
+        if (!contrasena.matches("^[A-Za-z0-9]+$")) {
+            new AlertDialog.Builder(CrearUsuario.this)
+                    .setTitle("Error")
+                    .setMessage("La contraseña solo puede contener letras y números")
+                    .setPositiveButton("Ok", null)
+                    .show();
+            return false;
+        }
+
+        return contrasena.matches("^(?=.*[A-Z])(?=.*\\d)[A-Za-z0-9]{6,12}$");
     }
+
     private boolean validarEmail(String email) {
         return email.matches("^[A-Za-z0-9+_.-]+@[A-Za-z0-9.-]+\\.[A-Za-z]{2,6}$");
     }
