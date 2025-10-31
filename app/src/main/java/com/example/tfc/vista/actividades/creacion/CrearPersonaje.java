@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -25,7 +26,6 @@ import com.example.tfc.bbdd.dao.PersonajeDAO;
 import com.example.tfc.bbdd.entidades.Personaje;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Base64;
 
 public class CrearPersonaje extends AppCompatActivity {
 
@@ -149,8 +149,7 @@ public class CrearPersonaje extends AppCompatActivity {
                 if (selectedImageUri != null) {
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                        Bitmap resizedBitmap = resizeAndCropBitmap(bitmap, 128, 128);
-                        imagenBase64 = bitmapToBase64(resizedBitmap);
+                        imagenBase64 = bitmapToBase64(bitmap);
                         Personaje p = new Personaje(nombre, raza, stats, imagenBase64, idCampana , username);
                         pDAO.insertarDatos(p);
 
@@ -159,8 +158,7 @@ public class CrearPersonaje extends AppCompatActivity {
                     }
                 } else {
                     Bitmap defaultBitmap = BitmapFactory.decodeResource(getResources(), R.drawable.character_generic);
-                    Bitmap resizedBitmap = resizeAndCropBitmap(defaultBitmap, 128, 128);
-                    imagenBase64 = bitmapToBase64(resizedBitmap);
+                    imagenBase64 = bitmapToBase64(defaultBitmap);
                     Personaje p = new Personaje(nombre, raza, stats, imagenBase64, idCampana , username);
                     pDAO.insertarDatos(p);
                 }
@@ -187,11 +185,19 @@ public class CrearPersonaje extends AppCompatActivity {
     }
 
     private String bitmapToBase64(Bitmap bitmap) {
+        if (bitmap == null) return null;
+
+        Bitmap resized = resizeAndCropBitmap(bitmap, 256, 256);
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+
+        resized.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
         byte[] byteArray = outputStream.toByteArray();
-        return Base64.getEncoder().encodeToString(byteArray);
+
+        return android.util.Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
+
 
     private Bitmap resizeAndCropBitmap(Bitmap original, int targetWidth, int targetHeight) {
         if (original == null) {

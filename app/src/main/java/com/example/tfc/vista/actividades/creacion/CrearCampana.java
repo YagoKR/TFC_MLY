@@ -10,6 +10,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -27,7 +28,6 @@ import com.example.tfc.bbdd.entidades.Campana;
 import com.example.tfc.bbdd.entidades.UsuariosCampanas;
 
 import java.io.ByteArrayOutputStream;
-import java.util.Base64;
 
 public class CrearCampana extends AppCompatActivity {
     public SharedPreferences sp;
@@ -127,8 +127,7 @@ public class CrearCampana extends AppCompatActivity {
                 if (selectedImageUri != null) {
                     try {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                        Bitmap resizedBitmap = resizeAndCropBitmap(bitmap, 128, 128);
-                        imagenBase64 = bitmapToBase64(resizedBitmap);
+                        imagenBase64 = bitmapToBase64(bitmap);
                         Campana c = new Campana(campana, descripcion, imagenBase64);
                         long idcampana = cDAO.insertarDatos(c);
                         c.setId((int) idcampana);
@@ -168,11 +167,19 @@ public class CrearCampana extends AppCompatActivity {
         }
     }
     private String bitmapToBase64(Bitmap bitmap) {
+        if (bitmap == null) return null;
+
+        Bitmap resized = resizeAndCropBitmap(bitmap, 256, 256);
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+
+        resized.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
         byte[] byteArray = outputStream.toByteArray();
-        return Base64.getEncoder().encodeToString(byteArray);
+
+        return android.util.Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
+
 
     private Bitmap resizeAndCropBitmap(Bitmap original, int targetWidth, int targetHeight) {
         if (original == null) {

@@ -25,8 +25,6 @@
             app:srcCompat="@android:drawable/sym_def_app_icon" />
     </androidx.constraintlayout.widget.ConstraintLayout>
 
-
-
     <TextView
         android:id="@+id/textViewNombre"
         android:layout_width="wrap_content"
@@ -38,14 +36,24 @@
         app:layout_constraintBottom_toTopOf="@id/textViewDescripcion"
         android:layout_marginStart="8dp" />
 
-
     <TextView
         android:id="@+id/textViewDescripcion"
-        android:layout_width="wrap_content"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:textSize="16sp"
-        app:layout_constraintTop_toBottomOf="@id/textViewNombre"
+        android:gravity="start|top"
+        android:layout_marginStart="8dp"
+        android:layout_marginEnd="8dp"
+        android:scrollHorizontally="false"
+        android:singleLine="false"
+        android:ellipsize="none"
+        android:inputType="textMultiLine"
+        android:breakStrategy="simple"
+        android:scrollbars="vertical"
         app:layout_constraintStart_toEndOf="@id/imageContainer"
-        android:layout_marginStart="8dp" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintTop_toBottomOf="@id/textViewNombre"
+        app:layout_constraintBottom_toBottomOf="@id/imageContainer" />
+
 
 </androidx.constraintlayout.widget.ConstraintLayout>

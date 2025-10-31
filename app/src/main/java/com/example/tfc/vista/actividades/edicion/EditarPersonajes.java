@@ -172,8 +172,7 @@ public class EditarPersonajes extends AppCompatActivity {
             try {
                 byte[] bytes = Base64.decode(imagenBase64Actual, Base64.DEFAULT);
                 Bitmap bitmap = BitmapFactory.decodeByteArray(bytes, 0, bytes.length);
-                Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
-                imageViewEditarPersonaje.setImageBitmap(resized);
+                imageViewEditarPersonaje.setImageBitmap(bitmap);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -190,11 +189,19 @@ public class EditarPersonajes extends AppCompatActivity {
     }
 
     private String bitmapToBase64(Bitmap bitmap) {
+        if (bitmap == null) return null;
+
+        Bitmap resized = resizeAndCropBitmap(bitmap, 256, 256);
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+
+        resized.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
         byte[] byteArray = outputStream.toByteArray();
-        return java.util.Base64.getEncoder().encodeToString(byteArray);
+
+        return android.util.Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
+
 
     private Bitmap resizeAndCropBitmap(Bitmap original, int targetWidth, int targetHeight) {
         if (original == null) {

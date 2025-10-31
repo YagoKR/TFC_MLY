@@ -124,8 +124,7 @@ public class EditarItem extends AppCompatActivity {
                 Bitmap bitmap;
                 if (selectedImageUri != null) {
                     bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                    Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
-                    itemActual.setImagenItem(bitmapToBase64(resized));
+                    itemActual.setImagenItem(bitmapToBase64(bitmap));
                 } else {
                     itemActual.setImagenItem(imagenBase64Actual);
                 }
@@ -165,11 +164,19 @@ public class EditarItem extends AppCompatActivity {
         }
     }
     private String bitmapToBase64(Bitmap bitmap) {
+        if (bitmap == null) return null;
+
+        Bitmap resized = resizeAndCropBitmap(bitmap, 256, 256);
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+
+        resized.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
         byte[] byteArray = outputStream.toByteArray();
-        return java.util.Base64.getEncoder().encodeToString(byteArray);
+
+        return android.util.Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
+
 
     private Bitmap resizeAndCropBitmap(Bitmap original, int targetWidth, int targetHeight) {
         if (original == null) throw new IllegalArgumentException("Bitmap no puede ser nulo");

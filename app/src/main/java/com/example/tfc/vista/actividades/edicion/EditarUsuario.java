@@ -169,8 +169,7 @@ public class EditarUsuario extends AppCompatActivity {
                                     if (selectedImageUri != null) {
                                         try {
                                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                                            Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
-                                            usuario.setImagen(bitmapToBase64(resized));
+                                            usuario.setImagen(bitmapToBase64(bitmap));
                                         } catch (IOException e) {
                                             e.printStackTrace();
                                             usuario.setImagen(imagenBase64Actual);
@@ -198,8 +197,7 @@ public class EditarUsuario extends AppCompatActivity {
                     if (selectedImageUri != null) {
                         try {
                             Bitmap bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
-                            Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
-                            usuario.setImagen(bitmapToBase64(resized));
+                            usuario.setImagen(bitmapToBase64(bitmap));
                         } catch (IOException e) {
                             e.printStackTrace();
                             usuario.setImagen(imagenBase64Actual);
@@ -233,10 +231,17 @@ public class EditarUsuario extends AppCompatActivity {
         }
     }
     private String bitmapToBase64(Bitmap bitmap) {
+        if (bitmap == null) return null;
+
+        Bitmap resized = resizeAndCropBitmap(bitmap, 256, 256);
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+
+        resized.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
         byte[] byteArray = outputStream.toByteArray();
-        return java.util.Base64.getEncoder().encodeToString(byteArray);
+
+        return android.util.Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
     public static String hashPassword(String password) {

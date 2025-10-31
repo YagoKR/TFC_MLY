@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
@@ -30,7 +31,6 @@ import java.io.ByteArrayOutputStream;
 import java.nio.charset.StandardCharsets;
 import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
-import java.util.Base64;
 
 public class CrearUsuario extends AppCompatActivity {
 
@@ -174,8 +174,7 @@ public class CrearUsuario extends AppCompatActivity {
                                     } else {
                                         bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.woman_avatar_proof);
                                     }
-                                    Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
-                                    imagenBase64 = bitmapToBase64(resized);
+                                    imagenBase64 = bitmapToBase64(bitmap);
 
                                     Usuario u = new Usuario(usuario, nome, email, contrasenaHasheada, imagenBase64);
                                     uDAO.insertarDatos(u);
@@ -212,10 +211,17 @@ public class CrearUsuario extends AppCompatActivity {
         }
     }
     private String bitmapToBase64(Bitmap bitmap) {
+        if (bitmap == null) return null;
+
+        Bitmap resized = resizeAndCropBitmap(bitmap, 256, 256);
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+
+        resized.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
         byte[] byteArray = outputStream.toByteArray();
-        return Base64.getEncoder().encodeToString(byteArray);
+
+        return android.util.Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
 
 

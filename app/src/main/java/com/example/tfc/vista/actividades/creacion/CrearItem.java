@@ -165,8 +165,7 @@ public class CrearItem extends AppCompatActivity {
             } else {
                 bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.item_generic);
             }
-            Bitmap resized = resizeAndCropBitmap(bitmap, 128, 128);
-            imagenBase64 = bitmapToBase64(resized);
+            imagenBase64 = bitmapToBase64(bitmap);
         } catch (Exception e) {
             mostrarDialogo("Error", "Error al procesar la imagen");
             return;
@@ -216,11 +215,19 @@ public class CrearItem extends AppCompatActivity {
     }
 
     private String bitmapToBase64(Bitmap bitmap) {
+        if (bitmap == null) return null;
+
+        Bitmap resized = resizeAndCropBitmap(bitmap, 256, 256);
+
         ByteArrayOutputStream outputStream = new ByteArrayOutputStream();
-        bitmap.compress(Bitmap.CompressFormat.PNG, 100, outputStream);
+
+        resized.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
         byte[] byteArray = outputStream.toByteArray();
-        return Base64.encodeToString(byteArray, Base64.DEFAULT);
+
+        return android.util.Base64.encodeToString(byteArray, Base64.DEFAULT);
     }
+
 
     private Bitmap resizeAndCropBitmap(Bitmap original, int targetWidth, int targetHeight) {
         if (original == null) throw new IllegalArgumentException("Bitmap no puede ser nulo");

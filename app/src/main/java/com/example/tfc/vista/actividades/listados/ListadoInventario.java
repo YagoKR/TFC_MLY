@@ -120,14 +120,16 @@ public class ListadoInventario extends AppCompatActivity implements ListaInventa
         Personaje personajeActualizado = pDAO.obtenerPersonajePorId(idPersonaje);
 
         if (personajeActualizado != null) {
-            txtNombrePersonaje.setText(personajeActualizado.getNombre()+ "(" + personajeActualizado.getRaza() + ")");
-            String[] atributos = personaje.getClase().split(",");
+            txtNombrePersonaje.setText(
+                    personajeActualizado.getNombre() + " (" + personajeActualizado.getRaza() + ")"
+            );
+
+            String[] atributos = personajeActualizado.getClase().split(",");
             StringBuilder sb = new StringBuilder();
             for (String atributo : atributos) {
-                sb.append(String.format("%-20s", atributo.trim())).append("\n");
+                sb.append(atributo.trim()).append("\n");
             }
             txtClasePersonaje.setText(sb.toString());
-
 
             try {
                 if (personajeActualizado.getImagenPJ() != null && !personajeActualizado.getImagenPJ().isEmpty()) {
@@ -138,6 +140,8 @@ public class ListadoInventario extends AppCompatActivity implements ListaInventa
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+            personaje = personajeActualizado;
         }
     }
 

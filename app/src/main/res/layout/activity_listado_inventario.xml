@@ -45,6 +45,7 @@
         app:layout_constraintStart_toEndOf="@id/imageView4"
         app:layout_constraintTop_toTopOf="@id/imageView4"
         app:layout_constraintBottom_toTopOf="@+id/NivelesPersonaje" />
+
     <TextView
         android:id="@+id/NivelesPersonaje"
         android:layout_width="0dp"
@@ -62,7 +63,6 @@
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toBottomOf="@id/NombrePersonaje"
         app:layout_constraintBottom_toBottomOf="@id/imageView4" />
-
 
     <View
         android:id="@+id/separador01"
