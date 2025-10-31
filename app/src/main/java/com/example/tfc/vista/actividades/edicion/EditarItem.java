@@ -78,7 +78,7 @@ public class EditarItem extends AppCompatActivity {
         });
 
         descripcionEditItem.addTextChangedListener(new TextWatcher() {
-            private static final int MAX_CHARACTERS = 30;
+            private static final int MAX_CHARACTERS = 35;
             @Override
             public void beforeTextChanged(CharSequence s, int start, int count, int after) { }
 
