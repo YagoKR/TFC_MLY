@@ -45,6 +45,10 @@ public class CampanaDAO {
         );
     }
 
+    public int borrarCampana( int idCampana) {
+        return db.delete("Campañas", BaseColumns._ID + " = ?", new String[]{String.valueOf(idCampana)});
+    }
+
     public Campana obtenerCampanaPorId(int idCampana) {
         Campana campana = null;
 

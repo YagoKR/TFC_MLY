@@ -13,6 +13,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.activity.OnBackPressedCallback;
+import androidx.appcompat.app.AlertDialog;
 import androidx.appcompat.widget.Toolbar;
 
 import androidx.activity.EdgeToEdge;
@@ -122,6 +123,29 @@ public class ListadoCampanas extends AppCompatActivity implements ListaCampana.O
             startActivity(intent);
             return true;
         }
+
+        if (id == R.id.borrarCuenta) {
+            new AlertDialog.Builder(ListadoCampanas.this)
+                    .setTitle("Eliminar usuario")
+                    .setMessage("¿Estás seguro de que quieres eliminar tu cuenta?")
+                    .setPositiveButton("Sí", (dialog, which) -> {
+                        String username = sp.getString("usuario", null);
+                        if (username != null) {
+                            usuarioDAO.borrarUsuario(username);
+                            SharedPreferences.Editor editor = sp.edit();
+                            editor.clear();
+                            editor.apply();
+                            Intent intent = new Intent(ListadoCampanas.this, InicioSesion.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                            startActivity(intent);
+                            finish();
+                        }
+                    })
+                    .setNegativeButton("Cancelar", null)
+                    .show();
+            return true;
+        }
+
 
         if (id == R.id.cerrarSesion) {
             cerrarSesion();

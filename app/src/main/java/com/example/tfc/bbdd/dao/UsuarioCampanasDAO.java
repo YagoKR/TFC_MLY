@@ -26,8 +26,8 @@ public class UsuarioCampanasDAO {
         return db.insert("Usuarios_Campañas", null, values);
     }
 
-    public int borrarUsuarioCampana(String idUsuario, String idCampana) {
-        return db.delete("Usuarios_Campañas", "ID_Usuario = ? AND ID_Campaña = ?", new String[]{idUsuario, idCampana});
+    public int borrarUsuarioCampana(String idUsuario, int idCampana) {
+        return db.delete("Usuarios_Campañas", "ID_Usuario = ? AND ID_Campaña = ?", new String[]{idUsuario, String.valueOf(idCampana)});
     }
 
     public boolean existeCampanaParaUsuario(String idUsuario, String nombreCampana) {

@@ -12,6 +12,11 @@
         android:title="Cerrar Sesión"
         app:showAsAction="never" />
     <item
+        android:id="@+id/borrarCuenta"
+        android:orderInCategory="100"
+        android:title="Borrar Cuenta"
+        app:showAsAction="never" />
+    <item
         android:id="@+id/salir"
         android:orderInCategory="100"
         android:title="Salir"

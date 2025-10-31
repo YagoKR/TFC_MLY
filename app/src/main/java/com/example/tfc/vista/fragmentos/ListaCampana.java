@@ -68,7 +68,7 @@ public class ListaCampana extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment_lista_campana, container, false);
-
+        campanaDAO = new CampanaDAO(getContext());
         usuarioCampanasDAO = new UsuarioCampanasDAO(getContext());
 
         sp = getActivity().getSharedPreferences("datosUsuario", Context.MODE_PRIVATE);
@@ -96,7 +96,8 @@ public class ListaCampana extends Fragment {
                     .setMessage("¿Seguro que deseas eliminar \"" + campanaSeleccionada.getNombreCampanha() + "\"?\n Se borrarán todos los personajes e items asociados.")
                     .setPositiveButton("Sí", (dialog, which) -> {
 
-                        usuarioCampanasDAO.borrarUsuarioCampana(idUsuario, String.valueOf(campanaSeleccionada.getId()));
+                        campanaDAO.borrarCampana(campanaSeleccionada.getId());
+                        usuarioCampanasDAO.borrarUsuarioCampana(idUsuario, campanaSeleccionada.getId());
 
                         recargarCampanas();
                     })

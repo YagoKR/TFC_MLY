@@ -6,12 +6,17 @@ import android.database.Cursor;
 import android.database.sqlite.SQLiteDatabase;
 
 import com.example.tfc.bbdd.definicion.SQLiteHelper;
+import com.example.tfc.bbdd.entidades.Campana;
 import com.example.tfc.bbdd.entidades.Usuario;
+
+import java.util.ArrayList;
 
 public class UsuarioDAO {
     private SQLiteDatabase db;
+    private Context context;
 
     public UsuarioDAO(Context context) {
+        this.context = context;
         SQLiteHelper dbHelper = new SQLiteHelper(context);
         db = dbHelper.getWritableDatabase();
     }
@@ -141,6 +146,17 @@ public class UsuarioDAO {
                 new String[]{usuario.getIdUsuario()}
         );
     }
+
+    public int borrarUsuario(String idUsuario) {
+        UsuarioCampanasDAO ucDAO = new UsuarioCampanasDAO(context);
+        ArrayList<Campana> campanas = ucDAO.obtenerCampanasDeUsuario(idUsuario);
+        for (Campana c : campanas) {
+            ucDAO.borrarUsuarioCampana(idUsuario, c.getId());
+        }
+
+        return db.delete("Usuarios", "usuario = ?", new String[]{idUsuario});
+    }
+
 
 
 }
