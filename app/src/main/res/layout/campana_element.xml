@@ -49,11 +49,13 @@
         android:ellipsize="none"
         android:inputType="textMultiLine"
         android:breakStrategy="simple"
-        android:scrollbars="vertical"
-        app:layout_constraintStart_toEndOf="@id/imageContainer"
-        app:layout_constraintEnd_toEndOf="parent"
+        android:scrollbars="none"
+        android:clickable="false"
+        android:focusable="false"
+        android:longClickable="false"
         app:layout_constraintTop_toBottomOf="@id/textViewNombre"
-        app:layout_constraintBottom_toBottomOf="@id/imageContainer" />
+        app:layout_constraintStart_toEndOf="@id/imageContainer"
+        app:layout_constraintEnd_toEndOf="parent" />
 
 
 </androidx.constraintlayout.widget.ConstraintLayout>
