@@ -117,6 +117,11 @@ public class EditarItem extends AppCompatActivity {
                 return;
             }
 
+            if (cantidad <= 0) {
+                mostrarDialogo("Error", "La cantidad mínima permitida es 1");
+                return;
+            }
+
             itemActual.setCantidad(cantidad);
             itemActual.setDescripcion(descripcion);
 

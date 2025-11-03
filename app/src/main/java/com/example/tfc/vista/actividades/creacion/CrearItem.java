@@ -147,6 +147,11 @@ public class CrearItem extends AppCompatActivity {
             mostrarDialogo("Error", "La cantidad máxima permitida es 999");
             return;
         }
+
+        if (cantidad <= 0) {
+            mostrarDialogo("Error", "La cantidad mínima permitida es 1");
+            return;
+        }
         InventarioDAO invDAO = new InventarioDAO(getApplicationContext());
         if (invDAO.existeItem(idPersonaje, nombre)) {
             mostrarDialogo("Error", "Ya existe un ítem con ese nombre para este personaje");
