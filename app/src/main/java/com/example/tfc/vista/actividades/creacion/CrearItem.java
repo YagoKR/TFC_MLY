@@ -139,7 +139,7 @@ public class CrearItem extends AppCompatActivity {
         try {
             cantidad = Integer.parseInt(cantidadTexto);
         } catch (NumberFormatException e) {
-            mostrarDialogo("Error", "La cantidad debe ser un número válido");
+            mostrarDialogo("Error", "Cantidad inválida");
             return;
         }
 
@@ -152,6 +152,7 @@ public class CrearItem extends AppCompatActivity {
             mostrarDialogo("Error", "La cantidad mínima permitida es 1");
             return;
         }
+
         InventarioDAO invDAO = new InventarioDAO(getApplicationContext());
         if (invDAO.existeItem(idPersonaje, nombre)) {
             mostrarDialogo("Error", "Ya existe un ítem con ese nombre para este personaje");
