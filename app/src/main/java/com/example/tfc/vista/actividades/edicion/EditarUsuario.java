@@ -32,16 +32,16 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 
 public class EditarUsuario extends AppCompatActivity {
-    private Toolbar toolbar;
-    private EditText editNombreUsuario, editNombreReal, editmail, editcontrasena;
-    private ImageView imageView;
-    private Button btnEditarUsuario, btncambiarContrasena;
+    public Toolbar toolbar;
+    public EditText editNombreUsuario, editNombreReal, editmail, editcontrasena;
+    public ImageView imageView;
+    public Button btnEditarUsuario, btncambiarContrasena;
     private UsuarioDAO usuarioDAO;
-    private SharedPreferences sp;
+    public SharedPreferences sp;
     private Usuario usuario;
 
     private Uri selectedImageUri;
-    private String imagenBase64Actual;
+    public String imagenBase64Actual;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {

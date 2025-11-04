@@ -21,7 +21,7 @@ public class InicioSesion extends AppCompatActivity {
     public Button btnInicio;
     public EditText txtUsuario;
     public EditText txtContrasena;
-    public SharedPreferences sp;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

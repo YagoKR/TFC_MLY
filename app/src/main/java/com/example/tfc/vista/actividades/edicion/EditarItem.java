@@ -26,12 +26,12 @@ import com.example.tfc.bbdd.entidades.Inventario;
 import java.io.ByteArrayOutputStream;
 
 public class EditarItem extends AppCompatActivity {
-    private Toolbar toolbar;
-    private ImageView imagenItem;
-    private EditText nomeEditItem, cantidadEditItem, descripcionEditItem;
-    private Button btnEditarItem;
+    public Toolbar toolbar;
+    public ImageView imagenItem;
+    public EditText nomeEditItem, cantidadEditItem, descripcionEditItem;
+    public Button btnEditarItem;
     private Uri selectedImageUri;
-    private String imagenBase64Actual;
+    public String imagenBase64Actual;
     private Inventario itemActual;
     private InventarioDAO inventarioDAO;
 

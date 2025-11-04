@@ -25,15 +25,16 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class EditarCampana extends AppCompatActivity {
-    private Toolbar toolbar;
-    private EditText editNombreCampana, editDescripcionCampana;
-    private ImageView imageViewEditar;
-    private Button btnEditarCampana;
+
+    public Toolbar toolbar;
+    public EditText editNombreCampana, editDescripcionCampana;
+    public ImageView imageViewEditar;
+    public Button btnEditarCampana;
     private CampanaDAO campanaDAO;
     private Campana campana;
 
     private Uri selectedImageUri;
-    private String imagenBase64Actual;
+    public String imagenBase64Actual;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
