@@ -35,7 +35,7 @@ public class EditarPersonajes extends AppCompatActivity {
     private Personaje personaje;
 
     private Uri selectedImageUri;
-    private String imagenBase64Actual;
+    public String imagenBase64Actual;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

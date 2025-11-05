@@ -35,7 +35,7 @@ public class EditarItem extends AppCompatActivity {
     private Inventario itemActual;
     private InventarioDAO inventarioDAO;
 
-    private int idPersonaje;
+    public int idPersonaje;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
