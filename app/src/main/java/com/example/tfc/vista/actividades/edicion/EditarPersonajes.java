@@ -27,15 +27,15 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 
 public class EditarPersonajes extends AppCompatActivity {
-    private Toolbar toolbar;
-    private ImageView imageViewEditarPersonaje;
-    private EditText nombreEditarPersonaje, razaEditarPersonaje, statsEditarPersonaje;
-    private Button btnEditarPersonaje;
+    public Toolbar toolbar;
+    public ImageView imageViewEditarPersonaje;
+    public EditText nombreEditarPersonaje, razaEditarPersonaje, statsEditarPersonaje;
+    public Button btnEditarPersonaje;
     private PersonajeDAO personajeDAO;
     private Personaje personaje;
 
     private Uri selectedImageUri;
-    private String imagenBase64Actual;
+    public String imagenBase64Actual;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);

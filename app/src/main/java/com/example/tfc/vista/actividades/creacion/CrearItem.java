@@ -169,7 +169,7 @@ public class CrearItem extends AppCompatActivity {
             if (selectedImageUri != null) {
                 bitmap = MediaStore.Images.Media.getBitmap(getContentResolver(), selectedImageUri);
             } else {
-                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.item_generic);
+                bitmap = BitmapFactory.decodeResource(getResources(), R.drawable.new_item_generic);
             }
             imagenBase64 = bitmapToBase64(bitmap);
         } catch (Exception e) {
