@@ -144,6 +144,16 @@ public class EditarUsuario extends AppCompatActivity {
                 if (editcontrasena.isEnabled()) {
                     String nuevaContrasena = editcontrasena.getText().toString().trim();
                     if (!nuevaContrasena.isEmpty()) {
+
+                        if (nuevaContrasena.length() < 6 || nuevaContrasena.length() > 12) {
+                            new AlertDialog.Builder(EditarUsuario.this)
+                                    .setTitle("Error")
+                                    .setMessage("La contraseña debe tener entre 6 y 12 caracteres.")
+                                    .setPositiveButton("Ok", null)
+                                    .show();
+                            return;
+                        }
+
                         if (!validarContrasena(nuevaContrasena)) return;
 
                         final EditText inputConfirm = new EditText(EditarUsuario.this);

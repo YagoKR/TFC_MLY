@@ -122,6 +122,15 @@ public class CrearUsuario extends AppCompatActivity {
                 String email = txtEmailUsuario.getText().toString();
                 String contrasena = txtContrasenha.getText().toString();
 
+                if (contrasena.length() < 6 || contrasena.length() > 12) {
+                    new AlertDialog.Builder(CrearUsuario.this)
+                            .setTitle("Error")
+                            .setMessage("La contraseña debe tener entre 6 y 12 caracteres")
+                            .setPositiveButton("Ok", null)
+                            .show();
+                    return;
+                }
+
                 if (!validarContrasena(contrasena)) return;
 
                 if (!validarEmail(email)) {
