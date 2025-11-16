@@ -117,7 +117,7 @@
         android:id="@+id/textoAvisoIngles"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:text="Debido a la API utilizada, el ítem y su información deben estar en inglés."
+        android:text="Debido a la API utilizada, el nombre del ítem debe estar en inglés."
         android:textColor="#FF9800"
         android:textStyle="italic"
         android:background="#1AFF9800"

@@ -132,6 +132,16 @@ public class EditarPersonajes extends AppCompatActivity {
                 return;
             }
 
+            if (nombreEditarPersonaje.getText().toString().trim().isEmpty() ||
+                    razaEditarPersonaje.getText().toString().trim().isEmpty() ||
+                    statsEditarPersonaje.getText().toString().trim().isEmpty()) {
+                new AlertDialog.Builder(EditarPersonajes.this)
+                        .setTitle("Error")
+                        .setMessage("Hay campos vacíos.")
+                        .setPositiveButton("Ok", null)
+                        .show();
+                return;
+            }
             personaje.setNombre(nombreEditarPersonaje.getText().toString());
             personaje.setRaza(razaEditarPersonaje.getText().toString());
             personaje.setClase(statsEditarPersonaje.getText().toString());

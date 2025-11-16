@@ -113,6 +113,16 @@ public class EditarCampana extends AppCompatActivity {
                 return;
             }
 
+            if (editNombreCampana.getText().toString().trim().isEmpty() ||
+                editDescripcionCampana.getText().toString().trim().isEmpty()) {
+                new AlertDialog.Builder(EditarCampana.this)
+                        .setTitle("Error")
+                        .setMessage("Hay campos vacíos.")
+                        .setPositiveButton("Ok", null)
+                        .show();
+                return;
+            }
+
             campana.setNombreCampanha(editNombreCampana.getText().toString());
             campana.setDescripcion(editDescripcionCampana.getText().toString());
 

@@ -124,6 +124,15 @@ public class EditarUsuario extends AppCompatActivity {
             @Override
             public void onClick(View v) {
 
+                if (editNombreReal.getText().toString().trim().isEmpty() || editmail.getText().toString().trim().isEmpty()) {
+                    new AlertDialog.Builder(EditarUsuario.this)
+                            .setTitle("Error")
+                            .setMessage("Hay campos vacíos.")
+                            .setPositiveButton("Ok", null)
+                            .show();
+                    return;
+                }
+
                 usuario.setNombre(editNombreReal.getText().toString());
 
                 if (!validarEmail(editmail.getText().toString())) return;
