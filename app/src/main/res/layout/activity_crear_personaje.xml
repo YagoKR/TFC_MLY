@@ -101,7 +101,7 @@
         android:id="@+id/statsPersonaje"
         android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:hint="Ej. Luchador Samurai, lvl 3"
+        android:hint="Ej. Luchador Samurai lvl 3"
         android:inputType="text"
         android:layout_marginTop="8dp"
         android:layout_marginHorizontal="32dp"
